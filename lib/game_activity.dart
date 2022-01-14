@@ -280,7 +280,111 @@ class _GameActivityState extends State<GameActivity> {
                 ),
                 InkWell(
                   onTap: () {
-                    _reinitialiseGame(PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ);
+                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_upward,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_downward,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_upward,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.yellow,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_forward,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.yellow,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_downward,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.yellow,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);
+                  },
+                  child: CircleAvatar(
+                    child: Icon(
+                      Icons.arrow_back,
+                      color: Colors.black,
+                      size: 40.0,
+                    ),
+                    backgroundColor: Colors.yellow,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    _reinitialiseGame(PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ,PositionGreenI,PositionGreenJ,PositionYellowI,PositionYellowJ);
                     movecount=0;
                   },
                   child: CircleAvatar(
@@ -315,8 +419,10 @@ class _GameActivityState extends State<GameActivity> {
               boardpos[PositionBlueI][PositionBlueJ].blueposition = true;
               boardpos[PositionRedAltI][PositionRedAltJ].redposition = false;
               boardpos[PositionRedI][PositionRedJ].redposition = true;
-              boardpos[PositionGreenAltI][PositionGreenAltJ].redposition = false;
-              boardpos[PositionGreenI][PositionGreenJ].redposition = true;
+              boardpos[PositionGreenAltI][PositionGreenAltJ].greenposition = false;
+              boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
+              boardpos[PositionYellowAltI][PositionYellowAltJ].yellowposition = false;
+              boardpos[PositionYellowI][PositionYellowJ].yellowposition = true;
 
               if ((rowNumber == 7) && (columnNumber == 7)) {
                 image = getImage(ImageType.bombnw);
@@ -339,7 +445,6 @@ class _GameActivityState extends State<GameActivity> {
               if (boardpos[rowNumber][columnNumber].blueposition) {
                 return InkWell(
                   onTap: () {
-                    //_handleMoveBlue(rowNumber, columnNumber, 4);
                   },
                   splashColor: Colors.grey,
                   child: Container(
@@ -352,7 +457,6 @@ class _GameActivityState extends State<GameActivity> {
               } else if (boardpos[rowNumber][columnNumber].redposition) {
                 return InkWell(
                   onTap: () {
-                        //_handleMoveRed(rowNumber, columnNumber, 3);
                     },
                   splashColor: Colors.grey,
                   child: Container(
@@ -365,7 +469,6 @@ class _GameActivityState extends State<GameActivity> {
               } else if (boardpos[rowNumber][columnNumber].greenposition) {
                 return InkWell(
                   onTap: () {
-                    //_handleMoveRed(rowNumber, columnNumber, 3);
                   },
                   splashColor: Colors.grey,
                   child: Container(
@@ -375,7 +478,19 @@ class _GameActivityState extends State<GameActivity> {
                       ])
                   ),
                 );
-              }else {
+              } else if (boardpos[rowNumber][columnNumber].yellowposition) {
+                return InkWell(
+                  onTap: () {
+                  },
+                  splashColor: Colors.grey,
+                  child: Container(
+                      color: Colors.grey,
+                      child: Stack(children: <Widget>[image,
+                        Image.asset('assets/images/yellowplayer.png'),
+                      ])
+                  ),
+                );
+              } else {
                 return InkWell(
                   splashColor: Colors.grey,
                   child: Container(
@@ -537,12 +652,15 @@ class _GameActivityState extends State<GameActivity> {
   }
 
 
-  Future _reinitialiseGame(int PositionBlueI, int PositionBlueJ, int PositionRedI,int PositionRedJ) async {
+  Future _reinitialiseGame(int PositionBlueI, int PositionBlueJ, int PositionRedI,int PositionRedJ, int PositionGreenI,int PositionGreenJ, int PositionYellowI,int PositionYellowJ) async {
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
 
     boardpos[PositionBlueI][PositionBlueJ].blueposition = false;
     boardpos[PositionRedI][PositionRedJ].redposition = false;
+    boardpos[PositionGreenI][PositionGreenJ].greenposition = false;
+    boardpos[PositionYellowI][PositionYellowJ].yellowposition = false;
+
     //MIDDLE
     boardpos[6][7].obstaclesouth = true;
     boardpos[6][8].obstaclesouth = true;
@@ -633,11 +751,21 @@ class _GameActivityState extends State<GameActivity> {
 
     boardpos[redi][redj].redposition = false;      // print(snapshot.connectionState);
     boardpos[bluei][bluej].blueposition = false;      // print(snapshot.connectionState);
+    boardpos[greeni][greenj].greenposition = false;      // print(snapshot.connectionState);
+    boardpos[yellowi][yellowj].yellowposition = false;      // print(snapshot.connectionState);
+
 
     await game.doc("TestGame").update({'redalti': PositionRedI,'redaltj':PositionRedJ});
     await game.doc("TestGame").update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
+    await game.doc("TestGame").update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
+    await game.doc("TestGame").update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
+
     await game.doc("TestGame").update({'bluei': 4,'bluej':4});
     await game.doc("TestGame").update({'redi': 3,'redj':3});
+    await game.doc("TestGame").update({'greeni': 12,'greenj':12});
+    await game.doc("TestGame").update({'yellowi': 13,'yellowj':13});
+
+
     //setState(() {});
   }
   // This function opens other squares around the target square which don't have any bombs around them.
@@ -658,6 +786,14 @@ class _GameActivityState extends State<GameActivity> {
       if (i<15 && boardpos[i+1][j].blueposition && t==3) {break;}
       if (j>0 && boardpos[i][j-1].blueposition && t==4) {break;}
       if (j<15 && boardpos[i][j+1].blueposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].greenposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].greenposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].greenposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].greenposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].yellowposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].yellowposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].yellowposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].yellowposition && t==2) {break;}
       if (t==1) {i--;}
       if (t==3) {i++;}
       if (t==4) {j--;}
@@ -688,6 +824,14 @@ class _GameActivityState extends State<GameActivity> {
       if (i<15 && boardpos[i+1][j].redposition && t==3) {break;}
       if (j>0 && boardpos[i][j-1].redposition && t==4) {break;}
       if (j<15 && boardpos[i][j+1].redposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].greenposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].greenposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].greenposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].greenposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].yellowposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].yellowposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].yellowposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].yellowposition && t==2) {break;}
       if (t==1) {i--;}
       if (t==3) {i++;}
       if (t==4) {j--;}
@@ -723,6 +867,10 @@ class _GameActivityState extends State<GameActivity> {
       if (i<15 && boardpos[i+1][j].blueposition && t==3) {break;}
       if (j>0 && boardpos[i][j-1].blueposition && t==4) {break;}
       if (j<15 && boardpos[i][j+1].blueposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].yellowposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].yellowposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].yellowposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].yellowposition && t==2) {break;}
       if (t==1) {i--;}
       if (t==3) {i++;}
       if (t==4) {j--;}
@@ -733,6 +881,45 @@ class _GameActivityState extends State<GameActivity> {
     greenj=j;
 
     await game.doc("TestGame").update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
+    movecount++;
+    print('MoveCount ${movecount}');
+    setState(() {});
+  }
+
+  Future _handleMoveYellowAlt(int i, int j, int t) async {
+
+    CollectionReference game = FirebaseFirestore.instance.collection('Games');
+
+    boardpos[i][j].yellowposition = false;
+    int ialt=i;
+    int jalt=j;
+    while(1==1) {
+      if (boardpos[i][j].obstaclenorth && t==1) {break;}
+      if (boardpos[i][j].obstacleeast && t==2) {break;}
+      if (boardpos[i][j].obstaclesouth && t==3) {break;}
+      if (boardpos[i][j].obstaclewest && t==4) {break;}
+      if (i>0 && boardpos[i-1][j].redposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].redposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].redposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].redposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].blueposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].blueposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].blueposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].blueposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].greenposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].greenposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].greenposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].greenposition && t==2) {break;}
+      if (t==1) {i--;}
+      if (t==3) {i++;}
+      if (t==4) {j--;}
+      if (t==2) {j++;}
+    }
+    boardpos[i][j].yellowposition = true;
+    yellowi=i;
+    yellowj=j;
+
+    await game.doc("TestGame").update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
     movecount++;
     print('MoveCount ${movecount}');
     setState(() {});
