@@ -5,6 +5,7 @@ import 'board_square.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 // Types of images available
 enum ImageType {
   zero,
@@ -26,6 +27,12 @@ enum ImageType {
   bluecrossne,
   redtrianglese,
   greencirclenw,
+  bluecirclene,
+  greensaturnse,
+  walle,
+  wallw,
+  walln,
+  walls,
   redplayer,
   bluepleyer,
   greenplayer,
@@ -444,6 +451,39 @@ class _GameActivityState extends State<GameActivity> {
               if ((rowNumber == 8) && (columnNumber == 2)) {
                 image = getImage(ImageType.greencirclenw);
               }
+              if ((rowNumber == 11) && (columnNumber == 11)) {
+                image = getImage(ImageType.bluecrossne);
+              }
+              if ((rowNumber == 3) && (columnNumber == 8)) {
+                image = getImage(ImageType.greensaturnse);
+              }
+              if ((rowNumber == 13) && (columnNumber == 7)) {
+                image = getImage(ImageType.bluecirclene);
+              }
+              if ((rowNumber == 15) && (columnNumber == 5)) {
+                image = getImage(ImageType.walle);
+              }
+              if ((rowNumber == 15) && (columnNumber == 6)) {
+                image = getImage(ImageType.wallw);
+              }
+              if ((rowNumber == 0) && (columnNumber == 5)) {
+                image = getImage(ImageType.walle);
+              }
+              if ((rowNumber == 0) && (columnNumber == 6)) {
+                image = getImage(ImageType.wallw);
+              }
+              if ((rowNumber == 6) && (columnNumber == 0)) {
+                image = getImage(ImageType.walln);
+              }
+              if ((rowNumber == 5) && (columnNumber == 0)) {
+                image = getImage(ImageType.walls);
+              }
+              if ((rowNumber == 9) && (columnNumber == 15)) {
+                image = getImage(ImageType.walln);
+              }
+              if ((rowNumber == 8) && (columnNumber == 15)) {
+                image = getImage(ImageType.walls);
+              }
               if (boardpos[rowNumber][columnNumber].blueposition) {
                 return InkWell(
                   onTap: () {
@@ -647,6 +687,34 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[8][2].obstaclenorth = true;
     boardpos[8][2].obstaclewest = true;
     boardpos[8][1].obstacleeast = true;
+
+    //SmallWalls
+    boardpos[5][0].obstaclesouth = true;
+    boardpos[6][0].obstaclenorth = true;
+    boardpos[8][15].obstaclesouth = true;
+    boardpos[9][15].obstaclenorth = true;
+    boardpos[0][5].obstacleeast = true;
+    boardpos[0][6].obstaclewest = true;
+    boardpos[15][5].obstacleeast = true;
+    boardpos[15][6].obstaclewest = true;
+
+    //GreenSaturn
+    boardpos[4][8].obstaclenorth = true;
+    boardpos[3][8].obstacleeast = true;
+    boardpos[3][8].obstaclesouth = true;
+    boardpos[3][9].obstaclewest = true;
+
+    //BlueCircle
+    boardpos[13][7].obstaclenorth = true;
+    boardpos[13][7].obstacleeast = true;
+    boardpos[12][7].obstaclesouth = true;
+    boardpos[13][8].obstaclewest = true;
+
+    //BlueCross
+    boardpos[11][11].obstaclenorth = true;
+    boardpos[11][11].obstacleeast = true;
+    boardpos[10][11].obstaclesouth = true;
+    boardpos[11][12].obstaclewest = true;
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
@@ -960,6 +1028,18 @@ class _GameActivityState extends State<GameActivity> {
         return Image.asset('assets/images/bombSouthEast.png');
       case ImageType.bluecrossne:
         return Image.asset('assets/images/BlueCrossNorthEast.png');
+      case ImageType.bluecirclene:
+        return Image.asset('assets/images/BlueCircleNorthEast.png');
+      case ImageType.greensaturnse:
+        return Image.asset('assets/images/GreenSaturnSouthEast.png');
+      case ImageType.walle:
+        return Image.asset('assets/images/WallEast.png');
+      case ImageType.wallw:
+        return Image.asset('assets/images/WallWest.png');
+      case ImageType.walln:
+        return Image.asset('assets/images/WallNorth.png');
+      case ImageType.walls:
+        return Image.asset('assets/images/WallSouth.png');
       case ImageType.redtrianglese:
         return Image.asset('assets/images/RedTriangleSouthEast.png');
       case ImageType.greencirclenw:
