@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'board_square.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -63,7 +65,7 @@ class _GameActivityState extends State<GameActivity> {
   int yellowi = 0;
   int yellowj = 5;
 
-  int movecount=0;
+  //int movecount=0;
   // The grid of squares
   List<List<BoardPosition>> boardpos = List.generate(16, (i) {
     return List.generate(16, (j) {
@@ -159,7 +161,7 @@ class _GameActivityState extends State<GameActivity> {
               int PositionYellowAltI = snapshot.data?.data()!["yellowalti"];
               int PositionYellowJ=snapshot.data?.data()!["yellowj"];
               int PositionYellowAltJ = snapshot.data?.data()!["yellowaltj"];
-
+              int movecount = snapshot.data?.data()!["movecount"];
               return (
 
 
@@ -760,6 +762,7 @@ class _GameActivityState extends State<GameActivity> {
     await game.doc("TestGame").update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
     await game.doc("TestGame").update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
 
+    await game.doc("TestGame").update({'movecount': 0});
     await game.doc("TestGame").update({'bluei': 4,'bluej':4});
     await game.doc("TestGame").update({'redi': 3,'redj':3});
     await game.doc("TestGame").update({'greeni': 12,'greenj':12});
@@ -803,8 +806,7 @@ class _GameActivityState extends State<GameActivity> {
     redi=i;
     redj=j;
     await game.doc("TestGame").update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
-    movecount++;
-    print('MoveCount ${movecount}');
+    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
     setState(() {});
   }
 
@@ -842,8 +844,7 @@ class _GameActivityState extends State<GameActivity> {
     bluej=j;
 
     await game.doc("TestGame").update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
-    movecount++;
-    print('MoveCount ${movecount}');
+    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
     setState(() {});
   }
 
@@ -881,8 +882,7 @@ class _GameActivityState extends State<GameActivity> {
     greenj=j;
 
     await game.doc("TestGame").update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
-    movecount++;
-    print('MoveCount ${movecount}');
+    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
     setState(() {});
   }
 
@@ -920,8 +920,7 @@ class _GameActivityState extends State<GameActivity> {
     yellowj=j;
 
     await game.doc("TestGame").update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
-    movecount++;
-    print('MoveCount ${movecount}');
+    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
     setState(() {});
   }
 
