@@ -26,10 +26,73 @@ enum ImageType {
   bombse,
   redcircle,
   bluecrossne,
-  redtrianglese,
-  greencirclenw,
+  bluecrossnw,
+  bluecrossse,
+  bluecrosssw,
+  bluetrianglene,
+  bluetrianglenw,
+  bluetrianglese,
+  bluetrianglesw,
+  bluesaturnne,
+  bluesaturnnw,
+  bluesaturnse,
+  bluesaturnsw,
   bluecirclene,
+  bluecirclenw,
+  bluecirclese,
+  bluecirclesw,
+  redcrossne,
+  redcrossnw,
+  redcrossse,
+  redcrosssw,
+  redtrianglene,
+  redtrianglenw,
+  redtrianglese,
+  redtrianglesw,
+  redsaturnne,
+  redsaturnnw,
+  redsaturnse,
+  redsaturnsw,
+  redcirclene,
+  redcirclenw,
+  redcirclese,
+  redcirclesw,
+  greencrossne,
+  greencrossnw,
+  greencrossse,
+  greencrosssw,
+  greentrianglene,
+  greentrianglenw,
+  greentrianglese,
+  greentrianglesw,
+  greensaturnne,
+  greensaturnnw,
   greensaturnse,
+  greensaturnsw,
+  greencirclene,
+  greencirclenw,
+  greencirclese,
+  greencirclesw,
+  yellowcrossne,
+  yellowcrossnw,
+  yellowcrossse,
+  yellowcrosssw,
+  yellowtrianglene,
+  yellowtrianglenw,
+  yellowtrianglese,
+  yellowtrianglesw,
+  yellowsaturnne,
+  yellowsaturnnw,
+  yellowsaturnse,
+  yellowsaturnsw,
+  yellowcirclene,
+  yellowcirclenw,
+  yellowcirclese,
+  yellowcirclesw,
+  rainbowne,
+  rainbownw,
+  rainbowse,
+  rainbowsw,
   walle,
   wallw,
   walln,
@@ -446,20 +509,68 @@ class _GameActivityState extends State<GameActivity> {
               if ((rowNumber == 8) && (columnNumber == 8)) {
                 image = getImage(ImageType.bombse);
               }
-              if ((rowNumber == 4) && (columnNumber == 3)) {
-                image = getImage(ImageType.redtrianglese);
+              //Quadrant 1
+              if ((rowNumber == 4) && (columnNumber == 2)) {
+                image = getImage(ImageType.greencirclene);
               }
-              if ((rowNumber == 8) && (columnNumber == 2)) {
-                image = getImage(ImageType.greencirclenw);
+              if ((rowNumber == 2) && (columnNumber == 5)) {
+                image = getImage(ImageType.bluecrossse);
               }
-              if ((rowNumber == 11) && (columnNumber == 11)) {
-                image = getImage(ImageType.bluecrossne);
+              if ((rowNumber == 6) && (columnNumber == 1)) {
+                image = getImage(ImageType.yellowsaturnnw);
               }
-              if ((rowNumber == 3) && (columnNumber == 8)) {
-                image = getImage(ImageType.greensaturnse);
+              if ((rowNumber == 5) && (columnNumber == 7)) {
+                image = getImage(ImageType.redtrianglesw);
               }
-              if ((rowNumber == 13) && (columnNumber == 7)) {
-                image = getImage(ImageType.bluecirclene);
+              if ((rowNumber == 5) && (columnNumber == 0)) {
+                image = getImage(ImageType.walln);
+              }
+              if ((rowNumber == 4) && (columnNumber == 0)) {
+                image = getImage(ImageType.walls);
+              }
+              if ((rowNumber == 0) && (columnNumber == 3)) {
+                image = getImage(ImageType.walle);
+              }
+              if ((rowNumber == 0) && (columnNumber == 4)) {
+                image = getImage(ImageType.wallw);
+              }
+              //Quadrant 2
+              if ((rowNumber == 2) && (columnNumber == 9)) {
+                image = getImage(ImageType.bluetrianglese);
+              }
+              if ((rowNumber == 1) && (columnNumber == 13)) {
+                image = getImage(ImageType.redsaturnnw);
+              }
+              if ((rowNumber == 6) && (columnNumber == 11)) {
+                image = getImage(ImageType.yellowcirclene);
+              }
+              if ((rowNumber == 5) && (columnNumber == 14)) {
+                image = getImage(ImageType.greencrosssw);
+              }
+              if ((rowNumber == 0) && (columnNumber == 11)) {
+                image = getImage(ImageType.walle);
+              }
+              if ((rowNumber == 0) && (columnNumber == 12)) {
+                image = getImage(ImageType.wallw);
+              }
+              if ((rowNumber == 3) && (columnNumber == 15)) {
+                image = getImage(ImageType.walls);
+              }
+              if ((rowNumber == 4) && (columnNumber == 15)) {
+                image = getImage(ImageType.walln);
+              }
+              //Quadrant 3
+              if ((rowNumber == 11) && (columnNumber == 1)) {
+                image = getImage(ImageType.redcirclesw);
+              }
+              if ((rowNumber == 9) && (columnNumber == 3)) {
+                image = getImage(ImageType.yellowcrossne);
+              }
+              if ((rowNumber == 14) && (columnNumber == 2)) {
+                image = getImage(ImageType.greentrianglenw);
+              }
+              if ((rowNumber == 12) && (columnNumber == 6)) {
+                image = getImage(ImageType.bluesaturnse);
               }
               if ((rowNumber == 15) && (columnNumber == 5)) {
                 image = getImage(ImageType.walle);
@@ -467,18 +578,50 @@ class _GameActivityState extends State<GameActivity> {
               if ((rowNumber == 15) && (columnNumber == 6)) {
                 image = getImage(ImageType.wallw);
               }
-              if ((rowNumber == 0) && (columnNumber == 5)) {
-                image = getImage(ImageType.walle);
-              }
-              if ((rowNumber == 0) && (columnNumber == 6)) {
-                image = getImage(ImageType.wallw);
-              }
-              if ((rowNumber == 6) && (columnNumber == 0)) {
-                image = getImage(ImageType.walln);
-              }
-              if ((rowNumber == 5) && (columnNumber == 0)) {
+              if ((rowNumber == 13) && (columnNumber == 0)) {
                 image = getImage(ImageType.walls);
               }
+              if ((rowNumber == 14) && (columnNumber == 0)) {
+                image = getImage(ImageType.walln);
+              }
+              //Quadrant 4
+              if ((rowNumber == 10) && (columnNumber == 8)) {
+                image = getImage(ImageType.rainbownw);
+              }
+              if ((rowNumber == 10) && (columnNumber == 13)) {
+                image = getImage(ImageType.redcrossnw);
+              }
+              if ((rowNumber == 12) && (columnNumber == 14)) {
+                image = getImage(ImageType.yellowtrianglesw);
+              }
+              if ((rowNumber == 11) && (columnNumber == 10)) {
+                image = getImage(ImageType.greensaturnse);
+              }
+              if ((rowNumber == 14) && (columnNumber == 9)) {
+                image = getImage(ImageType.bluecirclene);
+              }
+              if ((rowNumber == 15) && (columnNumber == 11)) {
+                image = getImage(ImageType.walle);
+              }
+              if ((rowNumber == 15) && (columnNumber == 12)) {
+                image = getImage(ImageType.wallw);
+              }
+              if ((rowNumber == 8) && (columnNumber == 15)) {
+                image = getImage(ImageType.walls);
+              }
+              if ((rowNumber == 9) && (columnNumber == 15)) {
+                image = getImage(ImageType.walln);
+              }
+
+
+
+
+
+
+
+
+
+
               if ((rowNumber == 9) && (columnNumber == 15)) {
                 image = getImage(ImageType.walln);
               }
@@ -809,14 +952,29 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[0][1].obstaclenorth = true;
     boardpos[0][0].obstaclenorth = true;
 
-    //Reflectors
-    boardpos[4][4].obstaclewest = true;
-    boardpos[4][3].obstacleeast = true;
-    boardpos[4][3].obstaclesouth = true;
-    boardpos[7][2].obstaclesouth = true;
-    boardpos[8][2].obstaclenorth = true;
-    boardpos[8][2].obstaclewest = true;
-    boardpos[8][1].obstacleeast = true;
+    //Reflectors East
+    boardpos[0][3].obstacleeast = true;
+    boardpos[0][11].obstacleeast = true;
+    boardpos[1][12].obstacleeast = true;
+    boardpos[2][5].obstacleeast = true;
+    boardpos[2][9].obstacleeast = true;
+    boardpos[4][2].obstacleeast = true;
+    boardpos[5][6].obstacleeast = true;
+    boardpos[5][13].obstacleeast = true;
+    boardpos[6][1].obstacleeast = true;
+    boardpos[6][11].obstacleeast = true;
+    boardpos[8][3].obstacleeast = true;
+    boardpos[9][7].obstacleeast = true;
+    boardpos[9][12].obstacleeast = true;
+    boardpos[11][1].obstacleeast = true;
+    boardpos[11][10].obstacleeast = true;
+    boardpos[12][6].obstacleeast = true;
+    boardpos[12][13].obstacleeast = true;
+    boardpos[14][1].obstacleeast = true;
+    boardpos[14][9].obstacleeast = true;
+    boardpos[15][5].obstacleeast = true;
+    boardpos[15][11].obstacleeast = true;
+
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
@@ -1029,10 +1187,140 @@ class _GameActivityState extends State<GameActivity> {
         return Image.asset('assets/images/bombSouthEast.png');
       case ImageType.bluecrossne:
         return Image.asset('assets/images/BlueCrossNorthEast.png');
+      case ImageType.bluecrossnw:
+        return Image.asset('assets/images/BlueCrossNorthWest.png');
+      case ImageType.bluecrossse:
+        return Image.asset('assets/images/BlueCrossSouthEast.png');
+      case ImageType.bluecrosssw:
+        return Image.asset('assets/images/BlueCrossSouthWest.png');
+      case ImageType.bluetrianglene:
+        return Image.asset('assets/images/BlueTriangleNorthEast.png');
+      case ImageType.bluetrianglenw:
+        return Image.asset('assets/images/BlueTriangleNorthWest.png');
+      case ImageType.bluetrianglese:
+        return Image.asset('assets/images/BlueTriangleSouthEast.png');
+      case ImageType.bluetrianglesw:
+        return Image.asset('assets/images/BlueTriangleSouthWest.png');
+      case ImageType.bluesaturnne:
+        return Image.asset('assets/images/BlueSaturnNorthEast.png');
+      case ImageType.bluesaturnnw:
+        return Image.asset('assets/images/BlueSaturnNorthWest.png');
+      case ImageType.bluesaturnse:
+        return Image.asset('assets/images/BlueSaturnSouthEast.png');
+      case ImageType.bluesaturnsw:
+        return Image.asset('assets/images/BlueSaturnSouthWest.png');
       case ImageType.bluecirclene:
         return Image.asset('assets/images/BlueCircleNorthEast.png');
+      case ImageType.bluecirclenw:
+        return Image.asset('assets/images/BlueCircleNorthWest.png');
+      case ImageType.bluecirclese:
+        return Image.asset('assets/images/BlueCircleSouthEast.png');
+      case ImageType.bluecirclesw:
+        return Image.asset('assets/images/BlueCircleSouthWest.png');
+      case ImageType.redcrossne:
+        return Image.asset('assets/images/RedCrossNorthEast.png');
+      case ImageType.redcrossnw:
+        return Image.asset('assets/images/RedCrossNorthWest.png');
+      case ImageType.redcrossse:
+        return Image.asset('assets/images/RedCrossSouthEast.png');
+      case ImageType.redcrosssw:
+        return Image.asset('assets/images/RedCrossSouthWest.png');
+      case ImageType.redtrianglene:
+        return Image.asset('assets/images/RedTriangleNorthEast.png');
+      case ImageType.redtrianglenw:
+        return Image.asset('assets/images/RedTriangleNorthWest.png');
+      case ImageType.redtrianglese:
+        return Image.asset('assets/images/RedTriangleSouthEast.png');
+      case ImageType.redtrianglesw:
+        return Image.asset('assets/images/RedTriangleSouthWest.png');
+      case ImageType.redsaturnne:
+        return Image.asset('assets/images/RedSaturnNorthEast.png');
+      case ImageType.redsaturnnw:
+        return Image.asset('assets/images/RedSaturnNorthWest.png');
+      case ImageType.redsaturnse:
+        return Image.asset('assets/images/RedSaturnSouthEast.png');
+      case ImageType.redsaturnsw:
+        return Image.asset('assets/images/RedSaturnSouthWest.png');
+      case ImageType.redcirclene:
+        return Image.asset('assets/images/RedCircleNorthEast.png');
+      case ImageType.redcirclenw:
+        return Image.asset('assets/images/RedCircleNorthWest.png');
+      case ImageType.redcirclese:
+        return Image.asset('assets/images/RedCircleSouthEast.png');
+      case ImageType.redcirclesw:
+        return Image.asset('assets/images/RedCircleSouthWest.png');
+      case ImageType.greencrossne:
+        return Image.asset('assets/images/GreenCrossNorthEast.png');
+      case ImageType.greencrossnw:
+        return Image.asset('assets/images/GreenCrossNorthWest.png');
+      case ImageType.greencrossse:
+        return Image.asset('assets/images/GreenCrossSouthEast.png');
+      case ImageType.greencrosssw:
+        return Image.asset('assets/images/GreenCrossSouthWest.png');
+      case ImageType.greentrianglene:
+        return Image.asset('assets/images/GreenTriangleNorthEast.png');
+      case ImageType.greentrianglenw:
+        return Image.asset('assets/images/GreenTriangleNorthWest.png');
+      case ImageType.greentrianglese:
+        return Image.asset('assets/images/GreenTriangleSouthEast.png');
+      case ImageType.greentrianglesw:
+        return Image.asset('assets/images/GreenTriangleSouthWest.png');
+      case ImageType.greensaturnne:
+        return Image.asset('assets/images/GreenSaturnNorthEast.png');
+      case ImageType.greensaturnnw:
+        return Image.asset('assets/images/GreenSaturnNorthWest.png');
       case ImageType.greensaturnse:
         return Image.asset('assets/images/GreenSaturnSouthEast.png');
+      case ImageType.greensaturnsw:
+        return Image.asset('assets/images/GreenSaturnSouthWest.png');
+      case ImageType.greencirclene:
+        return Image.asset('assets/images/GreenCircleNorthEast.png');
+      case ImageType.greencirclenw:
+        return Image.asset('assets/images/GreenCircleNorthWest.png');
+      case ImageType.greencirclese:
+        return Image.asset('assets/images/GreenCircleSouthEast.png');
+      case ImageType.greencirclesw:
+        return Image.asset('assets/images/GreenCircleSouthWest.png');
+      case ImageType.yellowcrossne:
+        return Image.asset('assets/images/YellowCrossNorthEast.png');
+      case ImageType.yellowcrossnw:
+        return Image.asset('assets/images/YellowCrossNorthWest.png');
+      case ImageType.yellowcrossse:
+        return Image.asset('assets/images/YellowCrossSouthEast.png');
+      case ImageType.yellowcrosssw:
+        return Image.asset('assets/images/YellowCrossSouthWest.png');
+      case ImageType.yellowtrianglene:
+        return Image.asset('assets/images/YellowTriangleNorthEast.png');
+      case ImageType.yellowtrianglenw:
+        return Image.asset('assets/images/YellowTriangleNorthWest.png');
+      case ImageType.yellowtrianglese:
+        return Image.asset('assets/images/YellowTriangleSouthEast.png');
+      case ImageType.yellowtrianglesw:
+        return Image.asset('assets/images/YellowTriangleSouthWest.png');
+      case ImageType.yellowsaturnne:
+        return Image.asset('assets/images/YellowSaturnNorthEast.png');
+      case ImageType.yellowsaturnnw:
+        return Image.asset('assets/images/YellowSaturnNorthWest.png');
+      case ImageType.yellowsaturnse:
+        return Image.asset('assets/images/YellowSaturnSouthEast.png');
+      case ImageType.yellowsaturnsw:
+        return Image.asset('assets/images/YellowSaturnSouthWest.png');
+      case ImageType.yellowcirclene:
+        return Image.asset('assets/images/YellowCircleNorthEast.png');
+      case ImageType.yellowcirclenw:
+        return Image.asset('assets/images/YellowCircleNorthWest.png');
+      case ImageType.yellowcirclese:
+        return Image.asset('assets/images/YellowCircleSouthEast.png');
+      case ImageType.yellowcirclesw:
+        return Image.asset('assets/images/YellowCircleSouthWest.png');
+      case ImageType.rainbowne:
+        return Image.asset('assets/images/RainbowNorthEast.png');
+      case ImageType.rainbownw:
+        return Image.asset('assets/images/RainbowNorthWest.png');
+      case ImageType.rainbowse:
+        return Image.asset('assets/images/RainbowSouthEast.png');
+      case ImageType.rainbowsw:
+        return Image.asset('assets/images/RainbowSouthWest.png');
       case ImageType.walle:
         return Image.asset('assets/images/WallEast.png');
       case ImageType.wallw:
@@ -1041,10 +1329,6 @@ class _GameActivityState extends State<GameActivity> {
         return Image.asset('assets/images/WallNorth.png');
       case ImageType.walls:
         return Image.asset('assets/images/WallSouth.png');
-      case ImageType.redtrianglese:
-        return Image.asset('assets/images/RedTriangleSouthEast.png');
-      case ImageType.greencirclenw:
-        return Image.asset('assets/images/GreenCircleNorthWest.png');
       case ImageType.redplayer:
         return Image.asset('assets/images/redplayer.png');
       case ImageType.bluepleyer:
