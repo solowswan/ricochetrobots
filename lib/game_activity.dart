@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'board_square.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-
+import 'package:numberpicker/numberpicker.dart';
 // Types of images available
 enum ImageType {
   zero,
@@ -135,6 +134,9 @@ class _GameActivityState extends State<GameActivity> {
 
   int yellowi = 0;
   int yellowj = 5;
+
+  final bet = TextEditingController();
+
 
   //int movecount=0;
   // The grid of squares
@@ -471,6 +473,26 @@ class _GameActivityState extends State<GameActivity> {
                 )
               ],
             ),
+          ),
+          Container(
+          child:Row(
+            children: <Widget>[
+            Expanded(child: TextField(
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter your BET'
+              ),
+              controller: bet,
+            ),
+            ),
+              Expanded(child: ElevatedButton(
+                child: Text('SUBMIT BET'),
+                onPressed: () {},
+              ),
+              )
+            ],
+            ),
+
           ),
           // The grid of squares
           GridView.builder(
