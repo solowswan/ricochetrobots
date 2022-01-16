@@ -823,42 +823,93 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[0][1].obstaclenorth = true;
     boardpos[0][0].obstaclenorth = true;
 
-    //Reflectors
-    boardpos[4][4].obstaclewest = true;
-    boardpos[4][3].obstacleeast = true;
-    boardpos[4][3].obstaclesouth = true;
-    boardpos[7][2].obstaclesouth = true;
-    boardpos[8][2].obstaclenorth = true;
-    boardpos[8][2].obstaclewest = true;
-    boardpos[8][1].obstacleeast = true;
-
-    //SmallWalls
-    boardpos[5][0].obstaclesouth = true;
-    boardpos[6][0].obstaclenorth = true;
-    boardpos[8][15].obstaclesouth = true;
-    boardpos[9][15].obstaclenorth = true;
-    boardpos[0][5].obstacleeast = true;
-    boardpos[0][6].obstaclewest = true;
+    //Reflectors East
+    boardpos[0][3].obstacleeast = true;
+    boardpos[0][11].obstacleeast = true;
+    boardpos[1][12].obstacleeast = true;
+    boardpos[2][5].obstacleeast = true;
+    boardpos[2][9].obstacleeast = true;
+    boardpos[4][2].obstacleeast = true;
+    boardpos[5][6].obstacleeast = true;
+    boardpos[5][13].obstacleeast = true;
+    boardpos[6][1].obstacleeast = true;
+    boardpos[6][11].obstacleeast = true;
+    boardpos[8][3].obstacleeast = true;
+    boardpos[9][7].obstacleeast = true;
+    boardpos[9][12].obstacleeast = true;
+    boardpos[11][1].obstacleeast = true;
+    boardpos[11][10].obstacleeast = true;
+    boardpos[12][6].obstacleeast = true;
+    boardpos[12][13].obstacleeast = true;
+    boardpos[14][1].obstacleeast = true;
+    boardpos[14][9].obstacleeast = true;
     boardpos[15][5].obstacleeast = true;
+    boardpos[15][11].obstacleeast = true;
+
+    //Reflectors West
+    boardpos[0][4].obstaclewest = true;
+    boardpos[0][12].obstaclewest = true;
+    boardpos[1][13].obstaclewest = true;
+    boardpos[2][6].obstaclewest = true;
+    boardpos[2][10].obstaclewest = true;
+    boardpos[4][3].obstaclewest = true;
+    boardpos[5][7].obstaclewest = true;
+    boardpos[5][14].obstaclewest = true;
+    boardpos[6][2].obstaclewest = true;
+    boardpos[6][12].obstaclewest = true;
+    boardpos[8][4].obstaclewest = true;
+    boardpos[9][8].obstaclewest = true;
+    boardpos[9][13].obstaclewest = true;
+    boardpos[11][2].obstaclewest = true;
+    boardpos[11][11].obstaclewest = true;
+    boardpos[12][7].obstaclewest = true;
+    boardpos[12][14].obstaclewest = true;
+    boardpos[14][2].obstaclewest = true;
+    boardpos[14][10].obstaclewest = true;
     boardpos[15][6].obstaclewest = true;
+    boardpos[15][12].obstaclewest = true;
 
-    //GreenSaturn
-    boardpos[4][8].obstaclenorth = true;
-    boardpos[3][8].obstacleeast = true;
-    boardpos[3][8].obstaclesouth = true;
-    boardpos[3][9].obstaclewest = true;
+    //Reflectors South
+    boardpos[5][0].obstaclesouth = true;
+    boardpos[13][0].obstaclesouth = true;
+    boardpos[9][1].obstaclesouth = true;
+    boardpos[11][1].obstaclesouth = true;
+    boardpos[3][2].obstaclesouth = true;
+    boardpos[13][2].obstaclesouth = true;
+    boardpos[8][3].obstaclesouth = true;
+    boardpos[3][5].obstaclesouth = true;
+    boardpos[12][6].obstaclesouth = true;
+    boardpos[5][7].obstaclesouth = true;
+    boardpos[9][8].obstaclesouth = true;
+    boardpos[3][9].obstaclesouth = true;
+    boardpos[13][9].obstaclesouth = true;
+    boardpos[11][10].obstaclesouth = true;
+    boardpos[5][11].obstaclesouth = true;
+    boardpos[0][13].obstaclesouth = true;
+    boardpos[9][13].obstaclesouth = true;
+    boardpos[5][14].obstaclesouth = true;
+    boardpos[12][14].obstaclesouth = true;
 
-    //BlueCircle
-    boardpos[13][7].obstaclenorth = true;
-    boardpos[13][7].obstacleeast = true;
-    boardpos[12][7].obstaclesouth = true;
-    boardpos[13][8].obstaclewest = true;
-
-    //BlueCross
-    boardpos[11][11].obstaclenorth = true;
-    boardpos[11][11].obstacleeast = true;
-    boardpos[10][11].obstaclesouth = true;
-    boardpos[11][12].obstaclewest = true;
+    //Reflectors North
+    boardpos[6][0].obstaclenorth = true;
+    boardpos[14][0].obstaclenorth = true;
+    boardpos[10][1].obstaclenorth = true;
+    boardpos[12][1].obstaclenorth = true;
+    boardpos[4][2].obstaclenorth = true;
+    boardpos[14][2].obstaclenorth = true;
+    boardpos[9][3].obstaclenorth = true;
+    boardpos[4][5].obstaclenorth = true;
+    boardpos[13][6].obstaclenorth = true;
+    boardpos[6][7].obstaclenorth = true;
+    boardpos[10][8].obstaclenorth = true;
+    boardpos[4][9].obstaclenorth = true;
+    boardpos[14][9].obstaclenorth = true;
+    boardpos[12][10].obstaclenorth = true;
+    boardpos[6][11].obstaclenorth = true;
+    boardpos[1][13].obstaclenorth = true;
+    boardpos[10][13].obstaclenorth = true;
+    boardpos[6][14].obstaclenorth = true;
+    boardpos[13][14].obstaclenorth = true;
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
@@ -974,6 +1025,71 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[14][9].obstacleeast = true;
     boardpos[15][5].obstacleeast = true;
     boardpos[15][11].obstacleeast = true;
+
+    //Reflectors West
+    boardpos[0][4].obstaclewest = true;
+    boardpos[0][12].obstaclewest = true;
+    boardpos[1][13].obstaclewest = true;
+    boardpos[2][6].obstaclewest = true;
+    boardpos[2][10].obstaclewest = true;
+    boardpos[4][3].obstaclewest = true;
+    boardpos[5][7].obstaclewest = true;
+    boardpos[5][14].obstaclewest = true;
+    boardpos[6][2].obstaclewest = true;
+    boardpos[6][12].obstaclewest = true;
+    boardpos[8][4].obstaclewest = true;
+    boardpos[9][8].obstaclewest = true;
+    boardpos[9][13].obstaclewest = true;
+    boardpos[11][2].obstaclewest = true;
+    boardpos[11][11].obstaclewest = true;
+    boardpos[12][7].obstaclewest = true;
+    boardpos[12][14].obstaclewest = true;
+    boardpos[14][2].obstaclewest = true;
+    boardpos[14][10].obstaclewest = true;
+    boardpos[15][6].obstaclewest = true;
+    boardpos[15][12].obstaclewest = true;
+
+    //Reflectors South
+    boardpos[5][0].obstaclesouth = true;
+    boardpos[13][0].obstaclesouth = true;
+    boardpos[9][1].obstaclesouth = true;
+    boardpos[11][1].obstaclesouth = true;
+    boardpos[3][2].obstaclesouth = true;
+    boardpos[13][2].obstaclesouth = true;
+    boardpos[8][3].obstaclesouth = true;
+    boardpos[3][5].obstaclesouth = true;
+    boardpos[12][6].obstaclesouth = true;
+    boardpos[5][7].obstaclesouth = true;
+    boardpos[9][8].obstaclesouth = true;
+    boardpos[3][9].obstaclesouth = true;
+    boardpos[13][9].obstaclesouth = true;
+    boardpos[11][10].obstaclesouth = true;
+    boardpos[5][11].obstaclesouth = true;
+    boardpos[0][13].obstaclesouth = true;
+    boardpos[9][13].obstaclesouth = true;
+    boardpos[5][14].obstaclesouth = true;
+    boardpos[12][14].obstaclesouth = true;
+
+    //Reflectors North
+    boardpos[6][0].obstaclenorth = true;
+    boardpos[14][0].obstaclenorth = true;
+    boardpos[10][1].obstaclenorth = true;
+    boardpos[12][1].obstaclenorth = true;
+    boardpos[4][2].obstaclenorth = true;
+    boardpos[14][2].obstaclenorth = true;
+    boardpos[9][3].obstaclenorth = true;
+    boardpos[4][5].obstaclenorth = true;
+    boardpos[13][6].obstaclenorth = true;
+    boardpos[6][7].obstaclenorth = true;
+    boardpos[10][8].obstaclenorth = true;
+    boardpos[4][9].obstaclenorth = true;
+    boardpos[14][9].obstaclenorth = true;
+    boardpos[12][10].obstaclenorth = true;
+    boardpos[6][11].obstaclenorth = true;
+    boardpos[1][13].obstaclenorth = true;
+    boardpos[10][13].obstaclenorth = true;
+    boardpos[6][14].obstaclenorth = true;
+    boardpos[13][14].obstaclenorth = true;
 
     //board[10][3].red = true;
     // Check bombs around and assign numbers
