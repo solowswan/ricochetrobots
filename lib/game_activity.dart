@@ -2,6 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'board_square.dart';
+import 'helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:numberpicker/numberpicker.dart';
@@ -487,7 +488,9 @@ class _GameActivityState extends State<GameActivity> {
             ),
               Expanded(child: ElevatedButton(
                 child: Text('SUBMIT BET'),
-                onPressed: () {},
+                onPressed: () {
+                  _submitBet("TestGame",_auth.currentUser?.email,bet.text);
+                  },
               ),
               )
             ],
@@ -1512,5 +1515,22 @@ class _GameActivityState extends State<GameActivity> {
       default:
         return ImageType.eight;
     }
+  }
+
+  Future _submitBet(String game, String? uid, String bet) async {
+    CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ game +'/Players');
+    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+    print(betupdate.orderBy('bet', descending: true).limit(1));
+    if(betupdate.orderBy('bet', descending: true).limit(1) == 99) {
+      await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
+      await betupdate.doc(uid).update({'bet': bet});
+    }
+
+
+    print(betupdate.orderBy('bet', descending: true).limit(1));
+
+    print(game);
+    print(uid);
+    print(bet);
   }
 }
