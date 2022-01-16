@@ -834,9 +834,9 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[5][13].obstacleeast = true;
     boardpos[6][1].obstacleeast = true;
     boardpos[6][11].obstacleeast = true;
-    boardpos[8][3].obstacleeast = true;
-    boardpos[9][7].obstacleeast = true;
-    boardpos[9][12].obstacleeast = true;
+    boardpos[9][3].obstacleeast = true;
+    boardpos[10][7].obstacleeast = true;
+    boardpos[10][12].obstacleeast = true;
     boardpos[11][1].obstacleeast = true;
     boardpos[11][10].obstacleeast = true;
     boardpos[12][6].obstacleeast = true;
@@ -857,9 +857,9 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[5][14].obstaclewest = true;
     boardpos[6][2].obstaclewest = true;
     boardpos[6][12].obstaclewest = true;
-    boardpos[8][4].obstaclewest = true;
-    boardpos[9][8].obstaclewest = true;
-    boardpos[9][13].obstaclewest = true;
+    boardpos[9][4].obstaclewest = true;
+    boardpos[10][8].obstaclewest = true;
+    boardpos[10][13].obstaclewest = true;
     boardpos[11][2].obstaclewest = true;
     boardpos[11][11].obstaclewest = true;
     boardpos[12][7].obstaclewest = true;
@@ -889,6 +889,8 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[9][13].obstaclesouth = true;
     boardpos[5][14].obstaclesouth = true;
     boardpos[12][14].obstaclesouth = true;
+    boardpos[3][15].obstaclesouth = true;
+    boardpos[8][15].obstaclesouth = true;
 
     //Reflectors North
     boardpos[6][0].obstaclenorth = true;
@@ -910,6 +912,8 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[10][13].obstaclenorth = true;
     boardpos[6][14].obstaclenorth = true;
     boardpos[13][14].obstaclenorth = true;
+    boardpos[4][15].obstaclenorth = true;
+    boardpos[9][15].obstaclenorth = true;
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
@@ -1014,9 +1018,9 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[5][13].obstacleeast = true;
     boardpos[6][1].obstacleeast = true;
     boardpos[6][11].obstacleeast = true;
-    boardpos[8][3].obstacleeast = true;
-    boardpos[9][7].obstacleeast = true;
-    boardpos[9][12].obstacleeast = true;
+    boardpos[9][3].obstacleeast = true;
+    boardpos[10][7].obstacleeast = true;
+    boardpos[10][12].obstacleeast = true;
     boardpos[11][1].obstacleeast = true;
     boardpos[11][10].obstacleeast = true;
     boardpos[12][6].obstacleeast = true;
@@ -1037,9 +1041,9 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[5][14].obstaclewest = true;
     boardpos[6][2].obstaclewest = true;
     boardpos[6][12].obstaclewest = true;
-    boardpos[8][4].obstaclewest = true;
-    boardpos[9][8].obstaclewest = true;
-    boardpos[9][13].obstaclewest = true;
+    boardpos[9][4].obstaclewest = true;
+    boardpos[10][8].obstaclewest = true;
+    boardpos[10][13].obstaclewest = true;
     boardpos[11][2].obstaclewest = true;
     boardpos[11][11].obstaclewest = true;
     boardpos[12][7].obstaclewest = true;
@@ -1069,6 +1073,8 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[9][13].obstaclesouth = true;
     boardpos[5][14].obstaclesouth = true;
     boardpos[12][14].obstaclesouth = true;
+    boardpos[3][15].obstaclesouth = true;
+    boardpos[8][15].obstaclesouth = true;
 
     //Reflectors North
     boardpos[6][0].obstaclenorth = true;
@@ -1090,7 +1096,8 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[10][13].obstaclenorth = true;
     boardpos[6][14].obstaclenorth = true;
     boardpos[13][14].obstaclenorth = true;
-
+    boardpos[4][15].obstaclenorth = true;
+    boardpos[9][15].obstaclenorth = true;
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
