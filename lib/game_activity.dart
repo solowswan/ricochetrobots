@@ -24,6 +24,7 @@ enum ImageType {
   bombsw,
   bombne,
   bombse,
+  redcircle,
   bluecrossne,
   redtrianglese,
   greencirclenw,
