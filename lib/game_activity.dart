@@ -236,6 +236,18 @@ class _GameActivityState extends State<GameActivity> {
               int PositionYellowJ=snapshot.data?.data()!["yellowj"];
               int PositionYellowAltJ = snapshot.data?.data()!["yellowaltj"];
               int movecount = snapshot.data?.data()!["movecount"];
+
+              int GameRound = snapshot.data?.data()!["Round"];
+              CollectionReference collectibles = FirebaseFirestore.instance.collection('Games/TestGame/Collectibles');
+
+
+
+              //QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').orderBy('Round', descending: false).limit(1).get();
+              //var list = querySnapshot.docs;
+              //List<int> collectibleslist = [];
+              // list.forEach((f) => bets.add(f.id));
+              //list.forEach((f) => collectibleslist.add(f.data()['bet']));
+
               return (
 
 
@@ -497,6 +509,46 @@ class _GameActivityState extends State<GameActivity> {
             ),
 
           ),
+
+          StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').where("Round",isEqualTo: GameRound).snapshots(), //.doc(_auth.currentUser.email).get(),
+              builder: (context, AsyncSnapshot<QuerySnapshot> collectibles ) {
+                if (collectibles.hasData) {
+                  List<String> target = [];
+                  //List<String> bets = [];
+                  //List<List<Players>> players;
+                  //List<Map<String, dynamic>> send=[] ;
+                  //snapshot1.data?.docs.forEach((f) => print(f.id));
+                  collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
+                  //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
+                  print(target[0]);
+                  //print(players[1]);
+                  //print(players.length);
+                  print(GameRound);
+                  return (Container(
+                    child:Row(
+                      children: <Widget>[
+                        Expanded(child: Text("ROUND "+ GameRound.toString()),
+                        ),
+
+                        Expanded(child: Text("Collectible " + target[0].toString().toUpperCase()),
+                        )
+                      ],
+                    ),
+
+                  )
+
+
+                  );
+
+                } else {return new Text("There is no data");}
+                //return new ListView(children: getExpenseItems(snapshot1));
+              }
+          ),
+
+
+
+
           // The grid of squares
           GridView.builder(
             shrinkWrap: true,
@@ -637,16 +689,6 @@ class _GameActivityState extends State<GameActivity> {
               if ((rowNumber == 9) && (columnNumber == 15)) {
                 image = getImage(ImageType.walln);
               }
-
-
-
-
-
-
-
-
-
-
               if ((rowNumber == 9) && (columnNumber == 15)) {
                 image = getImage(ImageType.walln);
               }
@@ -730,6 +772,7 @@ class _GameActivityState extends State<GameActivity> {
                   print(bets[1]);
                   print(players[1]);
                   print(players.length);
+
                   return (ListView.builder(
                             shrinkWrap: true,
                             itemCount: players.length,
