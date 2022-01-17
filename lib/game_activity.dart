@@ -1,5 +1,5 @@
 import 'dart:html';
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'board_square.dart';
 import 'helper.dart';
@@ -103,12 +103,35 @@ enum ImageType {
   yellowpleyer
 }
 
+
+
 class GameActivity extends StatefulWidget {
   @override
   _GameActivityState createState() => _GameActivityState();
 }
 
 class _GameActivityState extends State<GameActivity> {
+
+  Timer _timer = Timer(Duration(milliseconds: 1), () {});
+  int _start = 60;
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+          (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+          });
+        } else {
+          setState(() {
+            _start--;
+          });
+        }
+      },
+    );
+  }
+
 
   Future<void> _signOut() async {
     try {
@@ -136,6 +159,7 @@ class _GameActivityState extends State<GameActivity> {
   int yellowi = 0;
   int yellowj = 5;
 
+
   final bet = TextEditingController();
 
 
@@ -149,7 +173,7 @@ class _GameActivityState extends State<GameActivity> {
 
   @override
   void initState() {
-    super.initState();
+    //super.initState();
     _initialiseGame();
   }
 
@@ -239,7 +263,7 @@ class _GameActivityState extends State<GameActivity> {
 
               int GameRound = snapshot.data?.data()!["Round"];
               CollectionReference collectibles = FirebaseFirestore.instance.collection('Games/TestGame/Collectibles');
-
+              print(GameRound);
 
 
               //QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').orderBy('Round', descending: false).limit(1).get();
@@ -551,7 +575,7 @@ class _GameActivityState extends State<GameActivity> {
 
                   //print(players[1]);
                   //print(players.length);
-                  print(GameRound);
+                  //print(GameRound);
                   return (Container(
                     child:Row(
                       children: <Widget>[
@@ -559,12 +583,13 @@ class _GameActivityState extends State<GameActivity> {
                         ),
 
                         Expanded(child: Text("Collectible " + target[0].toString().toUpperCase()),
+                        ),
+                        Expanded(child: Text("$_start"),
                         )
                       ],
                     ),
 
                   )
-
 
                   );
 
@@ -844,8 +869,8 @@ class _GameActivityState extends State<GameActivity> {
    //MIDDLE
     boardpos[6][7].obstaclesouth = true;
     boardpos[6][8].obstaclesouth = true;
-    boardpos[7][8].obstaclewest = true;
-    boardpos[8][8].obstaclewest = true;
+    boardpos[7][9].obstaclewest = true;
+    boardpos[8][9].obstaclewest = true;
     boardpos[9][7].obstaclenorth = true;
     boardpos[9][8].obstaclenorth = true;
     boardpos[7][6].obstacleeast = true;
@@ -1033,8 +1058,8 @@ class _GameActivityState extends State<GameActivity> {
     //MIDDLE
     boardpos[6][7].obstaclesouth = true;
     boardpos[6][8].obstaclesouth = true;
-    boardpos[7][8].obstaclewest = true;
-    boardpos[8][8].obstaclewest = true;
+    boardpos[7][9].obstaclewest = true;
+    boardpos[8][9].obstaclewest = true;
     boardpos[9][7].obstaclenorth = true;
     boardpos[9][8].obstaclenorth = true;
     boardpos[7][6].obstacleeast = true;
@@ -1225,7 +1250,7 @@ class _GameActivityState extends State<GameActivity> {
     await game.doc("TestGame").update({'yellowi': 13,'yellowj':13});
 
 
-    //setState(() {});
+    setState(() {});
   }
   // This function opens other squares around the target square which don't have any bombs around them.
   // We use a recursive function which stops at squares which have a non zero number of bombs around them.
@@ -1628,7 +1653,7 @@ class _GameActivityState extends State<GameActivity> {
     }
 
     await betupdate.doc(uid).update({'bet': bet});
-
+    startTimer();
   }
 
   showAlertDialog(BuildContext context, int Round) {
@@ -1673,9 +1698,10 @@ class _GameActivityState extends State<GameActivity> {
       await gameupdate.doc(game).update({'Round': Round+1});
     await roundupdate.doc((Round+1).toString())
         .set({
-      'Start': ""
+      'Start': DateTime.now().add(const Duration(minutes: 5))
     });
     }
+
 
 
 
