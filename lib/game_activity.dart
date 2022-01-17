@@ -528,8 +528,26 @@ class _GameActivityState extends State<GameActivity> {
                     {
                       print(boardpos[PositionGreenI][PositionGreenJ].collectible);
                       print(target[0].toString().substring(0,5));
-                      showAlertDialog(context);
+                      showAlertDialog(context,GameRound);
                     }
+                  if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red")
+                  {
+                    print(boardpos[PositionRedI][PositionRedJ].collectible);
+                    print(target[0].toString().substring(0,5));
+                    showAlertDialog(context,GameRound);
+                  }
+                  if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue")
+                  {
+                    print(boardpos[PositionBlueI][PositionBlueJ].collectible);
+                    print(target[0].toString().substring(0,5));
+                    showAlertDialog(context,GameRound);
+                  }
+                  if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow")
+                  {
+                    print(boardpos[PositionYellowI][PositionYellowJ].collectible);
+                    print(target[0].toString().substring(0,5));
+                    showAlertDialog(context,GameRound);
+                  }
 
                   //print(players[1]);
                   //print(players.length);
@@ -949,7 +967,7 @@ class _GameActivityState extends State<GameActivity> {
     //Reflectors South
     boardpos[4][0].obstaclesouth = true;
     boardpos[13][0].obstaclesouth = true;
-    boardpos[9][1].obstaclesouth = true;
+    boardpos[5][1].obstaclesouth = true;
     boardpos[11][1].obstaclesouth = true;
     boardpos[3][2].obstaclesouth = true;
     boardpos[13][2].obstaclesouth = true;
@@ -970,9 +988,9 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[8][15].obstaclesouth = true;
 
     //Reflectors North
-    boardpos[6][0].obstaclenorth = true;
+    boardpos[5][0].obstaclenorth = true;
     boardpos[14][0].obstaclenorth = true;
-    boardpos[10][1].obstaclenorth = true;
+    boardpos[6][1].obstaclenorth = true;
     boardpos[12][1].obstaclenorth = true;
     boardpos[4][2].obstaclenorth = true;
     boardpos[14][2].obstaclenorth = true;
@@ -996,7 +1014,8 @@ class _GameActivityState extends State<GameActivity> {
 
     boardpos[4][2].collectible = "greencircle";
     boardpos[14][2].collectible = "greentriangle";
-
+    boardpos[11][1].collectible = "redcircle";
+    boardpos[2][9].collectible = "bluetriangle";
 
     setState(() {});
   }
@@ -1137,7 +1156,7 @@ class _GameActivityState extends State<GameActivity> {
     //Reflectors South
     boardpos[4][0].obstaclesouth = true;
     boardpos[13][0].obstaclesouth = true;
-    boardpos[9][1].obstaclesouth = true;
+    boardpos[5][1].obstaclesouth = true;
     boardpos[11][1].obstaclesouth = true;
     boardpos[3][2].obstaclesouth = true;
     boardpos[13][2].obstaclesouth = true;
@@ -1158,9 +1177,9 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[8][15].obstaclesouth = true;
 
     //Reflectors North
-    boardpos[6][0].obstaclenorth = true;
+    boardpos[5][0].obstaclenorth = true;
     boardpos[14][0].obstaclenorth = true;
-    boardpos[10][1].obstaclenorth = true;
+    boardpos[6][1].obstaclenorth = true;
     boardpos[12][1].obstaclenorth = true;
     boardpos[4][2].obstaclenorth = true;
     boardpos[14][2].obstaclenorth = true;
@@ -1184,6 +1203,8 @@ class _GameActivityState extends State<GameActivity> {
 
     boardpos[4][2].collectible = "greencircle";
     boardpos[14][2].collectible = "greentriangle";
+    boardpos[11][1].collectible = "redcircle";
+    boardpos[2][9].collectible = "bluetriangle";
 
 
     boardpos[redi][redj].redposition = false;      // print(snapshot.connectionState);
@@ -1610,14 +1631,14 @@ class _GameActivityState extends State<GameActivity> {
 
   }
 
-  showAlertDialog(BuildContext context) {
+  showAlertDialog(BuildContext context, int Round) {
 
     // set up the button
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
     //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
-        _nextRound("TestGame");
+        _nextRound("TestGame",Round);
         Navigator.pop(context);
 
      //});
@@ -1646,11 +1667,14 @@ class _GameActivityState extends State<GameActivity> {
     );
   }
 
-  Future _nextRound(String game) async {
+  Future _nextRound(String game, int Round) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-
-      await gameupdate.doc(game).update({'Round': 2});
-
+    CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
+      await gameupdate.doc(game).update({'Round': Round+1});
+    await roundupdate.doc((Round+1).toString())
+        .set({
+      'Start': ""
+    });
     }
 
 
