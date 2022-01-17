@@ -489,7 +489,7 @@ class _GameActivityState extends State<GameActivity> {
               Expanded(child: ElevatedButton(
                 child: Text('SUBMIT BET'),
                 onPressed: () {
-                  _submitBet("TestGame",_auth.currentUser?.email,bet.text);
+                  _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text));
                   },
               ),
               )
@@ -1517,7 +1517,7 @@ class _GameActivityState extends State<GameActivity> {
     }
   }
 
-  Future _submitBet(String game, String? uid, String bet) async {
+  Future _submitBet(String game, String? uid, int bet) async {
     CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ game +'/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
 
@@ -1535,13 +1535,18 @@ class _GameActivityState extends State<GameActivity> {
     //  await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
     //  await betupdate.doc(uid).update({'bet': bet});
     //}
-    List<String> bets = [];
-    list.forEach((f) => bets.add(f.id));
+    List<int> bets = [];
+   // list.forEach((f) => bets.add(f.id));
+    list.forEach((f) => bets.add(f.data()['bet']));
+
     print(bets);
-//                  snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
-    //print(game);
-    //print(uid);
-    //print(bet);
+    if(bets.first == 99) {
+      await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
+      await gameupdate.doc(game).update({'firstbet': DateTime.now()});
+      print(bets);
+    }
+
+    await betupdate.doc(uid).update({'bet': bet});
 
   }
 }
