@@ -995,6 +995,8 @@ class _GameActivityState extends State<GameActivity> {
     // Check bombs around and assign numbers
 
     boardpos[4][2].collectible = "greencircle";
+    boardpos[14][2].collectible = "greentriangle";
+
 
     setState(() {});
   }
@@ -1181,6 +1183,8 @@ class _GameActivityState extends State<GameActivity> {
     // Check bombs around and assign numbers
 
     boardpos[4][2].collectible = "greencircle";
+    boardpos[14][2].collectible = "greentriangle";
+
 
     boardpos[redi][redj].redposition = false;      // print(snapshot.connectionState);
     boardpos[bluei][bluej].blueposition = false;      // print(snapshot.connectionState);
@@ -1612,9 +1616,12 @@ class _GameActivityState extends State<GameActivity> {
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-        //Navigator.of(context).pop();
+    //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
+        _nextRound("TestGame");
         Navigator.pop(context);
-        },
+
+     //});
+      },
     );
 
     // set up the AlertDialog
@@ -1638,6 +1645,17 @@ class _GameActivityState extends State<GameActivity> {
     }
     );
   }
+
+  Future _nextRound(String game) async {
+    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+
+      await gameupdate.doc(game).update({'Round': 2});
+
+    }
+
+
+
+
 
 
 }
