@@ -522,6 +522,9 @@ class _GameActivityState extends State<GameActivity> {
                   collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
                   //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
                   print(target[0]);
+                  print(boardpos[1][2].greenposition);
+                  //WIN CONDITION!!!!
+
                   //print(players[1]);
                   //print(players.length);
                   print(GameRound);
