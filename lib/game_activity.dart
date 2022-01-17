@@ -716,7 +716,7 @@ class _GameActivityState extends State<GameActivity> {
           ),
           Text(movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold)),
           StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('Games/TestGame/Players').snapshots(), //.doc(_auth.currentUser.email).get(),
+              stream: FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
               builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1 ) {
                 if (snapshot1.hasData) {
                   var data = [];
@@ -1520,17 +1520,28 @@ class _GameActivityState extends State<GameActivity> {
   Future _submitBet(String game, String? uid, String bet) async {
     CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ game +'/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    print(betupdate.orderBy('bet', descending: true).limit(1));
-    if(betupdate.orderBy('bet', descending: true).limit(1) == 99) {
-      await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
-      await betupdate.doc(uid).update({'bet': bet});
-    }
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').orderBy('bet', descending: false).limit(1).get();
+    var list = querySnapshot.docs;
+
+    String maxbet = betupdate.orderBy('bet', descending: false).limit(1).toString();
+
+    var variable = await betupdate.where('bet', isEqualTo: 99).get();
+    //print(variable.docs.forEach((element) {print(element.id);}));
 
 
-    print(betupdate.orderBy('bet', descending: true).limit(1));
+    //print(betupdate.orderBy('bet', descending: true).limit(1));
+    //if(await betupdate.orderBy('bet', descending: false).limit(1) == 99) {
+    //  await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
+    //  await betupdate.doc(uid).update({'bet': bet});
+    //}
+    List<String> bets = [];
+    list.forEach((f) => bets.add(f.id));
+    print(bets);
+//                  snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
+    //print(game);
+    //print(uid);
+    //print(bet);
 
-    print(game);
-    print(uid);
-    print(bet);
   }
 }
