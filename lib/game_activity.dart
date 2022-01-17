@@ -130,7 +130,7 @@ class _GameActivityState extends State<GameActivity> {
   int redi = 0;
   int redj = 5;
 
-  int greeni = 0;
+  int greeni = 5;
   int greenj = 5;
 
   int yellowi = 0;
@@ -521,9 +521,15 @@ class _GameActivityState extends State<GameActivity> {
                   //snapshot1.data?.docs.forEach((f) => print(f.id));
                   collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
                   //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
-                  print(target[0]);
-                  print(boardpos[1][2].greenposition);
+                  //print(target[0]);
                   //WIN CONDITION!!!!
+
+                  if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green")
+                    {
+                      print(boardpos[PositionGreenI][PositionGreenJ].collectible);
+                      print(target[0].toString().substring(0,5));
+                      showAlertDialog(context);
+                    }
 
                   //print(players[1]);
                   //print(players.length);
@@ -941,7 +947,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[15][12].obstaclewest = true;
 
     //Reflectors South
-    boardpos[5][0].obstaclesouth = true;
+    boardpos[4][0].obstaclesouth = true;
     boardpos[13][0].obstaclesouth = true;
     boardpos[9][1].obstaclesouth = true;
     boardpos[11][1].obstaclesouth = true;
@@ -987,6 +993,8 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[9][15].obstaclenorth = true;
     //board[10][3].red = true;
     // Check bombs around and assign numbers
+
+    boardpos[4][2].collectible = "greencircle";
 
     setState(() {});
   }
@@ -1125,7 +1133,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[15][12].obstaclewest = true;
 
     //Reflectors South
-    boardpos[5][0].obstaclesouth = true;
+    boardpos[4][0].obstaclesouth = true;
     boardpos[13][0].obstaclesouth = true;
     boardpos[9][1].obstaclesouth = true;
     boardpos[11][1].obstaclesouth = true;
@@ -1172,6 +1180,8 @@ class _GameActivityState extends State<GameActivity> {
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
+    boardpos[4][2].collectible = "greencircle";
+
     boardpos[redi][redj].redposition = false;      // print(snapshot.connectionState);
     boardpos[bluei][bluej].blueposition = false;      // print(snapshot.connectionState);
     boardpos[greeni][greenj].greenposition = false;      // print(snapshot.connectionState);
@@ -1186,7 +1196,7 @@ class _GameActivityState extends State<GameActivity> {
     await game.doc("TestGame").update({'movecount': 0});
     await game.doc("TestGame").update({'bluei': 4,'bluej':4});
     await game.doc("TestGame").update({'redi': 3,'redj':3});
-    await game.doc("TestGame").update({'greeni': 12,'greenj':12});
+    await game.doc("TestGame").update({'greeni': 8,'greenj':2});
     await game.doc("TestGame").update({'yellowi': 13,'yellowj':13});
 
 
@@ -1595,4 +1605,39 @@ class _GameActivityState extends State<GameActivity> {
     await betupdate.doc(uid).update({'bet': bet});
 
   }
+
+  showAlertDialog(BuildContext context) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("OK"),
+      onPressed: () {
+        //Navigator.of(context).pop();
+        Navigator.pop(context);
+        },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("My title"),
+      content: Text("This is my message."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    Future.delayed(Duration.zero,()
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+    );
+  }
+
+
 }

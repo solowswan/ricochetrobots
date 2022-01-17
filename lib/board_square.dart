@@ -17,8 +17,9 @@ class BoardPosition {
   bool obstacleeast;
   bool obstaclesouth;
   bool obstaclewest;
+  String collectible;
 
-  BoardPosition({this.redposition = false, this.blueposition = false, this.greenposition = false,this.yellowposition = false,this.obstaclenorth = false, this.obstacleeast = false, this.obstaclesouth = false, this.obstaclewest = false});
+  BoardPosition({this.redposition = false, this.blueposition = false, this.greenposition = false,this.yellowposition = false,this.obstaclenorth = false, this.obstacleeast = false, this.obstaclesouth = false, this.obstaclewest = false, this.collectible=""});
 
 }
 
