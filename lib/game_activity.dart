@@ -555,7 +555,6 @@ class GameActivity extends StatelessWidget {
                               //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
                               //print(target[0]);
                               //WIN CONDITION!!!!
-
                               if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green")
                               {
                                 print(boardpos[PositionGreenI][PositionGreenJ].collectible);
@@ -1635,31 +1634,33 @@ class GameActivity extends StatelessWidget {
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
-
-    String maxbet = betupdate.orderBy('bet', descending: false).limit(1).toString();
-
-    var variable = await betupdate.where('bet', isEqualTo: 99).get();
-    //print(variable.docs.forEach((element) {print(element.id);}));
-
-
-    //print(betupdate.orderBy('bet', descending: true).limit(1));
-    //if(await betupdate.orderBy('bet', descending: false).limit(1) == 99) {
-    //  await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
-    //  await betupdate.doc(uid).update({'bet': bet});
-    //}
     List<int> bets = [];
-    // list.forEach((f) => bets.add(f.id));
     list.forEach((f) => bets.add(f.data()['bet']));
+
+    int lowestbid = 99;
+    var collection = FirebaseFirestore.instance.collection('Games');
+    var docSnapshot = await collection.doc('TestGame').get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data();
+      int value = data?['lowestbid'];
+      lowestbid=value;// <-- The value you want to retrieve.
+    }
 
     print(bets);
     if(bets.first == 99) {
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
+      await gameupdate.doc(game).update({'lowestbid': bet});
       await gameupdate.doc(game).update({'firstbet': DateTime.now()});
+      startTimer();
       print(bets);
     }
+    if(bet < lowestbid){
+      await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
+      await gameupdate.doc(game).update({'lowestbid': bet});
+    }
+
 
     await betupdate.doc(uid).update({'bet': bet});
-    startTimer();
   }
 
   showAlertDialog(BuildContext context, int Round) {
