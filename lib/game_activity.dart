@@ -1,3 +1,4 @@
+import 'package:provider/provider.dart';
 import 'dart:html';
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -105,28 +106,31 @@ enum ImageType {
 
 
 
-class GameActivity extends StatefulWidget {
-  @override
-  _GameActivityState createState() => _GameActivityState();
-}
+//class GameActivity extends StatefulWidget {
+//  @override
+//  _GameActivityState createState() => _GameActivityState();
+//}
 
-class _GameActivityState extends State<GameActivity> {
+class GameActivity extends StatelessWidget {
 
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   int _start = 60;
-  void startTimer() {
+
+  Future startTimer() async {
+    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
       oneSec,
           (Timer timer) {
         if (_start == 0) {
-          setState(() {
+          //setState(() {
             timer.cancel();
-          });
+        //  });
         } else {
-          setState(() {
-            _start--;
-          });
+         // setState(() {
+          gameupdate.doc("TestGame").update({'Timer': _start });
+          _start--;
+        //  });
         }
       },
     );
@@ -172,10 +176,10 @@ class _GameActivityState extends State<GameActivity> {
   });
 
   @override
-  void initState() {
-    //super.initState();
-    _initialiseGame();
-  }
+  //void initState() {
+   // //super.initState();
+  //  _initialiseGame();
+ // }
 
   @override
   Widget build(BuildContext context) {
@@ -262,9 +266,13 @@ class _GameActivityState extends State<GameActivity> {
               int movecount = snapshot.data?.data()!["movecount"];
 
               int GameRound = snapshot.data?.data()!["Round"];
-              CollectionReference collectibles = FirebaseFirestore.instance.collection('Games/TestGame/Collectibles');
+              int Timer = snapshot.data?.data()!["Timer"];
+              String lowestbidder = snapshot.data?.data()!["lowestbidder"];
+              int lowestbid = snapshot.data?.data()!["lowestbid"];
+              print(lowestbidder);
+              print(lowestbid);
               print(GameRound);
-
+              print(Timer);
 
               //QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').orderBy('Round', descending: false).limit(1).get();
               //var list = querySnapshot.docs;
@@ -275,578 +283,577 @@ class _GameActivityState extends State<GameActivity> {
               return (
 
 
-      ListView(
-        children: <Widget>[
+                  ListView(
+                    children: <Widget>[
 
 
-          Container(
-            color: Colors.grey,
-            height: 60.0,
-            width: double.infinity,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                InkWell(
-                  onTap: () {
-                    _handleMoveRedAlt(PositionRedI,PositionRedJ,1);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_upward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveRedAlt(PositionRedI,PositionRedJ,2);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveRedAlt(PositionRedI,PositionRedJ,3);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_downward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveRedAlt(PositionRedI,PositionRedJ,4);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,1);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_upward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.blue,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,2);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.blue,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,3);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_downward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.blue,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,4);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.blue,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_upward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_downward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_upward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.yellow,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_forward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.yellow,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_downward,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.yellow,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.arrow_back,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.yellow,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    _reinitialiseGame(PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ,PositionGreenI,PositionGreenJ,PositionYellowI,PositionYellowJ);
-                    movecount=0;
-                  },
-                  child: CircleAvatar(
-                    child: Icon(
-                      Icons.restart_alt,
-                      color: Colors.black,
-                      size: 40.0,
-                    ),
-                    backgroundColor: Colors.yellowAccent,
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-          child:Row(
-            children: <Widget>[
-            Expanded(child: TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Enter your BET'
-              ),
-              controller: bet,
-            ),
-            ),
-              Expanded(child: ElevatedButton(
-                child: Text('SUBMIT BET'),
-                onPressed: () {
-                  _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text));
-                  },
-              ),
-              )
-            ],
-            ),
-
-          ),
-
-          StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').where("Round",isEqualTo: GameRound).snapshots(), //.doc(_auth.currentUser.email).get(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> collectibles ) {
-                if (collectibles.hasData) {
-                  List<String> target = [];
-                  //List<String> bets = [];
-                  //List<List<Players>> players;
-                  //List<Map<String, dynamic>> send=[] ;
-                  //snapshot1.data?.docs.forEach((f) => print(f.id));
-                  collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
-                  //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
-                  //print(target[0]);
-                  //WIN CONDITION!!!!
-
-                  if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green")
-                    {
-                      print(boardpos[PositionGreenI][PositionGreenJ].collectible);
-                      print(target[0].toString().substring(0,5));
-                      showAlertDialog(context,GameRound);
-                    }
-                  if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red")
-                  {
-                    print(boardpos[PositionRedI][PositionRedJ].collectible);
-                    print(target[0].toString().substring(0,5));
-                    showAlertDialog(context,GameRound);
-                  }
-                  if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue")
-                  {
-                    print(boardpos[PositionBlueI][PositionBlueJ].collectible);
-                    print(target[0].toString().substring(0,5));
-                    showAlertDialog(context,GameRound);
-                  }
-                  if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow")
-                  {
-                    print(boardpos[PositionYellowI][PositionYellowJ].collectible);
-                    print(target[0].toString().substring(0,5));
-                    showAlertDialog(context,GameRound);
-                  }
-
-                  //print(players[1]);
-                  //print(players.length);
-                  //print(GameRound);
-                  return (Container(
-                    child:Row(
-                      children: <Widget>[
-                        Expanded(child: Text("ROUND "+ GameRound.toString()),
+                      Container(
+                        color: Colors.grey,
+                        height: 60.0,
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () {
+                                _handleMoveRedAlt(PositionRedI,PositionRedJ,1);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_upward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveRedAlt(PositionRedI,PositionRedJ,2);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveRedAlt(PositionRedI,PositionRedJ,3);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveRedAlt(PositionRedI,PositionRedJ,4);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.red,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,1);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_upward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.blue,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,2);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.blue,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,3);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.blue,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,4);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.blue,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_upward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.green,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.green,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.green,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.green,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_upward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.yellow,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.yellow,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_downward,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.yellow,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.yellow,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _reinitialiseGame(PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ,PositionGreenI,PositionGreenJ,PositionYellowI,PositionYellowJ);
+                                movecount=0;
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.restart_alt,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.yellowAccent,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        child:Row(
+                          children: <Widget>[
+                            Expanded(child: TextField(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  hintText: 'Enter your BET'
+                              ),
+                              controller: bet,
+                            ),
+                            ),
+                            Expanded(child: ElevatedButton(
+                              child: Text('SUBMIT BET'),
+                              onPressed: () {
+                                _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text));
+                              },
+                            ),
+                            )
+                          ],
                         ),
 
-                        Expanded(child: Text("Collectible " + target[0].toString().toUpperCase()),
+                      ),
+
+                      StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').where("Round",isEqualTo: GameRound).snapshots(), //.doc(_auth.currentUser.email).get(),
+                          builder: (context, AsyncSnapshot<QuerySnapshot> collectibles ) {
+                            if (collectibles.hasData) {
+                              List<String> target = [];
+                              //List<String> bets = [];
+                              //List<List<Players>> players;
+                              //List<Map<String, dynamic>> send=[] ;
+                              //snapshot1.data?.docs.forEach((f) => print(f.id));
+                              collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
+                              //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
+                              //print(target[0]);
+                              //WIN CONDITION!!!!
+
+                              if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green")
+                              {
+                                print(boardpos[PositionGreenI][PositionGreenJ].collectible);
+                                print(target[0].toString().substring(0,5));
+                                showAlertDialog(context,GameRound);
+                              }
+                              if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red")
+                              {
+                                print(boardpos[PositionRedI][PositionRedJ].collectible);
+                                print(target[0].toString().substring(0,5));
+                                showAlertDialog(context,GameRound);
+                              }
+                              if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue")
+                              {
+                                print(boardpos[PositionBlueI][PositionBlueJ].collectible);
+                                print(target[0].toString().substring(0,5));
+                                showAlertDialog(context,GameRound);
+                              }
+                              if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow")
+                              {
+                                print(boardpos[PositionYellowI][PositionYellowJ].collectible);
+                                print(target[0].toString().substring(0,5));
+                                showAlertDialog(context,GameRound);
+                              }
+
+                              print("Debug");
+                              //print(players.length);
+                              //print(GameRound);
+                              return (Container(
+                                child:Row(
+                                  children: <Widget>[
+                                    Expanded(child: Text("ROUND "+ GameRound.toString()),
+                                    ),
+
+                                    Expanded(child: Text("Collectible " + target[0].toString().toUpperCase()),
+                                    ),
+                                    Expanded(child: Text("$_start"),
+                                    )
+                                  ],
+                                ),
+
+                              )
+
+                              );
+
+                            } else {return new Text("There is no data");}
+                            //return new ListView(children: getExpenseItems(snapshot1));
+                          }
+                      ),
+
+
+
+
+                      // The grid of squares
+                      GridView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: columnCount,
                         ),
-                        Expanded(child: Text("$_start"),
-                        )
-                      ],
-                    ),
+                        itemBuilder: (context, position) {
+                          // Get row and column number of square
+                          int rowNumber = (position / columnCount).floor();
+                          int columnNumber = (position % columnCount);
+                          Image image;
+
+                          image = getImage(ImageType.facingDown);
+
+                          //boardpos[redi][redj].redposition = true;
+                          boardpos[PositionBlueAltI][PositionBlueAltJ].blueposition = false;
+                          boardpos[PositionBlueI][PositionBlueJ].blueposition = true;
+                          boardpos[PositionRedAltI][PositionRedAltJ].redposition = false;
+                          boardpos[PositionRedI][PositionRedJ].redposition = true;
+                          boardpos[PositionGreenAltI][PositionGreenAltJ].greenposition = false;
+                          boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
+                          boardpos[PositionYellowAltI][PositionYellowAltJ].yellowposition = false;
+                          boardpos[PositionYellowI][PositionYellowJ].yellowposition = true;
+                          if ((rowNumber == 7) && (columnNumber == 7)) {
+                            image = getImage(ImageType.bombnw);
+                          }
+                          if ((rowNumber == 8) && (columnNumber == 7)) {
+                            image = getImage(ImageType.bombsw);
+                          }
+                          if ((rowNumber == 7) && (columnNumber == 8)) {
+                            image = getImage(ImageType.bombne);
+                          }
+                          if ((rowNumber == 8) && (columnNumber == 8)) {
+                            image = getImage(ImageType.bombse);
+                          }
+                          //Quadrant 1
+                          if ((rowNumber == 4) && (columnNumber == 2)) {
+                            image = getImage(ImageType.greencirclene);
+                          }
+                          if ((rowNumber == 2) && (columnNumber == 5)) {
+                            image = getImage(ImageType.bluecrossse);
+                          }
+                          if ((rowNumber == 6) && (columnNumber == 1)) {
+                            image = getImage(ImageType.yellowsaturnnw);
+                          }
+                          if ((rowNumber == 5) && (columnNumber == 7)) {
+                            image = getImage(ImageType.redtrianglesw);
+                          }
+                          if ((rowNumber == 5) && (columnNumber == 0)) {
+                            image = getImage(ImageType.walln);
+                          }
+                          if ((rowNumber == 4) && (columnNumber == 0)) {
+                            image = getImage(ImageType.walls);
+                          }
+                          if ((rowNumber == 0) && (columnNumber == 3)) {
+                            image = getImage(ImageType.walle);
+                          }
+                          if ((rowNumber == 0) && (columnNumber == 4)) {
+                            image = getImage(ImageType.wallw);
+                          }
+                          //Quadrant 2
+                          if ((rowNumber == 2) && (columnNumber == 9)) {
+                            image = getImage(ImageType.bluetrianglese);
+                          }
+                          if ((rowNumber == 1) && (columnNumber == 13)) {
+                            image = getImage(ImageType.redsaturnnw);
+                          }
+                          if ((rowNumber == 6) && (columnNumber == 11)) {
+                            image = getImage(ImageType.yellowcirclene);
+                          }
+                          if ((rowNumber == 5) && (columnNumber == 14)) {
+                            image = getImage(ImageType.greencrosssw);
+                          }
+                          if ((rowNumber == 0) && (columnNumber == 11)) {
+                            image = getImage(ImageType.walle);
+                          }
+                          if ((rowNumber == 0) && (columnNumber == 12)) {
+                            image = getImage(ImageType.wallw);
+                          }
+                          if ((rowNumber == 3) && (columnNumber == 15)) {
+                            image = getImage(ImageType.walls);
+                          }
+                          if ((rowNumber == 4) && (columnNumber == 15)) {
+                            image = getImage(ImageType.walln);
+                          }
+                          //Quadrant 3
+                          if ((rowNumber == 11) && (columnNumber == 1)) {
+                            image = getImage(ImageType.redcirclesw);
+                          }
+                          if ((rowNumber == 9) && (columnNumber == 3)) {
+                            image = getImage(ImageType.yellowcrossne);
+                          }
+                          if ((rowNumber == 14) && (columnNumber == 2)) {
+                            image = getImage(ImageType.greentrianglenw);
+                          }
+                          if ((rowNumber == 12) && (columnNumber == 6)) {
+                            image = getImage(ImageType.bluesaturnse);
+                          }
+                          if ((rowNumber == 15) && (columnNumber == 5)) {
+                            image = getImage(ImageType.walle);
+                          }
+                          if ((rowNumber == 15) && (columnNumber == 6)) {
+                            image = getImage(ImageType.wallw);
+                          }
+                          if ((rowNumber == 13) && (columnNumber == 0)) {
+                            image = getImage(ImageType.walls);
+                          }
+                          if ((rowNumber == 14) && (columnNumber == 0)) {
+                            image = getImage(ImageType.walln);
+                          }
+                          //Quadrant 4
+                          if ((rowNumber == 10) && (columnNumber == 8)) {
+                            image = getImage(ImageType.rainbownw);
+                          }
+                          if ((rowNumber == 10) && (columnNumber == 13)) {
+                            image = getImage(ImageType.redcrossnw);
+                          }
+                          if ((rowNumber == 12) && (columnNumber == 14)) {
+                            image = getImage(ImageType.yellowtrianglesw);
+                          }
+                          if ((rowNumber == 11) && (columnNumber == 10)) {
+                            image = getImage(ImageType.greensaturnse);
+                          }
+                          if ((rowNumber == 14) && (columnNumber == 9)) {
+                            image = getImage(ImageType.bluecirclene);
+                          }
+                          if ((rowNumber == 15) && (columnNumber == 11)) {
+                            image = getImage(ImageType.walle);
+                          }
+                          if ((rowNumber == 15) && (columnNumber == 12)) {
+                            image = getImage(ImageType.wallw);
+                          }
+                          if ((rowNumber == 8) && (columnNumber == 15)) {
+                            image = getImage(ImageType.walls);
+                          }
+                          if ((rowNumber == 9) && (columnNumber == 15)) {
+                            image = getImage(ImageType.walln);
+                          }
+                          if ((rowNumber == 9) && (columnNumber == 15)) {
+                            image = getImage(ImageType.walln);
+                          }
+                          if ((rowNumber == 8) && (columnNumber == 15)) {
+                            image = getImage(ImageType.walls);
+                          }
+                          if (boardpos[rowNumber][columnNumber].blueposition) {
+                            return InkWell(
+                              onTap: () {
+                              },
+                              splashColor: Colors.grey,
+                              child: Container(
+                                  color: Colors.grey,
+                                  child: Stack(children: <Widget>[image,
+                                    Image.asset('assets/images/blueplayer.png'),
+                                  ])
+                              ),
+                            );
+                          } else if (boardpos[rowNumber][columnNumber].redposition) {
+                            return InkWell(
+                              onTap: () {
+                              },
+                              splashColor: Colors.grey,
+                              child: Container(
+                                  color: Colors.grey,
+                                  child: Stack(children: <Widget>[image,
+                                    Image.asset('assets/images/redplayer.png'),
+                                  ])
+                              ),
+                            );
+                          } else if (boardpos[rowNumber][columnNumber].greenposition) {
+                            return InkWell(
+                              onTap: () {
+                              },
+                              splashColor: Colors.grey,
+                              child: Container(
+                                  color: Colors.grey,
+                                  child: Stack(children: <Widget>[image,
+                                    Image.asset('assets/images/greenplayer.png'),
+                                  ])
+                              ),
+                            );
+                          } else if (boardpos[rowNumber][columnNumber].yellowposition) {
+                            return InkWell(
+                              onTap: () {
+                              },
+                              splashColor: Colors.grey,
+                              child: Container(
+                                  color: Colors.grey,
+                                  child: Stack(children: <Widget>[image,
+                                    Image.asset('assets/images/yellowplayer.png'),
+                                  ])
+                              ),
+                            );
+                          } else {
+                            return InkWell(
+                              splashColor: Colors.grey,
+                              child: Container(
+                                  color: Colors.grey,
+                                  child: Stack(children: <Widget>[image,
+                                  ])
+                              ),
+                            );
+                          }
+                        },
+                        itemCount: rowCount * columnCount,
+                      ),
+                      Text(movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold)),
+                      StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
+                          builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1 ) {
+                            if (snapshot1.hasData) {
+                              var data = [];
+                              List<String> players = [];
+                              List<String> bets = [];
+                              //List<List<Players>> players;
+                              //List<Map<String, dynamic>> send=[] ;
+                              //snapshot1.data?.docs.forEach((f) => print(f.id));
+                              snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
+                              snapshot1.data?.docs.forEach((f) => players.add(f.id.toString()));
+                              //print(bets[1]);
+                              //print(players[1]);
+                              //print(players.length);
+
+                              return (ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: players.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return Text('${players[index].length} Player: ${players[index].padRight(30,' ')}Bet:${bets[index]}');
+
+                                  }
+                              )
+
+
+                              );
+
+                            } else {return new Text("There is no data");}
+                            //return new ListView(children: getExpenseItems(snapshot1));
+                          }
+                      ),
+
+                    ],
 
                   )
 
-                  );
-
-                } else {return new Text("There is no data");}
-                //return new ListView(children: getExpenseItems(snapshot1));
-              }
-          ),
-
-
-
-
-          // The grid of squares
-          GridView.builder(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: columnCount,
-            ),
-            itemBuilder: (context, position) {
-              // Get row and column number of square
-              int rowNumber = (position / columnCount).floor();
-              int columnNumber = (position % columnCount);
-              Image image;
-
-              image = getImage(ImageType.facingDown);
-
-              //boardpos[redi][redj].redposition = true;
-              boardpos[PositionBlueAltI][PositionBlueAltJ].blueposition = false;
-              boardpos[PositionBlueI][PositionBlueJ].blueposition = true;
-              boardpos[PositionRedAltI][PositionRedAltJ].redposition = false;
-              boardpos[PositionRedI][PositionRedJ].redposition = true;
-              boardpos[PositionGreenAltI][PositionGreenAltJ].greenposition = false;
-              boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
-              boardpos[PositionYellowAltI][PositionYellowAltJ].yellowposition = false;
-              boardpos[PositionYellowI][PositionYellowJ].yellowposition = true;
-
-              if ((rowNumber == 7) && (columnNumber == 7)) {
-                image = getImage(ImageType.bombnw);
-              }
-              if ((rowNumber == 8) && (columnNumber == 7)) {
-                image = getImage(ImageType.bombsw);
-              }
-              if ((rowNumber == 7) && (columnNumber == 8)) {
-                image = getImage(ImageType.bombne);
-              }
-              if ((rowNumber == 8) && (columnNumber == 8)) {
-                image = getImage(ImageType.bombse);
-              }
-              //Quadrant 1
-              if ((rowNumber == 4) && (columnNumber == 2)) {
-                image = getImage(ImageType.greencirclene);
-              }
-              if ((rowNumber == 2) && (columnNumber == 5)) {
-                image = getImage(ImageType.bluecrossse);
-              }
-              if ((rowNumber == 6) && (columnNumber == 1)) {
-                image = getImage(ImageType.yellowsaturnnw);
-              }
-              if ((rowNumber == 5) && (columnNumber == 7)) {
-                image = getImage(ImageType.redtrianglesw);
-              }
-              if ((rowNumber == 5) && (columnNumber == 0)) {
-                image = getImage(ImageType.walln);
-              }
-              if ((rowNumber == 4) && (columnNumber == 0)) {
-                image = getImage(ImageType.walls);
-              }
-              if ((rowNumber == 0) && (columnNumber == 3)) {
-                image = getImage(ImageType.walle);
-              }
-              if ((rowNumber == 0) && (columnNumber == 4)) {
-                image = getImage(ImageType.wallw);
-              }
-              //Quadrant 2
-              if ((rowNumber == 2) && (columnNumber == 9)) {
-                image = getImage(ImageType.bluetrianglese);
-              }
-              if ((rowNumber == 1) && (columnNumber == 13)) {
-                image = getImage(ImageType.redsaturnnw);
-              }
-              if ((rowNumber == 6) && (columnNumber == 11)) {
-                image = getImage(ImageType.yellowcirclene);
-              }
-              if ((rowNumber == 5) && (columnNumber == 14)) {
-                image = getImage(ImageType.greencrosssw);
-              }
-              if ((rowNumber == 0) && (columnNumber == 11)) {
-                image = getImage(ImageType.walle);
-              }
-              if ((rowNumber == 0) && (columnNumber == 12)) {
-                image = getImage(ImageType.wallw);
-              }
-              if ((rowNumber == 3) && (columnNumber == 15)) {
-                image = getImage(ImageType.walls);
-              }
-              if ((rowNumber == 4) && (columnNumber == 15)) {
-                image = getImage(ImageType.walln);
-              }
-              //Quadrant 3
-              if ((rowNumber == 11) && (columnNumber == 1)) {
-                image = getImage(ImageType.redcirclesw);
-              }
-              if ((rowNumber == 9) && (columnNumber == 3)) {
-                image = getImage(ImageType.yellowcrossne);
-              }
-              if ((rowNumber == 14) && (columnNumber == 2)) {
-                image = getImage(ImageType.greentrianglenw);
-              }
-              if ((rowNumber == 12) && (columnNumber == 6)) {
-                image = getImage(ImageType.bluesaturnse);
-              }
-              if ((rowNumber == 15) && (columnNumber == 5)) {
-                image = getImage(ImageType.walle);
-              }
-              if ((rowNumber == 15) && (columnNumber == 6)) {
-                image = getImage(ImageType.wallw);
-              }
-              if ((rowNumber == 13) && (columnNumber == 0)) {
-                image = getImage(ImageType.walls);
-              }
-              if ((rowNumber == 14) && (columnNumber == 0)) {
-                image = getImage(ImageType.walln);
-              }
-              //Quadrant 4
-              if ((rowNumber == 10) && (columnNumber == 8)) {
-                image = getImage(ImageType.rainbownw);
-              }
-              if ((rowNumber == 10) && (columnNumber == 13)) {
-                image = getImage(ImageType.redcrossnw);
-              }
-              if ((rowNumber == 12) && (columnNumber == 14)) {
-                image = getImage(ImageType.yellowtrianglesw);
-              }
-              if ((rowNumber == 11) && (columnNumber == 10)) {
-                image = getImage(ImageType.greensaturnse);
-              }
-              if ((rowNumber == 14) && (columnNumber == 9)) {
-                image = getImage(ImageType.bluecirclene);
-              }
-              if ((rowNumber == 15) && (columnNumber == 11)) {
-                image = getImage(ImageType.walle);
-              }
-              if ((rowNumber == 15) && (columnNumber == 12)) {
-                image = getImage(ImageType.wallw);
-              }
-              if ((rowNumber == 8) && (columnNumber == 15)) {
-                image = getImage(ImageType.walls);
-              }
-              if ((rowNumber == 9) && (columnNumber == 15)) {
-                image = getImage(ImageType.walln);
-              }
-              if ((rowNumber == 9) && (columnNumber == 15)) {
-                image = getImage(ImageType.walln);
-              }
-              if ((rowNumber == 8) && (columnNumber == 15)) {
-                image = getImage(ImageType.walls);
-              }
-              if (boardpos[rowNumber][columnNumber].blueposition) {
-                return InkWell(
-                  onTap: () {
-                  },
-                  splashColor: Colors.grey,
-                  child: Container(
-                      color: Colors.grey,
-                      child: Stack(children: <Widget>[image,
-                        Image.asset('assets/images/blueplayer.png'),
-                      ])
-                  ),
-                );
-              } else if (boardpos[rowNumber][columnNumber].redposition) {
-                return InkWell(
-                  onTap: () {
-                    },
-                  splashColor: Colors.grey,
-                  child: Container(
-                      color: Colors.grey,
-                      child: Stack(children: <Widget>[image,
-                        Image.asset('assets/images/redplayer.png'),
-                      ])
-                  ),
-                );
-              } else if (boardpos[rowNumber][columnNumber].greenposition) {
-                return InkWell(
-                  onTap: () {
-                  },
-                  splashColor: Colors.grey,
-                  child: Container(
-                      color: Colors.grey,
-                      child: Stack(children: <Widget>[image,
-                        Image.asset('assets/images/greenplayer.png'),
-                      ])
-                  ),
-                );
-              } else if (boardpos[rowNumber][columnNumber].yellowposition) {
-                return InkWell(
-                  onTap: () {
-                  },
-                  splashColor: Colors.grey,
-                  child: Container(
-                      color: Colors.grey,
-                      child: Stack(children: <Widget>[image,
-                        Image.asset('assets/images/yellowplayer.png'),
-                      ])
-                  ),
-                );
-              } else {
-                return InkWell(
-                  splashColor: Colors.grey,
-                  child: Container(
-                      color: Colors.grey,
-                      child: Stack(children: <Widget>[image,
-                      ])
-                  ),
-                );
-              }
-            },
-            itemCount: rowCount * columnCount,
-          ),
-          Text(movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold)),
-          StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
-              builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1 ) {
-                if (snapshot1.hasData) {
-                  var data = [];
-                  List<String> players = [];
-                  List<String> bets = [];
-                  //List<List<Players>> players;
-                  //List<Map<String, dynamic>> send=[] ;
-                  //snapshot1.data?.docs.forEach((f) => print(f.id));
-                  snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
-                  snapshot1.data?.docs.forEach((f) => players.add(f.id.toString()));
-                  print(bets[1]);
-                  print(players[1]);
-                  print(players.length);
-
-                  return (ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: players.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Text('${players[index].length} Player: ${players[index].padRight(30,' ')}Bet:${bets[index]}');
-
-                            }
-                        )
-
-
-                  );
-
-                } else {return new Text("There is no data");}
-                //return new ListView(children: getExpenseItems(snapshot1));
-              }
-          ),
-
-        ],
-
-      )
-
-                );
+              );
 
             } else {return(Text("123"));}
           }
@@ -866,7 +873,7 @@ class _GameActivityState extends State<GameActivity> {
   }
   // Initialises all lists
   Future _initialiseGame() async {
-   //MIDDLE
+    //MIDDLE
     boardpos[6][7].obstaclesouth = true;
     boardpos[6][8].obstaclesouth = true;
     boardpos[7][9].obstaclewest = true;
@@ -957,7 +964,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[9][3].obstacleeast = true;
     boardpos[10][7].obstacleeast = true;
     boardpos[10][12].obstacleeast = true;
-    boardpos[11][1].obstacleeast = true;
+    boardpos[11][0].obstacleeast = true;
     boardpos[11][10].obstacleeast = true;
     boardpos[12][6].obstacleeast = true;
     boardpos[12][13].obstacleeast = true;
@@ -980,7 +987,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[9][4].obstaclewest = true;
     boardpos[10][8].obstaclewest = true;
     boardpos[10][13].obstaclewest = true;
-    boardpos[11][2].obstaclewest = true;
+    boardpos[11][1].obstaclewest = true;
     boardpos[11][11].obstaclewest = true;
     boardpos[12][7].obstaclewest = true;
     boardpos[12][14].obstaclewest = true;
@@ -1001,7 +1008,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[12][6].obstaclesouth = true;
     boardpos[5][7].obstaclesouth = true;
     boardpos[9][8].obstaclesouth = true;
-    boardpos[3][9].obstaclesouth = true;
+    boardpos[2][9].obstaclesouth = true;
     boardpos[13][9].obstaclesouth = true;
     boardpos[11][10].obstaclesouth = true;
     boardpos[5][11].obstaclesouth = true;
@@ -1024,7 +1031,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[13][6].obstaclenorth = true;
     boardpos[6][7].obstaclenorth = true;
     boardpos[10][8].obstaclenorth = true;
-    boardpos[4][9].obstaclenorth = true;
+    boardpos[3][9].obstaclenorth = true;
     boardpos[14][9].obstaclenorth = true;
     boardpos[12][10].obstaclenorth = true;
     boardpos[6][11].obstaclenorth = true;
@@ -1042,7 +1049,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[11][1].collectible = "redcircle";
     boardpos[2][9].collectible = "bluetriangle";
 
-    setState(() {});
+    //setState(() {});
   }
 
 
@@ -1146,7 +1153,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[9][3].obstacleeast = true;
     boardpos[10][7].obstacleeast = true;
     boardpos[10][12].obstacleeast = true;
-    boardpos[11][1].obstacleeast = true;
+    boardpos[11][0].obstacleeast = true;
     boardpos[11][10].obstacleeast = true;
     boardpos[12][6].obstacleeast = true;
     boardpos[12][13].obstacleeast = true;
@@ -1169,7 +1176,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[9][4].obstaclewest = true;
     boardpos[10][8].obstaclewest = true;
     boardpos[10][13].obstaclewest = true;
-    boardpos[11][2].obstaclewest = true;
+    boardpos[11][1].obstaclewest = true;
     boardpos[11][11].obstaclewest = true;
     boardpos[12][7].obstaclewest = true;
     boardpos[12][14].obstaclewest = true;
@@ -1190,7 +1197,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[12][6].obstaclesouth = true;
     boardpos[5][7].obstaclesouth = true;
     boardpos[9][8].obstaclesouth = true;
-    boardpos[3][9].obstaclesouth = true;
+    boardpos[2][9].obstaclesouth = true;
     boardpos[13][9].obstaclesouth = true;
     boardpos[11][10].obstaclesouth = true;
     boardpos[5][11].obstaclesouth = true;
@@ -1213,7 +1220,7 @@ class _GameActivityState extends State<GameActivity> {
     boardpos[13][6].obstaclenorth = true;
     boardpos[6][7].obstaclenorth = true;
     boardpos[10][8].obstaclenorth = true;
-    boardpos[4][9].obstaclenorth = true;
+    boardpos[3][9].obstaclenorth = true;
     boardpos[14][9].obstaclenorth = true;
     boardpos[12][10].obstaclenorth = true;
     boardpos[6][11].obstaclenorth = true;
@@ -1250,7 +1257,7 @@ class _GameActivityState extends State<GameActivity> {
     await game.doc("TestGame").update({'yellowi': 13,'yellowj':13});
 
 
-    setState(() {});
+    // setState(() {});
   }
   // This function opens other squares around the target square which don't have any bombs around them.
   // We use a recursive function which stops at squares which have a non zero number of bombs around them.
@@ -1288,11 +1295,10 @@ class _GameActivityState extends State<GameActivity> {
     redj=j;
     await game.doc("TestGame").update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
     await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
-    setState(() {});
+    //setState(() {});
   }
 
   Future _handleMoveBlueAlt(int i, int j, int t) async {
-
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[i][j].blueposition = false;
@@ -1326,7 +1332,7 @@ class _GameActivityState extends State<GameActivity> {
 
     await game.doc("TestGame").update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
     await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
-    setState(() {});
+    // setState(() {});
   }
 
   Future _handleMoveGreenAlt(int i, int j, int t) async {
@@ -1364,7 +1370,7 @@ class _GameActivityState extends State<GameActivity> {
 
     await game.doc("TestGame").update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
     await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
-    setState(() {});
+    //setState(() {});
   }
 
   Future _handleMoveYellowAlt(int i, int j, int t) async {
@@ -1402,7 +1408,7 @@ class _GameActivityState extends State<GameActivity> {
 
     await game.doc("TestGame").update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
     await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
-    setState(() {});
+    //setState(() {});
   }
 
   Image getImage(ImageType type) {
@@ -1642,7 +1648,7 @@ class _GameActivityState extends State<GameActivity> {
     //  await betupdate.doc(uid).update({'bet': bet});
     //}
     List<int> bets = [];
-   // list.forEach((f) => bets.add(f.id));
+    // list.forEach((f) => bets.add(f.id));
     list.forEach((f) => bets.add(f.data()['bet']));
 
     print(bets);
@@ -1662,11 +1668,11 @@ class _GameActivityState extends State<GameActivity> {
     Widget okButton = TextButton(
       child: Text("OK"),
       onPressed: () {
-    //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
+        //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
         _nextRound("TestGame",Round);
         Navigator.pop(context);
 
-     //});
+        //});
       },
     );
 
@@ -1695,17 +1701,12 @@ class _GameActivityState extends State<GameActivity> {
   Future _nextRound(String game, int Round) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
-      await gameupdate.doc(game).update({'Round': Round+1});
+    await gameupdate.doc(game).update({'Round': Round+1});
     await roundupdate.doc((Round+1).toString())
         .set({
       'Start': DateTime.now().add(const Duration(minutes: 5))
     });
-    }
-
-
-
-
-
+  }
 
 
 }
