@@ -114,7 +114,7 @@ enum ImageType {
 class GameActivity extends StatelessWidget {
 
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
-  int _start = 60;
+  int _start = 5;
 
   Future startTimer() async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
@@ -124,7 +124,8 @@ class GameActivity extends StatelessWidget {
           (Timer timer) {
         if (_start == 0) {
           //setState(() {
-            timer.cancel();
+          gameupdate.doc("TestGame").update({'Timer': _start });
+          timer.cancel();
         //  });
         } else {
          // setState(() {
@@ -266,14 +267,14 @@ class GameActivity extends StatelessWidget {
               int movecount = snapshot.data?.data()!["movecount"];
 
               int GameRound = snapshot.data?.data()!["Round"];
-              int Timer = snapshot.data?.data()!["Timer"];
+              int RunningTimer = snapshot.data?.data()!["Timer"];
               String lowestbidder = snapshot.data?.data()!["lowestbidder"];
               int lowestbid = snapshot.data?.data()!["lowestbid"];
               print(lowestbidder);
               print(lowestbid);
               print(GameRound);
-              print(Timer);
-
+              print(RunningTimer);
+              print(_auth.currentUser?.email);
               //QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').orderBy('Round', descending: false).limit(1).get();
               //var list = querySnapshot.docs;
               //List<int> collectibleslist = [];
@@ -296,7 +297,7 @@ class GameActivity extends StatelessWidget {
                           children: <Widget>[
                             InkWell(
                               onTap: () {
-                                _handleMoveRedAlt(PositionRedI,PositionRedJ,1);
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,1); };
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -309,7 +310,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveRedAlt(PositionRedI,PositionRedJ,2);
+                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -322,7 +323,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveRedAlt(PositionRedI,PositionRedJ,3);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -335,7 +336,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveRedAlt(PositionRedI,PositionRedJ,4);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -348,7 +349,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,1);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -361,7 +362,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,2);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -374,7 +375,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,3);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -387,7 +388,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveBlueAlt(PositionBlueI,PositionBlueJ,4);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -400,7 +401,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -413,7 +414,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -426,7 +427,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -439,7 +440,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -452,7 +453,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -465,7 +466,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -478,7 +479,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -491,7 +492,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);
+            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -509,11 +510,25 @@ class GameActivity extends StatelessWidget {
                               },
                               child: CircleAvatar(
                                 child: Icon(
+                                  Icons.play_arrow,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.tealAccent,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _resetGame("TestGame");
+                                movecount=0;
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
                                   Icons.restart_alt,
                                   color: Colors.black,
                                   size: 40.0,
                                 ),
-                                backgroundColor: Colors.yellowAccent,
+                                backgroundColor: Colors.tealAccent,
                               ),
                             )
                           ],
@@ -555,29 +570,31 @@ class GameActivity extends StatelessWidget {
                               //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
                               //print(target[0]);
                               //WIN CONDITION!!!!
-                              if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green")
+                              if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionGreenI][PositionGreenJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialog(context,GameRound);
+                                showAlertDialogWIN(context,GameRound,lowestbidder);
+                              } else if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount>lowestbid) {
+                                showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
                               }
-                              if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red")
+                              if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionRedI][PositionRedJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialog(context,GameRound);
+                                showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
-                              if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue")
+                              if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionBlueI][PositionBlueJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialog(context,GameRound);
+                                showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
-                              if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow")
+                              if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionYellowI][PositionYellowJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialog(context,GameRound);
+                                showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
 
                               print("Debug");
@@ -591,7 +608,7 @@ class GameActivity extends StatelessWidget {
 
                                     Expanded(child: Text("Collectible " + target[0].toString().toUpperCase()),
                                     ),
-                                    Expanded(child: Text("$_start"),
+                                    Expanded(child: Text(RunningTimer.toString()),
                                     )
                                   ],
                                 ),
@@ -822,9 +839,6 @@ class GameActivity extends StatelessWidget {
                               var data = [];
                               List<String> players = [];
                               List<String> bets = [];
-                              //List<List<Players>> players;
-                              //List<Map<String, dynamic>> send=[] ;
-                              //snapshot1.data?.docs.forEach((f) => print(f.id));
                               snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
                               snapshot1.data?.docs.forEach((f) => players.add(f.id.toString()));
                               //print(bets[1]);
@@ -835,7 +849,7 @@ class GameActivity extends StatelessWidget {
                                   shrinkWrap: true,
                                   itemCount: players.length,
                                   itemBuilder: (BuildContext context, int index) {
-                                    return Text('${players[index].length} Player: ${players[index].padRight(30,' ')}Bet:${bets[index]}');
+                                    return Text('${players[index].length} Player: ${players[index].padRight(30,' ')}Bet:${bets[index]} ');
 
                                   }
                               )
@@ -1651,23 +1665,26 @@ class GameActivity extends StatelessWidget {
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(game).update({'lowestbid': bet});
       await gameupdate.doc(game).update({'firstbet': DateTime.now()});
+      await betupdate.doc(uid).set({'bet': bet, 'timestampupdated': DateTime.now()});
       startTimer();
       print(bets);
     }
     if(bet < lowestbid){
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(game).update({'lowestbid': bet});
+      await betupdate.doc(uid).set({'bet': bet, 'timestampupdated': DateTime.now()});
     }
 
 
-    await betupdate.doc(uid).update({'bet': bet});
+    //await betupdate.doc(uid).update({'bet': bet});
+
   }
 
-  showAlertDialog(BuildContext context, int Round) {
+  showAlertDialogWIN(BuildContext context, int Round, String uid) {
 
     // set up the button
     Widget okButton = TextButton(
-      child: Text("OK"),
+      child: Text("NEXT ROUND"),
       onPressed: () {
         //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
         _nextRound("TestGame",Round);
@@ -1679,8 +1696,44 @@ class GameActivity extends StatelessWidget {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("My title"),
-      content: Text("This is my message."),
+      title: Text("CONGRATULATIONS"),
+      content: Text("The WINNER IS  " + uid),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    Future.delayed(Duration.zero,()
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
+    );
+  }
+
+  showAlertDialogNEXTPLAYER(BuildContext context, String uid, int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) {
+    _nextBestBet(uid,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+
+    // set up the button
+    Widget okButton = TextButton(
+      child: Text("NEXT PLAYER"),
+      onPressed: () {
+        //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
+        Navigator.pop(context);
+
+        //});
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("YOU FAILED"),
+      content: Text("Bad luck"),
       actions: [
         okButton,
       ],
@@ -1702,6 +1755,7 @@ class GameActivity extends StatelessWidget {
   Future _nextRound(String game, int Round) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
+
     await gameupdate.doc(game).update({'Round': Round+1});
     await roundupdate.doc((Round+1).toString())
         .set({
@@ -1709,5 +1763,40 @@ class GameActivity extends StatelessWidget {
     });
   }
 
+  Future _nextBestBet(String uid,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
+    _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
+    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+
+    playerupdate.doc(uid).update({'bet': 99});
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).limit(1).get();
+    var list = querySnapshot.docs;
+    List<String> player = [];
+    list.forEach((f) => player.add(f.data()['id']));
+    print( "Debug1" + player.first);
+
+    await gameupdate.doc("TestGame").update({'lowestbidder': player.first});
+
+  }
+
+
+  Future _resetGame(String game) async {
+    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
+    await gameupdate.doc(game).update({'lowestbidder': ""});
+    await gameupdate.doc(game).update({'lowestbid': 99});
+    await gameupdate.doc(game).update({'firstbet': DateTime.now()});
+    await gameupdate.doc(game).update({'movecount': 0});
+    await gameupdate.doc(game).update({'Round': 1});
+    await gameupdate.doc(game).update({'Timer': 5});
+
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
+    var list = querySnapshot.docs;
+    list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
+
+
+  }
 
 }
