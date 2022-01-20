@@ -127,12 +127,12 @@ class GameActivity extends StatelessWidget {
           //setState(() {
           gameupdate.doc("TestGame").update({'Timer': _start });
           timer.cancel();
-        //  });
+          //  });
         } else {
-         // setState(() {
+          // setState(() {
           gameupdate.doc("TestGame").update({'Timer': _start });
           _start--;
-        //  });
+          //  });
         }
       },
     );
@@ -179,9 +179,9 @@ class GameActivity extends StatelessWidget {
   });
 
   //void initState() {
-   // //super.initState();
+  // //super.initState();
   //  _initialiseGame();
- // }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -270,6 +270,8 @@ class GameActivity extends StatelessWidget {
               int GameRound = snapshot.data?.data()!["Round"];
               int RunningTimer = snapshot.data?.data()!["Timer"];
               String lowestbidder = snapshot.data?.data()!["lowestbidder"];
+              String hostplayer = snapshot.data?.data()!["Host"];
+
               int lowestbid = snapshot.data?.data()!["lowestbid"];
               print(lowestbidder);
               print(lowestbid);
@@ -311,7 +313,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -324,7 +326,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -337,7 +339,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -350,7 +352,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,1);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -363,7 +365,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -376,7 +378,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -389,7 +391,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -402,7 +404,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -415,7 +417,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -428,7 +430,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -441,7 +443,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -454,7 +456,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -467,7 +469,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -480,7 +482,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -493,7 +495,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-            if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -520,12 +522,26 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                _resetGame("TestGame");
+                                if(_auth.currentUser?.email==hostplayer) {_resetGame("TestGame");}
                                 movecount=0;
                               },
                               child: CircleAvatar(
                                 child: Icon(
                                   Icons.restart_alt,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.tealAccent,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                if(_auth.currentUser?.email==hostplayer) {_nextRound("TestGame",GameRound,lowestbidder);}
+                                movecount=0;
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.skip_next,
                                   color: Colors.black,
                                   size: 40.0,
                                 ),
@@ -581,7 +597,7 @@ class GameActivity extends StatelessWidget {
                                 print(boardpos[PositionGreenI][PositionGreenJ].collectible);
                                 print(target[0].toString().substring(0,5));
                                 msg="$lowestbidder has won!!!";
-                                _nextRound("TestGame",GameRound,lowestbidder);
+                               // _nextRound("TestGame",GameRound,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
@@ -614,19 +630,19 @@ class GameActivity extends StatelessWidget {
                               return (
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children:<Widget>[
-                                  Row(children: <Widget>[Expanded(child:Text("ROUND "+ GameRound.toString())),
-                                    Expanded(child:Text("Collectible " + target[0].toString().toUpperCase()))
-                                  ] ,
-                                    ),
+                                    children:<Widget>[
+                                      Row(children: <Widget>[Expanded(child:Text("ROUND "+ GameRound.toString())),
+                                        Expanded(child:Text("Collectible " + target[0].toString().toUpperCase()))
+                                      ] ,
+                                      ),
 
-                                  Container(child: Text(RunningTimer.toString()),
-                                    ),
-                                  Container(child: Text(msg),
-                                    )
-                                  ],
+                                      Container(child: Text(RunningTimer.toString()),
+                                      ),
+                                      Container(child: Text(msg),
+                                      )
+                                    ],
 
-                                )
+                                  )
 
                               );
 
@@ -1699,7 +1715,9 @@ class GameActivity extends StatelessWidget {
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
 
-    playerupdate.doc(uid).update({'bet': 99});
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
+    var list = querySnapshot.docs;
+    list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
 
     await gameupdate.doc(game).update({'Round': Round+1});
     await gameupdate.doc(game).update({'lowestbidder': "a@a.at"});

@@ -5,17 +5,17 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'game_activity.dart';
 
-FirebaseAuth auth = FirebaseAuth.instance;
+//FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
   runApp(MyApp()  );
 }
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  //final Future<FirebaseApp> _initialization = Firebase.initializeApp();
 
   @override
   Widget build(BuildContext context) {
@@ -39,17 +39,17 @@ class LandingPage extends StatelessWidget {
 
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.active) {
-          User? user = snapshot.data;
+      builder: (context, snapshot1) {
+        if (snapshot1.connectionState == ConnectionState.active) {
+          User? user = snapshot1.data;
           if (user == null) {
             return SignInPage();
-          }
-          return GameActivity(); //FirstScreen();
+          } else {
+          return GameActivity();} //FirstScreen();
         } else {
           return Scaffold(
             body: Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(valueColor:AlwaysStoppedAnimation<Color>(Colors.green)),
             ),
           );
         }
@@ -127,38 +127,6 @@ class SignInPage extends StatelessWidget {
 
             ]
         ),
-      ),
-    );
-  }
-}
-
-class HomePage extends StatelessWidget {
-
-  Future<void> _signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      print(e); // TODO: show dialog with error
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page'),
-        actions: <Widget>[
-          TextButton(
-            child: Text(
-              'Logout',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.white,
-              ),
-            ),
-            onPressed: _signOut,
-          ),
-        ],
       ),
     );
   }
