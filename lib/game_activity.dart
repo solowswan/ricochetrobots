@@ -178,7 +178,6 @@ class GameActivity extends StatelessWidget {
     });
   });
 
-  @override
   //void initState() {
    // //super.initState();
   //  _initialiseGame();
@@ -550,7 +549,7 @@ class GameActivity extends StatelessWidget {
                             Expanded(child: ElevatedButton(
                               child: Text('SUBMIT BET'),
                               onPressed: () {
-                                _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text));
+                                _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text), GameRound);
                               },
                             ),
                             )
@@ -570,18 +569,19 @@ class GameActivity extends StatelessWidget {
                               //snapshot1.data?.docs.forEach((f) => print(f.id));
                               collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
                               //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
-                              //print(target[0]);
+                              print(target[0]);
                               //WIN CONDITION!!!!
                               if(RunningTimer==0) {
                                 msg="The lowest bidder is $lowestbidder. Show us the shortest path.";
+                                print("Lowest $RunningTimer");
                               }
 
-                              if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid)
+                              if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid && lowestbid!=99)
                               {
                                 print(boardpos[PositionGreenI][PositionGreenJ].collectible);
                                 print(target[0].toString().substring(0,5));
                                 msg="$lowestbidder has won!!!";
-                                _nextRound("TestGame",GameRound);
+                                _nextRound("TestGame",GameRound,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
@@ -592,19 +592,19 @@ class GameActivity extends StatelessWidget {
                               if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionRedI][PositionRedJ].collectible);
-                                print(target[0].toString().substring(0,5));
+                                print(target[0].toString().substring(0,3));
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
                               if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionBlueI][PositionBlueJ].collectible);
-                                print(target[0].toString().substring(0,5));
+                                print(target[0].toString().substring(0,4));
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
                               if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionYellowI][PositionYellowJ].collectible);
-                                print(target[0].toString().substring(0,5));
+                                print(target[0].toString().substring(0,6));
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
 
@@ -665,122 +665,122 @@ class GameActivity extends StatelessWidget {
                           if ((rowNumber == 7) && (columnNumber == 7)) {
                             image = getImage(ImageType.bombnw);
                           }
-                          if ((rowNumber == 8) && (columnNumber == 7)) {
+                          else if ((rowNumber == 8) && (columnNumber == 7)) {
                             image = getImage(ImageType.bombsw);
                           }
-                          if ((rowNumber == 7) && (columnNumber == 8)) {
+                          else if ((rowNumber == 7) && (columnNumber == 8)) {
                             image = getImage(ImageType.bombne);
                           }
-                          if ((rowNumber == 8) && (columnNumber == 8)) {
+                          else if ((rowNumber == 8) && (columnNumber == 8)) {
                             image = getImage(ImageType.bombse);
                           }
                           //Quadrant 1
-                          if ((rowNumber == 4) && (columnNumber == 2)) {
+                          else if ((rowNumber == 4) && (columnNumber == 2)) {
                             image = getImage(ImageType.greencirclene);
                           }
-                          if ((rowNumber == 2) && (columnNumber == 5)) {
+                          else if ((rowNumber == 2) && (columnNumber == 5)) {
                             image = getImage(ImageType.bluecrossse);
                           }
-                          if ((rowNumber == 6) && (columnNumber == 1)) {
+                          else if ((rowNumber == 6) && (columnNumber == 1)) {
                             image = getImage(ImageType.yellowsaturnnw);
                           }
-                          if ((rowNumber == 5) && (columnNumber == 7)) {
+                          else if ((rowNumber == 5) && (columnNumber == 7)) {
                             image = getImage(ImageType.redtrianglesw);
                           }
-                          if ((rowNumber == 5) && (columnNumber == 0)) {
+                          else if ((rowNumber == 5) && (columnNumber == 0)) {
                             image = getImage(ImageType.walln);
                           }
-                          if ((rowNumber == 4) && (columnNumber == 0)) {
+                          else if ((rowNumber == 4) && (columnNumber == 0)) {
                             image = getImage(ImageType.walls);
                           }
-                          if ((rowNumber == 0) && (columnNumber == 3)) {
+                          else if ((rowNumber == 0) && (columnNumber == 3)) {
                             image = getImage(ImageType.walle);
                           }
-                          if ((rowNumber == 0) && (columnNumber == 4)) {
+                          else if ((rowNumber == 0) && (columnNumber == 4)) {
                             image = getImage(ImageType.wallw);
                           }
                           //Quadrant 2
-                          if ((rowNumber == 2) && (columnNumber == 9)) {
+                          else if ((rowNumber == 2) && (columnNumber == 9)) {
                             image = getImage(ImageType.bluetrianglese);
                           }
-                          if ((rowNumber == 1) && (columnNumber == 13)) {
+                          else if ((rowNumber == 1) && (columnNumber == 13)) {
                             image = getImage(ImageType.redsaturnnw);
                           }
-                          if ((rowNumber == 6) && (columnNumber == 11)) {
+                          else if ((rowNumber == 6) && (columnNumber == 11)) {
                             image = getImage(ImageType.yellowcirclene);
                           }
-                          if ((rowNumber == 5) && (columnNumber == 14)) {
+                          else if ((rowNumber == 5) && (columnNumber == 14)) {
                             image = getImage(ImageType.greencrosssw);
                           }
-                          if ((rowNumber == 0) && (columnNumber == 11)) {
+                          else if ((rowNumber == 0) && (columnNumber == 11)) {
                             image = getImage(ImageType.walle);
                           }
-                          if ((rowNumber == 0) && (columnNumber == 12)) {
+                          else if ((rowNumber == 0) && (columnNumber == 12)) {
                             image = getImage(ImageType.wallw);
                           }
-                          if ((rowNumber == 3) && (columnNumber == 15)) {
+                          else if ((rowNumber == 3) && (columnNumber == 15)) {
                             image = getImage(ImageType.walls);
                           }
-                          if ((rowNumber == 4) && (columnNumber == 15)) {
+                          else if ((rowNumber == 4) && (columnNumber == 15)) {
                             image = getImage(ImageType.walln);
                           }
                           //Quadrant 3
-                          if ((rowNumber == 11) && (columnNumber == 1)) {
+                          else if ((rowNumber == 11) && (columnNumber == 1)) {
                             image = getImage(ImageType.redcirclesw);
                           }
-                          if ((rowNumber == 9) && (columnNumber == 3)) {
+                          else if ((rowNumber == 9) && (columnNumber == 3)) {
                             image = getImage(ImageType.yellowcrossne);
                           }
-                          if ((rowNumber == 14) && (columnNumber == 2)) {
+                          else if ((rowNumber == 14) && (columnNumber == 2)) {
                             image = getImage(ImageType.greentrianglenw);
                           }
-                          if ((rowNumber == 12) && (columnNumber == 6)) {
+                          else if ((rowNumber == 12) && (columnNumber == 6)) {
                             image = getImage(ImageType.bluesaturnse);
                           }
-                          if ((rowNumber == 15) && (columnNumber == 5)) {
+                          else if ((rowNumber == 15) && (columnNumber == 5)) {
                             image = getImage(ImageType.walle);
                           }
-                          if ((rowNumber == 15) && (columnNumber == 6)) {
+                          else if ((rowNumber == 15) && (columnNumber == 6)) {
                             image = getImage(ImageType.wallw);
                           }
-                          if ((rowNumber == 13) && (columnNumber == 0)) {
+                          else if ((rowNumber == 13) && (columnNumber == 0)) {
                             image = getImage(ImageType.walls);
                           }
-                          if ((rowNumber == 14) && (columnNumber == 0)) {
+                          else if ((rowNumber == 14) && (columnNumber == 0)) {
                             image = getImage(ImageType.walln);
                           }
                           //Quadrant 4
-                          if ((rowNumber == 10) && (columnNumber == 8)) {
+                          else if ((rowNumber == 10) && (columnNumber == 8)) {
                             image = getImage(ImageType.rainbownw);
                           }
-                          if ((rowNumber == 10) && (columnNumber == 13)) {
+                          else if ((rowNumber == 10) && (columnNumber == 13)) {
                             image = getImage(ImageType.redcrossnw);
                           }
-                          if ((rowNumber == 12) && (columnNumber == 14)) {
+                          else if ((rowNumber == 12) && (columnNumber == 14)) {
                             image = getImage(ImageType.yellowtrianglesw);
                           }
-                          if ((rowNumber == 11) && (columnNumber == 10)) {
+                          else if ((rowNumber == 11) && (columnNumber == 10)) {
                             image = getImage(ImageType.greensaturnse);
                           }
-                          if ((rowNumber == 14) && (columnNumber == 9)) {
+                          else if ((rowNumber == 14) && (columnNumber == 9)) {
                             image = getImage(ImageType.bluecirclene);
                           }
-                          if ((rowNumber == 15) && (columnNumber == 11)) {
+                          else if ((rowNumber == 15) && (columnNumber == 11)) {
                             image = getImage(ImageType.walle);
                           }
-                          if ((rowNumber == 15) && (columnNumber == 12)) {
+                          else if ((rowNumber == 15) && (columnNumber == 12)) {
                             image = getImage(ImageType.wallw);
                           }
-                          if ((rowNumber == 8) && (columnNumber == 15)) {
+                          else if ((rowNumber == 8) && (columnNumber == 15)) {
                             image = getImage(ImageType.walls);
                           }
-                          if ((rowNumber == 9) && (columnNumber == 15)) {
+                          else if ((rowNumber == 9) && (columnNumber == 15)) {
                             image = getImage(ImageType.walln);
                           }
-                          if ((rowNumber == 9) && (columnNumber == 15)) {
+                          else if ((rowNumber == 9) && (columnNumber == 15)) {
                             image = getImage(ImageType.walln);
                           }
-                          if ((rowNumber == 8) && (columnNumber == 15)) {
+                          else if ((rowNumber == 8) && (columnNumber == 15)) {
                             image = getImage(ImageType.walls);
                           }
                           if (boardpos[rowNumber][columnNumber].blueposition) {
@@ -1655,9 +1655,10 @@ class GameActivity extends StatelessWidget {
     }
   }
 
-  Future _submitBet(String game, String? uid, int bet) async {
+  Future _submitBet(String game, String? uid, int bet, int Round) async {
     CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ game +'/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+    CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
@@ -1693,11 +1694,20 @@ class GameActivity extends StatelessWidget {
 
   }
 
-  Future _nextRound(String game, int Round) async {
+  Future _nextRound(String game, int Round,String uid) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
 
+    playerupdate.doc(uid).update({'bet': 99});
+
     await gameupdate.doc(game).update({'Round': Round+1});
+    await gameupdate.doc(game).update({'lowestbidder': "a@a.at"});
+    await gameupdate.doc(game).update({'lowestbid': 99});
+    await gameupdate.doc(game).update({'firstbet': DateTime.now()});
+    await gameupdate.doc(game).update({'movecount': 0});
+    await gameupdate.doc(game).update({'Timer': 5});
+
     await roundupdate.doc((Round+1).toString())
         .set({
       'Start': DateTime.now().add(const Duration(minutes: 5))
