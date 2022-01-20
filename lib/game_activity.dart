@@ -603,7 +603,7 @@ class GameActivity extends StatelessWidget {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
                                 msg="$lowestbidder has failed miserable.";
                                 //sleep(Duration(seconds:2));
-                                _nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
                               if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid)
                               {
@@ -1733,7 +1733,7 @@ class GameActivity extends StatelessWidget {
   }
 
   Future _nextBestBet(String uid,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
-    _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+    //_reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
 
