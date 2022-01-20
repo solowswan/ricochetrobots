@@ -202,3 +202,76 @@ child: Center(child: Text('Entry ${players[index]}')),
 //return new ListView(children: getExpenseItems(snapshot1));
 }
 ),
+
+
+showAlertDialogWIN(BuildContext context, int Round, String uid) {
+
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("NEXT ROUND"),
+    onPressed: () {
+      //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
+      _nextRound("TestGame",Round);
+      Navigator.pop(context);
+
+      //});
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("CONGRATULATIONS"),
+    content: Text("The WINNER IS  " + uid),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  Future.delayed(Duration.zero,()
+  {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  );
+}
+
+showAlertDialogNEXTPLAYER(BuildContext context, String uid, int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) {
+  _nextBestBet(uid,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+
+  // set up the button
+  Widget okButton = TextButton(
+    child: Text("NEXT PLAYER"),
+    onPressed: () {
+      //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
+      Navigator.pop(context);
+
+      //});
+    },
+  );
+
+  // set up the AlertDialog
+  AlertDialog alert = AlertDialog(
+    title: Text("YOU FAILED"),
+    content: Text("Bad luck"),
+    actions: [
+      okButton,
+    ],
+  );
+
+  // show the dialog
+  Future.delayed(Duration.zero,()
+  {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+  );
+}

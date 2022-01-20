@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'dart:html';
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'board_square.dart';
 import 'helper.dart';
@@ -164,6 +165,7 @@ class GameActivity extends StatelessWidget {
   int yellowi = 0;
   int yellowj = 5;
 
+  String msg="";
 
   final bet = TextEditingController();
 
@@ -570,50 +572,61 @@ class GameActivity extends StatelessWidget {
                               //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
                               //print(target[0]);
                               //WIN CONDITION!!!!
+                              if(RunningTimer==0) {
+                                msg="The lowest bidder is $lowestbidder. Show us the shortest path.";
+                              }
+
                               if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionGreenI][PositionGreenJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialogWIN(context,GameRound,lowestbidder);
+                                msg="$lowestbidder has won!!!";
+                                _nextRound("TestGame",GameRound);
+                                //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount>lowestbid) {
-                                showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                msg="$lowestbidder has failed miserable.";
+                                //sleep(Duration(seconds:2));
+                                _nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
                               }
                               if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionRedI][PositionRedJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialogWIN(context,GameRound,lowestbidder);
+                                //showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
                               if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionBlueI][PositionBlueJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialogWIN(context,GameRound,lowestbidder);
+                                //showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
                               if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow" && movecount<=lowestbid)
                               {
                                 print(boardpos[PositionYellowI][PositionYellowJ].collectible);
                                 print(target[0].toString().substring(0,5));
-                                showAlertDialogWIN(context,GameRound,lowestbidder);
+                                //showAlertDialogWIN(context,GameRound,lowestbidder);
                               }
 
                               print("Debug");
                               //print(players.length);
                               //print(GameRound);
-                              return (Container(
-                                child:Row(
-                                  children: <Widget>[
-                                    Expanded(child: Text("ROUND "+ GameRound.toString()),
+                              return (
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children:<Widget>[
+                                  Row(children: <Widget>[Expanded(child:Text("ROUND "+ GameRound.toString())),
+                                    Expanded(child:Text("Collectible " + target[0].toString().toUpperCase()))
+                                  ] ,
                                     ),
 
-                                    Expanded(child: Text("Collectible " + target[0].toString().toUpperCase()),
+                                  Container(child: Text(RunningTimer.toString()),
                                     ),
-                                    Expanded(child: Text(RunningTimer.toString()),
+                                  Container(child: Text(msg),
                                     )
                                   ],
-                                ),
 
-                              )
+                                )
 
                               );
 
@@ -1678,78 +1691,6 @@ class GameActivity extends StatelessWidget {
 
     //await betupdate.doc(uid).update({'bet': bet});
 
-  }
-
-  showAlertDialogWIN(BuildContext context, int Round, String uid) {
-
-    // set up the button
-    Widget okButton = TextButton(
-      child: Text("NEXT ROUND"),
-      onPressed: () {
-        //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
-        _nextRound("TestGame",Round);
-        Navigator.pop(context);
-
-        //});
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("CONGRATULATIONS"),
-      content: Text("The WINNER IS  " + uid),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    Future.delayed(Duration.zero,()
-    {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
-    );
-  }
-
-  showAlertDialogNEXTPLAYER(BuildContext context, String uid, int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) {
-    _nextBestBet(uid,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-
-    // set up the button
-    Widget okButton = TextButton(
-      child: Text("NEXT PLAYER"),
-      onPressed: () {
-        //Future.delayed(Duration(hours: 0, minutes: 0, seconds: 2),() {
-        Navigator.pop(context);
-
-        //});
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("YOU FAILED"),
-      content: Text("Bad luck"),
-      actions: [
-        okButton,
-      ],
-    );
-
-    // show the dialog
-    Future.delayed(Duration.zero,()
-    {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        },
-      );
-    }
-    );
   }
 
   Future _nextRound(String game, int Round) async {
