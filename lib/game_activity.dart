@@ -547,6 +547,19 @@ class GameActivity extends StatelessWidget {
                                 ),
                                 backgroundColor: Colors.tealAccent,
                               ),
+                            ),
+                            InkWell(
+                              onTap: () {
+                                _nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                              },
+                              child: CircleAvatar(
+                                child: Icon(
+                                  Icons.update,
+                                  color: Colors.black,
+                                  size: 40.0,
+                                ),
+                                backgroundColor: Colors.tealAccent,
+                              ),
                             )
                           ],
                         ),
@@ -588,9 +601,10 @@ class GameActivity extends StatelessWidget {
                               print(target[0]);
                               //WIN CONDITION!!!!
                               if(RunningTimer==0) {
-                                msg="The lowest bidder is $lowestbidder. Show us the shortest path.";
+                                msg="The lowest bidder is $lowestbidder. Show us the shortest path in $lowestbid moves";
                                 print("Lowest $RunningTimer");
-                              }
+                              } else if(GameRound==1) {msg="Let the game begin. Please provide your lowest bid";}
+                              else if(GameRound>1) {msg="Let the next round begin. Please provide your lowest bid";}
 
                               if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid && lowestbid!=99)
                               {
@@ -601,9 +615,9 @@ class GameActivity extends StatelessWidget {
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                msg="$lowestbidder has failed miserable.";
+                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
                                 //sleep(Duration(seconds:2));
-                                if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                                //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
                               if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid)
                               {
@@ -1733,19 +1747,24 @@ class GameActivity extends StatelessWidget {
   }
 
   Future _nextBestBet(String uid,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
-    //_reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+    _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
 
     playerupdate.doc(uid).update({'bet': 99});
-
+    print("NextBestBet");
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
     List<String> player = [];
-    list.forEach((f) => player.add(f.data()['id']));
+    List<int> bid = [];
+    list.forEach((f) => player.add(f.id));
+    list.forEach((f) => bid.add(f.data()["bet"]));
+    //list.forEach((f) => print(f.id));
+
     print( "Debug1" + player.first);
 
     await gameupdate.doc("TestGame").update({'lowestbidder': player.first});
+    await gameupdate.doc("TestGame").update({'lowestbid': bid.first});
 
   }
 
