@@ -115,7 +115,7 @@ enum ImageType {
 class GameActivity extends StatelessWidget {
 
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
-  int _start = 5;
+  int _start = 20;
 
   Future startTimer() async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
@@ -402,6 +402,17 @@ class GameActivity extends StatelessWidget {
                                 backgroundColor: Colors.blue,
                               ),
                             ),
+
+                          ],
+                        ),
+                      ),
+                      Container(
+                        color: Colors.grey,
+                        height: 60.0,
+                        width: double.infinity,
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
                             InkWell(
                               onTap: () {
                                 if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
@@ -506,63 +517,41 @@ class GameActivity extends StatelessWidget {
                                 backgroundColor: Colors.yellow,
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                _reinitialiseGame(PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ,PositionGreenI,PositionGreenJ,PositionYellowI,PositionYellowJ);
-                                movecount=0;
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.play_arrow,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.tealAccent,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(_auth.currentUser?.email==hostplayer) {_resetGame("TestGame");}
-                                movecount=0;
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.restart_alt,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.tealAccent,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(_auth.currentUser?.email==hostplayer) {_nextRound("TestGame",GameRound,lowestbidder,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
-                                movecount=0;
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.skip_next,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.tealAccent,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                _nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.update,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.tealAccent,
-                              ),
-                            )
                           ],
                         ),
+
+                      ),
+                      Container(
+                        child:Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Column(children: <Widget>[IconButton(
+                              icon: const Icon(Icons.replay),
+                              tooltip: 'Reset',
+                              onPressed: () {
+                                if(_auth.currentUser?.email==hostplayer) {_resetGame("TestGame",PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ,PositionGreenI,PositionGreenJ,PositionYellowI,PositionYellowJ);}
+                              },
+                            ),
+                              Text('Reset')]),
+                            Column(children: <Widget>[IconButton(
+                              icon: const Icon(Icons.arrow_forward),
+                              tooltip: 'Next Round',
+                              onPressed: () {
+                                if(_auth.currentUser?.email==hostplayer) {_nextRound("TestGame",GameRound,lowestbidder,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                              },
+                            ),
+                              Text('NextRound')]),
+                            Column(children: <Widget>[IconButton(
+                              icon: const Icon(Icons.accessibility),
+                              tooltip: 'Next bid',
+                              onPressed: () {
+                                _nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                              },
+                            ),
+                              Text('NextBid')])
+                          ],
+                        ),
+
                       ),
                       Container(
                         child:Row(
@@ -1743,7 +1732,7 @@ class GameActivity extends StatelessWidget {
     await gameupdate.doc(game).update({'lowestbid': 99});
     await gameupdate.doc(game).update({'firstbet': DateTime.now()});
     await gameupdate.doc(game).update({'movecount': 0});
-    await gameupdate.doc(game).update({'Timer': 5});
+    await gameupdate.doc(game).update({'Timer': 20});
 
     await roundupdate.doc((Round+1).toString())
         .set({
@@ -1758,9 +1747,22 @@ class GameActivity extends StatelessWidget {
   }
 
   Future _nextBestBet(String uid,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
-    _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+    //_reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+    DocumentSnapshot gamedata = await FirebaseFirestore.instance.collection('Games').doc("TestGame").get();
+
+    print(gamedata.data()!["bluei"]);;
+    print(gamedata.data()!["bluej"]);;
+
+    int newredi = gamedata.data()!["redorigi"];
+    int newredj = gamedata.data()!["redorigj"];
+    int newbluei = gamedata.data()!["blueorigi"];
+    int newbluej = gamedata.data()!["blueorigj"];
+    int newgreeni = gamedata.data()!["greenorigi"];
+    int newgreenj = gamedata.data()!["greenorigj"];
+    int newyellowi = gamedata.data()!["yelloworigi"];
+    int newyellowj = gamedata.data()!["yelloworigj"];
 
     playerupdate.doc(uid).update({'bet': 99});
     print("NextBestBet");
@@ -1776,17 +1778,26 @@ class GameActivity extends StatelessWidget {
 
     await gameupdate.doc("TestGame").update({'lowestbidder': player.first});
     await gameupdate.doc("TestGame").update({'lowestbid': bid.first});
+    await gameupdate.doc("TestGame").update({'movecount': 0});
+
 
     await gameupdate.doc("TestGame").update({'redalti': PositionRedI,'redaltj':PositionRedJ});
     await gameupdate.doc("TestGame").update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
     await gameupdate.doc("TestGame").update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
     await gameupdate.doc("TestGame").update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
 
+    await gameupdate.doc("TestGame").update({'redi': newredi,'redj':newredj});
+    await gameupdate.doc("TestGame").update({'bluei': newbluei,'bluej':newbluej});
+    await gameupdate.doc("TestGame").update({'greeni': newgreeni,'greenj':newgreenj});
+    await gameupdate.doc("TestGame").update({'yellowi': newyellowi,'yellowj':newyellowj});
+
+
 
   }
 
 
-  Future _resetGame(String game) async {
+  Future _resetGame(String game,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
+    _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     await gameupdate.doc(game).update({'lowestbidder': ""});
@@ -1794,7 +1805,7 @@ class GameActivity extends StatelessWidget {
     await gameupdate.doc(game).update({'firstbet': DateTime.now()});
     await gameupdate.doc(game).update({'movecount': 0});
     await gameupdate.doc(game).update({'Round': 1});
-    await gameupdate.doc(game).update({'Timer': 5});
+    await gameupdate.doc(game).update({'Timer': 20});
 
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
