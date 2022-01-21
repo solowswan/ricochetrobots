@@ -536,7 +536,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(_auth.currentUser?.email==hostplayer) {_nextRound("TestGame",GameRound,lowestbidder);}
+                                if(_auth.currentUser?.email==hostplayer) {_nextRound("TestGame",GameRound,lowestbidder,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                                 movecount=0;
                               },
                               child: CircleAvatar(
@@ -1306,6 +1306,11 @@ class GameActivity extends StatelessWidget {
     await game.doc("TestGame").update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
     await game.doc("TestGame").update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
 
+    await game.doc("TestGame").update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
+    await game.doc("TestGame").update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
+    await game.doc("TestGame").update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
+    await game.doc("TestGame").update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
+
     await game.doc("TestGame").update({'movecount': 0});
     await game.doc("TestGame").update({'bluei': 4,'bluej':4});
     await game.doc("TestGame").update({'redi': 3,'redj':3});
@@ -1724,7 +1729,7 @@ class GameActivity extends StatelessWidget {
 
   }
 
-  Future _nextRound(String game, int Round,String uid) async {
+  Future _nextRound(String game, int Round,String uid,PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
@@ -1744,6 +1749,12 @@ class GameActivity extends StatelessWidget {
         .set({
       'Start': DateTime.now().add(const Duration(minutes: 5))
     });
+
+    await gameupdate.doc("TestGame").update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
+    await gameupdate.doc("TestGame").update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
+    await gameupdate.doc("TestGame").update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
+    await gameupdate.doc("TestGame").update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
+
   }
 
   Future _nextBestBet(String uid,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
@@ -1765,6 +1776,12 @@ class GameActivity extends StatelessWidget {
 
     await gameupdate.doc("TestGame").update({'lowestbidder': player.first});
     await gameupdate.doc("TestGame").update({'lowestbid': bid.first});
+
+    await gameupdate.doc("TestGame").update({'redalti': PositionRedI,'redaltj':PositionRedJ});
+    await gameupdate.doc("TestGame").update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
+    await gameupdate.doc("TestGame").update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
+    await gameupdate.doc("TestGame").update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
+
 
   }
 
