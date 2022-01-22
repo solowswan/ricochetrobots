@@ -1,4 +1,5 @@
 import 'package:provider/provider.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'dart:html';
 import 'dart:async';
 import 'dart:io';
@@ -117,6 +118,14 @@ class GameActivity extends StatelessWidget {
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   int _start = 20;
 
+  FirebaseFunctions functions = FirebaseFunctions.instance;
+
+  Future<void> getFruit() async {
+    HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('listFruit');
+    final results = await callable();
+    List fruit = results.data;  // ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
+  }
+
   Future startTimer() async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     const oneSec = const Duration(seconds: 1);
@@ -136,6 +145,10 @@ class GameActivity extends StatelessWidget {
         }
       },
     );
+  }
+
+  Future stopTimer() async {
+    _timer.cancel();
   }
 
 
@@ -568,6 +581,7 @@ class GameActivity extends StatelessWidget {
                               child: Text('SUBMIT BET'),
                               onPressed: () {
                                 _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text), GameRound);
+                                bet.clear();
                               },
                             ),
                             )
@@ -1710,9 +1724,8 @@ class GameActivity extends StatelessWidget {
     if(bet < lowestbid){
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(game).update({'lowestbid': bet});
-      await betupdate.doc(uid).set({'bet': bet, 'timestampupdated': DateTime.now()});
     }
-
+    await betupdate.doc(uid).set({'bet': bet, 'timestampupdated': DateTime.now()});
 
     //await betupdate.doc(uid).update({'bet': bet});
 
@@ -1797,6 +1810,7 @@ class GameActivity extends StatelessWidget {
 
 
   Future _resetGame(String game,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
+    stopTimer();
     _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
