@@ -118,13 +118,8 @@ class GameActivity extends StatelessWidget {
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   int _start = 20;
 
-  FirebaseFunctions functions = FirebaseFunctions.instance;
 
-  Future<void> getFruit() async {
-    HttpsCallable callable = FirebaseFunctions.instance.httpsCallable('listFruit');
-    final results = await callable();
-    List fruit = results.data;  // ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
-  }
+
 
   Future startTimer() async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
@@ -191,10 +186,11 @@ class GameActivity extends StatelessWidget {
     });
   });
 
-  //void initState() {
+
+  void initState() {
   // //super.initState();
-  //  _initialiseGame();
-  // }
+    _initialiseGame();
+   }
 
   @override
   Widget build(BuildContext context) {
@@ -428,7 +424,8 @@ class GameActivity extends StatelessWidget {
                           children: <Widget>[
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
+                                //if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
+                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -539,6 +536,13 @@ class GameActivity extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Column(children: <Widget>[IconButton(
+                              icon: const Icon(Icons.launch),
+                              tooltip: 'Initialise Board',
+                              onPressed: () {
+                                _initialiseGame();
+                              },
+                            ),
+                              Text('Init')]),Column(children: <Widget>[IconButton(
                               icon: const Icon(Icons.replay),
                               tooltip: 'Reset',
                               onPressed: () {
@@ -558,10 +562,20 @@ class GameActivity extends StatelessWidget {
                               icon: const Icon(Icons.accessibility),
                               tooltip: 'Next bid',
                               onPressed: () {
-                                _nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);};
                               },
                             ),
-                              Text('NextBid')])
+                              Text('NextBid')]),
+                            Column(children: <Widget>[IconButton(
+                              icon: const Icon(Icons.accessibility),
+                              tooltip: 'Test Firebase function',
+                              onPressed: () {
+                                // See index.js in .github/workflows/scripts for the example function we
+                                // are using for this example
+                                _initialiseGame();
+                              }
+            ),
+                              Text('Test')])
                           ],
                         ),
 
