@@ -8,8 +8,6 @@ const functions = require("firebase-functions");
 //   response.send("Hello from Firebase!");
 // });
 
-exports.hello = functions.https.onCall((data, context) => {
-  return {
-      response : "hello " + data.message,
-  }
+exports.listFruit = functions.https.onCall((data, context) => {
+  return ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
 });

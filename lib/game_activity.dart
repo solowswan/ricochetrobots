@@ -119,7 +119,12 @@ class GameActivity extends StatelessWidget {
   int _start = 20;
 
 
-
+  Future<void> runtest() async {
+    HttpsCallable callable = await FirebaseFunctions.instanceFor(region: 'europe-west3').httpsCallable('listFruit');
+    final results = await callable();
+    print(results.data.toString());  // ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
+    print("123");
+  }
 
   Future startTimer() async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
@@ -174,6 +179,7 @@ class GameActivity extends StatelessWidget {
   int yellowj = 5;
 
   String msg="";
+  late FocusNode myFocusNode;
 
   final bet = TextEditingController();
 
@@ -190,7 +196,7 @@ class GameActivity extends StatelessWidget {
   void initState() {
   // //super.initState();
     _initialiseGame();
-   }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -572,7 +578,7 @@ class GameActivity extends StatelessWidget {
                               onPressed: () {
                                 // See index.js in .github/workflows/scripts for the example function we
                                 // are using for this example
-                                _initialiseGame();
+                                runtest();
                               }
             ),
                               Text('Test')])
@@ -584,6 +590,7 @@ class GameActivity extends StatelessWidget {
                         child:Row(
                           children: <Widget>[
                             Expanded(child: TextField(
+            focusNode: myFocusNode = FocusNode(),
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   hintText: 'Enter your BET'
@@ -596,6 +603,7 @@ class GameActivity extends StatelessWidget {
                               onPressed: () {
                                 _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text), GameRound);
                                 bet.clear();
+                                myFocusNode.unfocus();
                               },
                             ),
                             )
@@ -899,8 +907,10 @@ class GameActivity extends StatelessWidget {
                               var data = [];
                               List<String> players = [];
                               List<String> bets = [];
+                              List<String> scores = [];
                               snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
                               snapshot1.data?.docs.forEach((f) => players.add(f.id.toString()));
+                              snapshot1.data?.docs.forEach((f) => scores.add(f.data()["score"].toString()));
                               //print(bets[1]);
                               //print(players[1]);
                               //print(players.length);
@@ -909,7 +919,7 @@ class GameActivity extends StatelessWidget {
                                   shrinkWrap: true,
                                   itemCount: players.length,
                                   itemBuilder: (BuildContext context, int index) {
-                                    return Text('${players[index].length} Player: ${players[index].padRight(30,' ')}Bet:${bets[index]} ');
+                                    return Text('${players[index].length} Player: ${players[index].padRight(30,' ')}Bet: ${bets[index]}              Score: ${scores[index]}');
 
                                   }
                               )
@@ -1753,6 +1763,8 @@ class GameActivity extends StatelessWidget {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
     var list = querySnapshot.docs;
     list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
+    list.where((element) => element.id==uid).forEach((element) { playerupdate.doc(element.id).update({'score': FieldValue.increment(1)}); });
+
 
     await gameupdate.doc(game).update({'Round': Round+1});
     await gameupdate.doc(game).update({'lowestbidder': "a@a.at"});
@@ -1839,6 +1851,8 @@ class GameActivity extends StatelessWidget {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
     var list = querySnapshot.docs;
     list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
+    list.forEach((element) { playerupdate.doc(element.id).update({'score': 0}); });
+
 
 
   }
