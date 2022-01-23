@@ -4,6 +4,8 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'game_activity.dart';
+import 'games_list.dart';
+import 'signup.dart';
 
 //FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -45,7 +47,7 @@ class LandingPage extends StatelessWidget {
           if (user == null) {
             return SignInPage();
           } else {
-          return GameActivity();} //FirstScreen();
+          return GamesList();} //FirstScreen();
         } else {
           return Scaffold(
             body: Center(
@@ -124,7 +126,10 @@ class SignInPage extends StatelessWidget {
                 child: Text('Login'),
                 onPressed: () {_signIn(context, username.text,password.text);},
               ),
-
+              ElevatedButton(
+                child: Text('Sign up'),
+                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new SignUp()));},
+              ),
             ]
         ),
       ),

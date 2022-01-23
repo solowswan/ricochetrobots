@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'dart:html';
+import 'dart:math';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'games_list.dart';
+
 // Types of images available
 enum ImageType {
   zero,
@@ -116,7 +119,7 @@ enum ImageType {
 class GameActivity extends StatelessWidget {
 
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
-  int _start = 20;
+  int _start = 10;
 
 
   Future<void> runtest() async {
@@ -573,15 +576,15 @@ class GameActivity extends StatelessWidget {
                             ),
                               Text('NextBid')]),
                             Column(children: <Widget>[IconButton(
-                              icon: const Icon(Icons.accessibility),
-                              tooltip: 'Test Firebase function',
+                              icon: const Icon(Icons.exit_to_app),
+                              tooltip: 'Exit to main menu',
                               onPressed: () {
                                 // See index.js in .github/workflows/scripts for the example function we
                                 // are using for this example
-                                runtest();
+                                Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new GamesList()));
                               }
             ),
-                              Text('Test')])
+                              Text('Back to Main')])
                           ],
                         ),
 
@@ -644,23 +647,41 @@ class GameActivity extends StatelessWidget {
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
-                              if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid)
+                              if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid && lowestbid!=99)
                               {
                                 print(boardpos[PositionRedI][PositionRedJ].collectible);
                                 print(target[0].toString().substring(0,3));
+                                msg="$lowestbidder has won!!!";
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
+                              } else if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="red" && movecount>lowestbid) {
+                                //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
+                                //sleep(Duration(seconds:2));
+                                //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
-                              if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue" && movecount<=lowestbid)
+                              if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue" && movecount<=lowestbid && lowestbid!=99)
                               {
                                 print(boardpos[PositionBlueI][PositionBlueJ].collectible);
                                 print(target[0].toString().substring(0,4));
+                                msg="$lowestbidder has won!!!";
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
+                              } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="blue" && movecount>lowestbid) {
+                                //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
+                                //sleep(Duration(seconds:2));
+                                //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
-                              if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow" && movecount<=lowestbid)
+                              if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow" && movecount<=lowestbid && lowestbid!=99)
                               {
                                 print(boardpos[PositionYellowI][PositionYellowJ].collectible);
                                 print(target[0].toString().substring(0,6));
+                                msg="$lowestbidder has won!!!";
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
+                              } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="yellow" && movecount>lowestbid) {
+                                //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
+                                //sleep(Duration(seconds:2));
+                                //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
 
                               print("Debug");
@@ -1087,7 +1108,7 @@ class GameActivity extends StatelessWidget {
     boardpos[3][2].obstaclesouth = true;
     boardpos[13][2].obstaclesouth = true;
     boardpos[8][3].obstaclesouth = true;
-    boardpos[3][5].obstaclesouth = true;
+    boardpos[2][5].obstaclesouth = true;
     boardpos[12][6].obstaclesouth = true;
     boardpos[5][7].obstaclesouth = true;
     boardpos[9][8].obstaclesouth = true;
@@ -1110,7 +1131,7 @@ class GameActivity extends StatelessWidget {
     boardpos[4][2].obstaclenorth = true;
     boardpos[14][2].obstaclenorth = true;
     boardpos[9][3].obstaclenorth = true;
-    boardpos[4][5].obstaclenorth = true;
+    boardpos[3][5].obstaclenorth = true;
     boardpos[13][6].obstaclenorth = true;
     boardpos[6][7].obstaclenorth = true;
     boardpos[10][8].obstaclenorth = true;
@@ -1127,10 +1148,25 @@ class GameActivity extends StatelessWidget {
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
-    boardpos[4][2].collectible = "greencircle";
-    boardpos[14][2].collectible = "greentriangle";
-    boardpos[11][1].collectible = "redcircle";
+    boardpos[1][13].collectible = "redsaturn";
+    boardpos[2][5].collectible = "bluestar";
     boardpos[2][9].collectible = "bluetriangle";
+    boardpos[4][2].collectible = "greencircle";
+    boardpos[5][7].collectible = "redtriangle";
+    boardpos[5][14].collectible = "greenstar";
+    boardpos[6][1].collectible = "yellowsaturn";
+    boardpos[6][11].collectible = "yellowcircle";
+    boardpos[9][3].collectible = "yellowstar";
+    boardpos[10][13].collectible = "redstar";
+    boardpos[11][1].collectible = "redcircle";
+    boardpos[11][10].collectible = "greensaturn";
+    boardpos[12][6].collectible = "bluesaturn";
+    boardpos[12][14].collectible = "yellowtriangle";
+    boardpos[14][2].collectible = "greentriangle";
+    boardpos[14][9].collectible = "bluecircle";
+
+
+
 
     //setState(() {});
   }
@@ -1138,7 +1174,6 @@ class GameActivity extends StatelessWidget {
 
   Future _reinitialiseGame(int PositionBlueI, int PositionBlueJ, int PositionRedI,int PositionRedJ, int PositionGreenI,int PositionGreenJ, int PositionYellowI,int PositionYellowJ) async {
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
-
 
     boardpos[PositionBlueI][PositionBlueJ].blueposition = false;
     boardpos[PositionRedI][PositionRedJ].redposition = false;
@@ -1276,7 +1311,7 @@ class GameActivity extends StatelessWidget {
     boardpos[3][2].obstaclesouth = true;
     boardpos[13][2].obstaclesouth = true;
     boardpos[8][3].obstaclesouth = true;
-    boardpos[3][5].obstaclesouth = true;
+    boardpos[2][5].obstaclesouth = true;
     boardpos[12][6].obstaclesouth = true;
     boardpos[5][7].obstaclesouth = true;
     boardpos[9][8].obstaclesouth = true;
@@ -1299,7 +1334,7 @@ class GameActivity extends StatelessWidget {
     boardpos[4][2].obstaclenorth = true;
     boardpos[14][2].obstaclenorth = true;
     boardpos[9][3].obstaclenorth = true;
-    boardpos[4][5].obstaclenorth = true;
+    boardpos[3][5].obstaclenorth = true;
     boardpos[13][6].obstaclenorth = true;
     boardpos[6][7].obstaclenorth = true;
     boardpos[10][8].obstaclenorth = true;
@@ -1316,10 +1351,22 @@ class GameActivity extends StatelessWidget {
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
-    boardpos[4][2].collectible = "greencircle";
-    boardpos[14][2].collectible = "greentriangle";
-    boardpos[11][1].collectible = "redcircle";
+    boardpos[1][13].collectible = "redsaturn";
+    boardpos[2][5].collectible = "bluestar";
     boardpos[2][9].collectible = "bluetriangle";
+    boardpos[4][2].collectible = "greencircle";
+    boardpos[5][7].collectible = "redtriangle";
+    boardpos[5][14].collectible = "greenstar";
+    boardpos[6][1].collectible = "yellowsaturn";
+    boardpos[6][11].collectible = "yellowcircle";
+    boardpos[9][3].collectible = "yellowstar";
+    boardpos[10][13].collectible = "redstar";
+    boardpos[11][1].collectible = "redcircle";
+    boardpos[11][10].collectible = "greensaturn";
+    boardpos[12][6].collectible = "bluesaturn";
+    boardpos[12][14].collectible = "yellowtriangle";
+    boardpos[14][2].collectible = "greentriangle";
+    boardpos[14][9].collectible = "bluecircle";
 
 
     boardpos[redi][redj].redposition = false;      // print(snapshot.connectionState);
@@ -1344,8 +1391,38 @@ class GameActivity extends StatelessWidget {
     await game.doc("TestGame").update({'greeni': 8,'greenj':2});
     await game.doc("TestGame").update({'yellowi': 13,'yellowj':13});
 
+    var list = new List<int>.filled(16, 0);
+    for (var i = 0; i < list.length; i++) {
+      list[i]=i;
+      //print(list[i]);
+    }
+    for (var i = 0; i < list.length; i++) {
+      int a=Random().nextInt(8);
+      int b=Random().nextInt(9)+7;
+      int avalue = list[a];
+      int bvalue = list[b];
+      list[a]=bvalue;
+      list[b]=avalue;
+    }
 
-    // setState(() {});
+    CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/TestGame/Collectibles');
+    await collectibleupdate.doc("redsaturn").update({'Round': list[1]});
+    await collectibleupdate.doc("bluestar").update({'Round': list[2]});
+    await collectibleupdate.doc("bluetriangle").update({'Round': list[3]});
+    await collectibleupdate.doc("greencircle").update({'Round': list[4]});
+    await collectibleupdate.doc("redtriangle").update({'Round': list[5]});
+    await collectibleupdate.doc("greenstar").update({'Round': list[6]});
+    await collectibleupdate.doc("yellowsaturn").update({'Round': list[7]});
+    await collectibleupdate.doc("yellowcircle").update({'Round': list[8]});
+    await collectibleupdate.doc("yellowstar").update({'Round': list[9]});
+    await collectibleupdate.doc("redstar").update({'Round': list[10]});
+    await collectibleupdate.doc("redcircle").update({'Round': list[11]});
+    await collectibleupdate.doc("greensaturn").update({'Round': list[12]});
+    await collectibleupdate.doc("bluesaturn").update({'Round': list[13]});
+    await collectibleupdate.doc("yellowtriangle").update({'Round': list[14]});
+    await collectibleupdate.doc("greentriangle").update({'Round': list[15]});
+    await collectibleupdate.doc("bluecircle").update({'Round': list[0]});
+
   }
   // This function opens other squares around the target square which don't have any bombs around them.
   // We use a recursive function which stops at squares which have a non zero number of bombs around them.
@@ -1771,8 +1848,8 @@ class GameActivity extends StatelessWidget {
     await gameupdate.doc(game).update({'lowestbid': 99});
     await gameupdate.doc(game).update({'firstbet': DateTime.now()});
     await gameupdate.doc(game).update({'movecount': 0});
-    await gameupdate.doc(game).update({'Timer': 20});
-
+    await gameupdate.doc(game).update({'Timer': 10});
+    _start=10;
     await roundupdate.doc((Round+1).toString())
         .set({
       'Start': DateTime.now().add(const Duration(minutes: 5))
@@ -1845,7 +1922,7 @@ class GameActivity extends StatelessWidget {
     await gameupdate.doc(game).update({'firstbet': DateTime.now()});
     await gameupdate.doc(game).update({'movecount': 0});
     await gameupdate.doc(game).update({'Round': 1});
-    await gameupdate.doc(game).update({'Timer': 20});
+    await gameupdate.doc(game).update({'Timer': 10});
 
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
