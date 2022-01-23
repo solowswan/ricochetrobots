@@ -13,16 +13,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
-class GamesList extends StatefulWidget {
-  //SignUp({Key key, this.title}) : super(key: key);
-
-//  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<GamesList> {
+class GamesList extends StatelessWidget {
 
   final email = TextEditingController();
   final password1 = TextEditingController();

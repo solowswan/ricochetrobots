@@ -121,14 +121,6 @@ class GameActivity extends StatelessWidget {
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   int _start = 10;
 
-
-  Future<void> runtest() async {
-    HttpsCallable callable = await FirebaseFunctions.instanceFor(region: 'europe-west3').httpsCallable('listFruit');
-    final results = await callable();
-    print(results.data.toString());  // ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
-    print("123");
-  }
-
   Future startTimer() async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     const oneSec = const Duration(seconds: 1);
@@ -604,7 +596,7 @@ class GameActivity extends StatelessWidget {
                             Expanded(child: ElevatedButton(
                               child: Text('SUBMIT BET'),
                               onPressed: () {
-                                _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text), GameRound);
+                                _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text), GameRound, RunningTimer);
                                 bet.clear();
                                 myFocusNode.unfocus();
                               },
@@ -1794,10 +1786,10 @@ class GameActivity extends StatelessWidget {
     }
   }
 
-  Future _submitBet(String game, String? uid, int bet, int Round) async {
+  Future _submitBet(String game, String? uid, int bet, int Round, int Timer) async {
     CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ game +'/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
+    CollectionReference round2update = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
@@ -1818,7 +1810,6 @@ class GameActivity extends StatelessWidget {
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(game).update({'lowestbid': bet});
       await gameupdate.doc(game).update({'firstbet': DateTime.now()});
-      await betupdate.doc(uid).set({'bet': bet, 'timestampupdated': DateTime.now()});
       startTimer();
       print(bets);
     }
@@ -1826,7 +1817,7 @@ class GameActivity extends StatelessWidget {
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(game).update({'lowestbid': bet});
     }
-    await betupdate.doc(uid).set({'bet': bet, 'timestampupdated': DateTime.now()});
+    await betupdate.doc(uid).update({'bet': bet, 'timestampupdated': DateTime.now()});
 
     //await betupdate.doc(uid).update({'bet': bet});
 
@@ -1914,7 +1905,7 @@ class GameActivity extends StatelessWidget {
 
   Future _resetGame(String game,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
     stopTimer();
-    _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+    await _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
     await gameupdate.doc(game).update({'lowestbidder': ""});
