@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_functions/cloud_functions.dart';
 import 'dart:html';
@@ -5,6 +6,7 @@ import 'dart:math';
 import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:ricochetrobots/main.dart';
 import 'board_square.dart';
 import 'helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -146,15 +148,6 @@ class GameActivity extends StatelessWidget {
     _timer.cancel();
   }
 
-
-  Future<void> _signOut() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      print(e); // TODO: show dialog with error
-    }
-  }
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   // Row and column count of the board
@@ -221,7 +214,10 @@ class GameActivity extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            onPressed: _signOut,
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              await Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new LandingPage()));
+            }
           ),
         ],
       ),
@@ -294,17 +290,20 @@ class GameActivity extends StatelessWidget {
               // list.forEach((f) => bets.add(f.id));
               //list.forEach((f) => collectibleslist.add(f.data()['bet']));
 
-              return (
+              bool isEnabled = false;
+              if(RunningTimer>0){isEnabled=true;}else{isEnabled=false;}
+              print(isEnabled);
 
+              return (
 
                   ListView(
                     children: <Widget>[
 
 
-                      Container(
-                        color: Colors.grey,
-                        height: 60.0,
-                        width: double.infinity,
+                      ConstrainedBox(
+                        //color: Colors.grey,
+                        //height: 60.0,
+                        constraints:BoxConstraints(maxWidth: 1),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -416,10 +415,10 @@ class GameActivity extends StatelessWidget {
                           ],
                         ),
                       ),
-                      Container(
-                        color: Colors.grey,
-                        height: 60.0,
-                        width: double.infinity,
+                      ConstrainedBox(
+                        //color: Colors.grey,
+                        //height: 60.0,
+                        constraints:BoxConstraints(maxWidth: 1),
                         child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -532,7 +531,10 @@ class GameActivity extends StatelessWidget {
                         ),
 
                       ),
-                      Container(
+                      ConstrainedBox(
+                        //color: Colors.grey,
+                        //height: 60.0,
+                        constraints:BoxConstraints(maxWidth: 1),
                         child:Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -581,12 +583,16 @@ class GameActivity extends StatelessWidget {
                         ),
 
                       ),
-                      Container(
+                      ConstrainedBox(
+                        //color: Colors.grey,
+                        //height: 60.0,
+                        constraints:BoxConstraints(maxWidth: 1),
                         child:Row(
                           children: <Widget>[
                             Expanded(child: TextField(
-            focusNode: myFocusNode = FocusNode(),
+                                focusNode: myFocusNode = FocusNode(),
                               decoration: InputDecoration(
+                                  constraints:BoxConstraints(maxHeight: 30),
                                   border: OutlineInputBorder(),
                                   hintText: 'Enter your BET'
                               ),
@@ -594,12 +600,14 @@ class GameActivity extends StatelessWidget {
                             ),
                             ),
                             Expanded(child: ElevatedButton(
+
                               child: Text('SUBMIT BET'),
-                              onPressed: () {
+                              onPressed: isEnabled?() {
                                 _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text), GameRound, RunningTimer);
                                 bet.clear();
                                 myFocusNode.unfocus();
-                              },
+                              }:null,
+
                             ),
                             )
                           ],
@@ -633,7 +641,7 @@ class GameActivity extends StatelessWidget {
                                 msg="$lowestbidder has won!!!";
                                // _nextRound("TestGame",GameRound,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
-                              } else if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount>lowestbid) {
+                              } else if(movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
                                 msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
                                 //sleep(Duration(seconds:2));
@@ -684,11 +692,9 @@ class GameActivity extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children:<Widget>[
                                       Row(children: <Widget>[Expanded(child:Text("ROUND "+ GameRound.toString())),
-                                        Expanded(child:Text("Collectible " + target[0].toString().toUpperCase()))
+                                        Expanded(child:Text("Collectible " + target[0].toString().toUpperCase())),
+                                        Expanded(child:Text("Countdown " + RunningTimer.toString()))
                                       ] ,
-                                      ),
-
-                                      Container(child: Text(RunningTimer.toString()),
                                       ),
                                       Container(child: Text(msg),
                                       )
@@ -705,8 +711,12 @@ class GameActivity extends StatelessWidget {
 
 
 
-
+                    Center( child:
                       // The grid of squares
+                      SizedBox(
+
+                        width: 800,
+                        child:
                       GridView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -912,6 +922,8 @@ class GameActivity extends StatelessWidget {
                         },
                         itemCount: rowCount * columnCount,
                       ),
+                      ),
+),
                       Text(movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold)),
                       StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
@@ -1396,8 +1408,9 @@ class GameActivity extends StatelessWidget {
       list[a]=bvalue;
       list[b]=avalue;
     }
-
+print("a");
     CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/TestGame/Collectibles');
+
     await collectibleupdate.doc("redsaturn").update({'Round': list[1]});
     await collectibleupdate.doc("bluestar").update({'Round': list[2]});
     await collectibleupdate.doc("bluetriangle").update({'Round': list[3]});
@@ -1806,14 +1819,14 @@ class GameActivity extends StatelessWidget {
     }
 
     print(bets);
-    if(bets.first == 99) {
+    if(bets.first == 99 && Timer!=0) {
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(game).update({'lowestbid': bet});
       await gameupdate.doc(game).update({'firstbet': DateTime.now()});
       startTimer();
       print(bets);
     }
-    if(bet < lowestbid){
+    if(bet < lowestbid  && Timer!=0){
       await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(game).update({'lowestbid': bet});
     }
@@ -1871,7 +1884,7 @@ class GameActivity extends StatelessWidget {
     int newyellowi = gamedata.data()!["yelloworigi"];
     int newyellowj = gamedata.data()!["yelloworigj"];
 
-    playerupdate.doc(uid).update({'bet': 99});
+    playerupdate.doc(uid).update({'bet': 100});
     print("NextBestBet");
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
@@ -1922,6 +1935,7 @@ class GameActivity extends StatelessWidget {
     list.forEach((element) { playerupdate.doc(element.id).update({'score': 0}); });
 
 
+    await _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
 
   }
 

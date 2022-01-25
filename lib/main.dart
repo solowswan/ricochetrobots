@@ -7,11 +7,11 @@ import 'game_activity.dart';
 import 'games_list.dart';
 import 'signup.dart';
 
-//FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp()  );
 }
 
@@ -40,7 +40,7 @@ class LandingPage extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: auth.authStateChanges(),
       builder: (context, snapshot1) {
         if (snapshot1.connectionState == ConnectionState.active) {
           User? user = snapshot1.data;
@@ -81,7 +81,7 @@ class SignInPage extends StatelessWidget {
     try {
       //await FirebaseAuth.instance.signInAnonymously();
 //      await FirebaseAuth.instance.signInWithEmailAndPassword(email: "solowswan@gmail.com", password: "123123qweqwe");
-      await FirebaseAuth.instance.signInWithEmailAndPassword(email: uid, password: pwd);
+      await auth.signInWithEmailAndPassword(email: uid, password: pwd);
 
     } catch (e) {
       print(e); // TODO: show dialog with error
