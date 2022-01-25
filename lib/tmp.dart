@@ -378,3 +378,34 @@ onPressed: () {_signup(context, email.text,password1.text,password2.text);},
 ]
 ),
 ),
+
+
+
+
+return SizedBox(
+width: 100.0,
+height: 30.0,
+child: Row( children: <Widget>[Text('Game name: ${game_name[index].padRight(30,' ')}Round: ${game_round[index]} Host: ${game_host[index]}'),
+TextButton(
+style: TextButton.styleFrom(
+primary: Colors.teal,
+),
+onPressed: () {
+Navigator.push(
+context,
+MaterialPageRoute(
+builder: (
+ctxt) => new GameActivity(),
+settings: RouteSettings(
+// arguments: Arguments(
+// comic.reference.id,
+// comic.data()["title"].toString(),
+// comic.data()["lang"].toString(),
+),
+));
+},
+child: const Text('Join'),
+),
+]
+)
+);

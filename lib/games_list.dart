@@ -10,6 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
 import 'game_activity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -54,7 +55,10 @@ class GamesList extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            onPressed: _signOut,
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+              await Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new LandingPage()));
+            }
           ),
         ],
       ),
@@ -94,45 +98,51 @@ class GamesList extends StatelessWidget {
 
               List<String> game_host = [];
               gameslist.data?.docs.forEach((f) => game_host.add(f.data()["Host"].toString()));
+
               //print(bets[1]);
               //print(players[1]);
               //print(players.length);
-
               return (GridView.builder(
                   //shrinkWrap: true,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
                   ),
                   itemCount: game_name.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return SizedBox(
-                        width: 100.0,
-                        height: 30.0,
-                        child: Row( children: <Widget>[Text('Game name: ${game_name[index].padRight(30,' ')}Round: ${game_round[index]} Host: ${game_host[index]}'),
-                          TextButton(
-                            style: TextButton.styleFrom(
-                              primary: Colors.teal,
-                            ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (
-                                          ctxt) => new GameActivity(),
-                                      settings: RouteSettings(
-                                       // arguments: Arguments(
-                                         // comic.reference.id,
-                                         // comic.data()["title"].toString(),
-                                         // comic.data()["lang"].toString(),
-                                        ),
-                                      ));
-                            },
-                            child: const Text('Join'),
+                    return DataTable(
+                        columns: [
+                          DataColumn(label: Text('Name')),
+                          DataColumn(label: Text('Round')),
+                          DataColumn(label: Text('Host')),
+                          DataColumn(label: Text('Host'))
+                        ],
+                      rows: [DataRow(cells: [DataCell(Text(game_name[index])),
+                        DataCell(Text(game_round[index])),
+                        DataCell(Text(game_host[index])),
+                        DataCell(TextButton(
+                          style: TextButton.styleFrom(
+                            primary: Colors.teal,
                           ),
-                    ]
-                        )
-                    );
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (
+                                      ctxt) => new GameActivity(),
+                                  settings: RouteSettings(
+// arguments: Arguments(
+// comic.reference.id,
+// comic.data()["title"].toString(),
+// comic.data()["lang"].toString(),
+                                  ),
+                                ));
+                          },
+                          child: const Text('Join'),
+                        ),)])],
 
+                    );
                   }
               )
 
