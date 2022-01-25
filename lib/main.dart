@@ -39,15 +39,16 @@ class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    return StreamBuilder<User?>(
-      stream: auth.authStateChanges(),
-      builder: (context, snapshot1) {
-        if (snapshot1.connectionState == ConnectionState.active) {
-          User? user = snapshot1.data;
+     return StreamBuilder<User?>(
+           stream: auth.authStateChanges(),
+      builder: (context, loginstream) {
+        if (loginstream.connectionState == ConnectionState.active) {
+         User? user = loginstream.data;
           if (user == null) {
-            return SignInPage();
+           return SignInPage();
           } else {
           return GamesList();} //FirstScreen();
+       // return SignInPage();}
         } else {
           return Scaffold(
             body: Center(
@@ -62,8 +63,10 @@ class LandingPage extends StatelessWidget {
 
 class SignInPage extends StatelessWidget {
 
-  final username = TextEditingController();
-  final password = TextEditingController();
+  TextEditingController  username = TextEditingController();
+  TextEditingController  password = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   void _showDialogNT(BuildContext context, String errormessage) {
     showDialog(
@@ -92,45 +95,91 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: Text('Ricochet Robots')
       ),
 
 
-      body: Center(
-        child: Column(
-            children: [
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter E-Mail'
+      body: SafeArea(
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                            decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                hintText: 'Email'),
+                            controller: username),
+                      ),
+                    ],
                   ),
-                  controller: username,
                 ),
-                //_pController.jumpToPage(200)
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter password'
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                hintText: 'Password'),
+                            controller: password),
+                      ),
+                    ],
                   ),
-                  controller: password,
                 ),
-                //_pController.jumpToPage(200)
-              ),
-              ElevatedButton(
-                child: Text('Login'),
-                onPressed: () {_signIn(context, username.text,password.text);},
-              ),
-              ElevatedButton(
-                child: Text('Sign up'),
-                onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new SignUp()));},
-              ),
-            ]
+                const SizedBox(
+                  height: 16,
+                ),
+                Container(
+                  height: 40,
+                  width: 300,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 6.0,
+                      primary: Colors.indigoAccent, // background
+                      onPrimary: Colors.white, // foreground
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          side: const BorderSide(color: Colors.indigoAccent)),
+                    ),
+                    onPressed: () {
+                      _signIn(context, username.text,password.text);
+                    },
+                    child: Text('SignIn'),
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+                InkWell(
+                  onTap: () {Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new SignUp()));},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't have an account? "),
+                      Text(
+                        'Sign up.',
+                        style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w600),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
         ),
       ),
     );

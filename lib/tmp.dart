@@ -275,3 +275,106 @@ showAlertDialogNEXTPLAYER(BuildContext context, String uid, int PositionBlueI, i
   }
   );
 }
+
+Center(
+child: Column(
+children: [
+Expanded(
+child: TextFormField(
+decoration: const InputDecoration(
+border: UnderlineInputBorder(),
+hintText: 'Enter E-Mail'
+),
+controller: username,
+),
+//_pController.jumpToPage(200)
+),
+Expanded(
+child: TextFormField(
+obscureText: true,
+decoration: const InputDecoration(
+border: UnderlineInputBorder(),
+hintText: 'Enter password'
+),
+controller: password,
+),
+//_pController.jumpToPage(200)
+),
+ElevatedButton(
+child: Text('Login'),
+onPressed: () {_signIn(context, username.text,password.text);},
+),
+ElevatedButton(
+child: Text('Sign up'),
+onPressed: () {Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new SignUp()));},
+),
+]
+),
+),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Center(
+child: Column(
+children: [
+SizedBox(
+width: 300,
+child: TextField(
+decoration: InputDecoration(
+border: OutlineInputBorder(),
+hintText: 'Enter E-Mail'
+),
+controller: email,
+),
+//_pController.jumpToPage(200)
+),
+SizedBox(
+width: 300,
+child: TextField(
+obscureText: true,
+decoration: InputDecoration(
+border: OutlineInputBorder(),
+hintText: 'Enter password'
+),
+controller: password1,
+),
+//_pController.jumpToPage(200)
+),
+SizedBox(
+width: 300,
+child: TextField(
+obscureText: true,
+decoration: InputDecoration(
+border: OutlineInputBorder(),
+hintText: 'Verify password'
+),
+controller: password2,
+),
+//_pController.jumpToPage(200)
+),
+ElevatedButton(
+child: Text('Create Account'),
+onPressed: () {_signup(context, email.text,password1.text,password2.text);},
+),
+]
+),
+),

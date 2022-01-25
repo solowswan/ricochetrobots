@@ -23,9 +23,12 @@ class SignUp extends StatefulWidget {
 
 class _MyHomePageState extends State<SignUp> {
 
-  final email = TextEditingController();
-  final password1 = TextEditingController();
-  final password2 = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password1 = TextEditingController();
+  TextEditingController password2 = TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
+
 
   Future<void> _signOut() async {
     try {
@@ -138,49 +141,88 @@ class _MyHomePageState extends State<SignUp> {
           )
         ],
       ),
-      body: Center(
-        child: Column(
-            children: [
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter E-Mail'
+      body: SafeArea(
+        child: Center(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                            decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                hintText: 'Email'),
+                            controller: email),
+                      ),
+                    ],
                   ),
-                  controller: email,
                 ),
-                //_pController.jumpToPage(200)
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Enter password'
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                hintText: 'Password'),
+                            controller: password1),
+                      ),
+                    ],
                   ),
-                  controller: password1,
                 ),
-                //_pController.jumpToPage(200)
-              ),
-              SizedBox(
-                width: 300,
-                child: TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Verify password'
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                            enableSuggestions: false,
+                            autocorrect: false,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                                border: UnderlineInputBorder(),
+                                hintText: 'Password'),
+                            controller: password2),
+                      ),
+                    ],
                   ),
-                  controller: password2,
                 ),
-                //_pController.jumpToPage(200)
-              ),
-              ElevatedButton(
-                child: Text('Create Account'),
-                onPressed: () {_signup(context, email.text,password1.text,password2.text);},
-              ),
-            ]
+                const SizedBox(
+                  height: 16,
+                ),
+                Container(
+                  height: 40,
+                  width: 300,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 6.0,
+                      primary: Colors.indigoAccent, // background
+                      onPrimary: Colors.white, // foreground
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          side: const BorderSide(color: Colors.indigoAccent)),
+                    ),
+                    onPressed: () {
+                      _signup(context, email.text,password1.text,password2.text);
+                    },
+                    child: Text('Create Account'),
+                  ),
+                ),
+                const SizedBox(
+                  height: 24,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
