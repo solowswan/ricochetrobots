@@ -7,6 +7,8 @@ import 'game_activity.dart';
 import 'games_list.dart';
 import 'signup.dart';
 
+
+
 FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {

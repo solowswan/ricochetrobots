@@ -118,6 +118,8 @@ enum ImageType {
 //  _GameActivityState createState() => _GameActivityState();
 //}
 
+
+
 class GameActivity extends StatelessWidget {
 
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
@@ -150,6 +152,7 @@ class GameActivity extends StatelessWidget {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+
   // Row and column count of the board
   int rowCount = 16;
   int columnCount = 16;
@@ -169,8 +172,10 @@ class GameActivity extends StatelessWidget {
   String msg="";
   late FocusNode myFocusNode;
 
-  final bet = TextEditingController();
+  ValueNotifier<int> _counter = ValueNotifier<int>(10);
 
+  final bet = TextEditingController();
+  int counter = 5;
 
   //int movecount=0;
   // The grid of squares
@@ -188,6 +193,7 @@ class GameActivity extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.red,
@@ -224,29 +230,7 @@ class GameActivity extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // this will be set when a new tab is tapped
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.library_books),
-            title: new Text('Library'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shop),
-              title: Text('Shop')
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            title: Text('Settings'),
 
-          )
-        ],
-      ),
 
 
       body:
@@ -572,47 +556,67 @@ class GameActivity extends StatelessWidget {
                               },
                             ),
                               Text('NextBid')]),
-                            Column(children: <Widget>[IconButton(
-                              icon: const Icon(Icons.exit_to_app),
-                              tooltip: 'Exit to main menu',
-                              onPressed: () {
-                                // See index.js in .github/workflows/scripts for the example function we
-                                // are using for this example
-                                Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new GamesList()));
-                              }
-            ),
-                              Text('Back to Main')])
+
                           ],
                         ),
 
                       ),
-                      ConstrainedBox(
+                        ConstrainedBox(
                         //color: Colors.grey,
                         //height: 60.0,
-                        constraints:BoxConstraints(maxWidth: 1),
-                        child:Row(
+                        constraints:BoxConstraints(maxWidth: 5),
+
+                        child:Row(mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Expanded(child: TextField(
-                                focusNode: myFocusNode = FocusNode(),
-                              decoration: InputDecoration(
-                                  constraints:BoxConstraints(maxHeight: 30),
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Enter your BET'
+                            Text("ROUND: " +GameRound.toString() + "     ",style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),
+
+                            IconButton(
+                              icon: Icon(
+                                Icons.remove,
+                                color: Theme.of(context).accentColor,
                               ),
-                              controller: bet,
+                              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 0.0),
+                              iconSize: 32.0,
+                              color: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                _counter.value--;
+                                print(_counter.value);
+                              },
                             ),
+
+                              ValueListenableBuilder(
+                              valueListenable: _counter ,
+                              builder: (context, value, child) => Text(
+                              '$value',style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold, color: Colors.red)
+                              ),
+                              ),
+
+                            IconButton(
+                              icon: Icon(
+                                Icons.add,
+                                color: Theme.of(context).accentColor,
+                              ),
+                              padding: EdgeInsets.symmetric(vertical: 4.0, horizontal: 0.0),
+                              iconSize: 32.0,
+                              color: Theme.of(context).primaryColor,
+                              onPressed: () {
+                                _counter.value++;
+                              },
                             ),
-                            Expanded(child: ElevatedButton(
+
+                            ElevatedButton(
 
                               child: Text('SUBMIT BET'),
                               onPressed: isEnabled?() {
-                                _submitBet("TestGame",_auth.currentUser?.email,int.parse(bet.text), GameRound, RunningTimer);
-                                bet.clear();
+                                _submitBet("TestGame",_auth.currentUser?.email,_counter.value, GameRound, RunningTimer);
+                                //bet.clear();
                                 myFocusNode.unfocus();
                               }:null,
 
                             ),
-                            )
+
+                            Text("         COUNTDOWN:    " +RunningTimer.toString(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),
+
                           ],
                         ),
 
@@ -692,11 +696,11 @@ class GameActivity extends StatelessWidget {
                               //print(GameRound);
                               return (
                                   Column(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children:<Widget>[
-                                      Row(children: <Widget>[Expanded(child:Text("ROUND "+ GameRound.toString())),
-                                        Expanded(child:Text("Collectible " + target[0].toString().toUpperCase())),
-                                        Expanded(child:Text("Countdown " + RunningTimer.toString()))
+                                      Row(mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                        Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),),
                                       ] ,
                                       ),
                                       Container(child: Text(msg),
@@ -927,7 +931,7 @@ class GameActivity extends StatelessWidget {
                       ),
                       ),
 ),
-                      Text(movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold)),
+                      Center(child:Text("Moves " + movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold))),
                       StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
                           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1 ) {
@@ -939,21 +943,49 @@ class GameActivity extends StatelessWidget {
                               snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
                               snapshot1.data?.docs.forEach((f) => players.add(f.id.toString()));
                               snapshot1.data?.docs.forEach((f) => scores.add(f.data()["score"].toString()));
+
+                              List<DataRow> _createRows(QuerySnapshot snapshot) {
+                                List<DataRow> newList = snapshot.docs.map((DocumentSnapshot documentSnapshot) {
+                                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString(),  style: TextStyle(height: 1, fontSize: 15),)) ,
+                                    DataCell(Text(documentSnapshot['bet'].toString(),  style: TextStyle(height: 1, fontSize: 15),)),
+                                    DataCell(Text(documentSnapshot['score'].toString(),  style: TextStyle(height: 1, fontSize: 15),)),
+                                  ]
+                                  );
+                                }).toList();
+                                return newList;
+                              }
                               //print(bets[1]);
                               //print(players[1]);
                               //print(players.length);
 
-                              return (ListView.builder(
+                              return (GridView.builder(
+                                //shrinkWrap: true,
                                   shrinkWrap: true,
-                                  itemCount: players.length,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                  ),
+                                  itemCount: 1,
                                   itemBuilder: (BuildContext context, int index) {
-                                    return Text('${players[index].length} Player: ${players[index].padRight(30,' ')}Bet: ${bets[index]}              Score: ${scores[index]}');
+                                    return DataTable(
+                                      dataRowHeight: 20,
+                                      headingRowHeight: 30,
+                                      headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black26),
+                                      showBottomBorder: true,
+                                      columns: [
+                                        DataColumn(label: Text('PLAYER', style: TextStyle(fontWeight: FontWeight.bold),)),
+                                        DataColumn(label: Text('BID', style: TextStyle(fontWeight: FontWeight.bold),)),
+                                        DataColumn(label: Text('SCORE',style: TextStyle(fontWeight: FontWeight.bold),)),
+                                      ],
+                                      rows: _createRows(snapshot1.data!),
 
+                                    );
                                   }
                               )
 
 
                               );
+
 
                             } else {return new Text("There is no data");}
                             //return new ListView(children: getExpenseItems(snapshot1));
@@ -1943,3 +1975,7 @@ print("a");
   }
 
 }
+
+
+
+

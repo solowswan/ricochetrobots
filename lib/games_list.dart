@@ -63,28 +63,7 @@ class GamesList extends StatelessWidget {
         ],
       ),
 
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: 0, // this will be set when a new tab is tapped
-        items: [
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.home),
-            title: new Text('Home'),
-          ),
-          BottomNavigationBarItem(
-            icon: new Icon(Icons.library_books),
-            title: new Text('Library'),
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shop),
-              title: Text('Shop')
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              title: Text('Settings')
-          )
-        ],
-      ),
+
       body: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('Games').snapshots(), //.doc(_auth.currentUser.email).get(),
           builder: (context, AsyncSnapshot<QuerySnapshot> gameslist ) {
@@ -103,7 +82,7 @@ class GamesList extends StatelessWidget {
               List<DataRow> _createRows(QuerySnapshot snapshot) {
 
                 List<DataRow> newList = snapshot.docs.map((DocumentSnapshot documentSnapshot) {
-                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString())) ,
+                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString()),) ,
                                               DataCell(Text(documentSnapshot['Round'].toString())),
                                               DataCell(Text(documentSnapshot['Host'].toString())),
                                               DataCell(TextButton(
@@ -145,11 +124,15 @@ class GamesList extends StatelessWidget {
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
                     return DataTable(
+                      headingRowHeight: 30,
+                      dataRowHeight: 20,
+                      headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black26),
+                      showBottomBorder: true,
                         columns: [
-                          DataColumn(label: Text('Name')),
-                          DataColumn(label: Text('Round')),
-                          DataColumn(label: Text('Host')),
-                          DataColumn(label: Text('Host'))
+                          DataColumn(label: Text('NAME',style: TextStyle(fontWeight: FontWeight.bold),)),
+                          DataColumn(label: Text('ROUND',style: TextStyle(fontWeight: FontWeight.bold),)),
+                          DataColumn(label: Text('HOST',style: TextStyle(fontWeight: FontWeight.bold),)),
+                          DataColumn(label: Text('',style: TextStyle(fontWeight: FontWeight.bold),))
                         ],
                       rows: _createRows(gameslist.data!),
 

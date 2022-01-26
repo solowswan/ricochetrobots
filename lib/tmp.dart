@@ -436,3 +436,15 @@ settings: RouteSettings(
 },
 child: const Text('Join'),
 ),)])]
+
+
+Expanded(child: TextField(
+focusNode: myFocusNode = FocusNode(),
+decoration: InputDecoration(
+constraints:BoxConstraints(maxHeight: 30),
+border: OutlineInputBorder(),
+hintText: 'Enter your BET'
+),
+controller: bet,
+),
+),
