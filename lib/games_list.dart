@@ -99,6 +99,39 @@ class GamesList extends StatelessWidget {
               List<String> game_host = [];
               gameslist.data?.docs.forEach((f) => game_host.add(f.data()["Host"].toString()));
 
+
+              List<DataRow> _createRows(QuerySnapshot snapshot) {
+
+                List<DataRow> newList = snapshot.docs.map((DocumentSnapshot documentSnapshot) {
+                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString())) ,
+                                              DataCell(Text(documentSnapshot['Round'].toString())),
+                                              DataCell(Text(documentSnapshot['Host'].toString())),
+                                              DataCell(TextButton(
+                                                style: TextButton.styleFrom(
+                                                  primary: Colors.teal,
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (
+                                                            ctxt) => new GameActivity(),
+                                                        settings: RouteSettings(
+                            // arguments: Arguments(
+                            // comic.reference.id,
+                            // comic.data()["title"].toString(),
+                            // comic.data()["lang"].toString(),
+                                                        ),
+                                                      ));
+                                                },
+                                                child: const Text('Join'),
+                                              ),)
+                                            ]
+                  );
+                }).toList();
+
+                return newList;
+              }
               //print(bets[1]);
               //print(players[1]);
               //print(players.length);
@@ -109,7 +142,7 @@ class GamesList extends StatelessWidget {
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 1,
                   ),
-                  itemCount: game_name.length,
+                  itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
                     return DataTable(
                         columns: [
@@ -118,29 +151,7 @@ class GamesList extends StatelessWidget {
                           DataColumn(label: Text('Host')),
                           DataColumn(label: Text('Host'))
                         ],
-                      rows: [DataRow(cells: [DataCell(Text(game_name[index])),
-                        DataCell(Text(game_round[index])),
-                        DataCell(Text(game_host[index])),
-                        DataCell(TextButton(
-                          style: TextButton.styleFrom(
-                            primary: Colors.teal,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (
-                                      ctxt) => new GameActivity(),
-                                  settings: RouteSettings(
-// arguments: Arguments(
-// comic.reference.id,
-// comic.data()["title"].toString(),
-// comic.data()["lang"].toString(),
-                                  ),
-                                ));
-                          },
-                          child: const Text('Join'),
-                        ),)])],
+                      rows: _createRows(gameslist.data!),
 
                     );
                   }

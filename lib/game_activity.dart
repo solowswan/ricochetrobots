@@ -195,12 +195,15 @@ class GameActivity extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Image.asset(
-              'assets/images/BlueCrossNorthEast.png',
-              fit: BoxFit.contain,
-              height: 55,
-            ),
+            Text('Ricochet Robots'),
           ],
+         // children: [
+            //Image.asset(
+             // 'assets/images/BlueCrossNorthEast.png',
+         //     fit: BoxFit.contain,
+           //   height: 55,
+         //   ),
+         // ],
 
         ),
         actions: <Widget>[

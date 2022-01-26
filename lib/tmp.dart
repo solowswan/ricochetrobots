@@ -409,3 +409,30 @@ child: const Text('Join'),
 ]
 )
 );
+
+
+
+
+[DataRow(cells: [DataCell(Text(game_name[index])),
+DataCell(Text(game_round[index])),
+DataCell(Text(game_host[index])),
+DataCell(TextButton(
+style: TextButton.styleFrom(
+primary: Colors.teal,
+),
+onPressed: () {
+Navigator.push(
+context,
+MaterialPageRoute(
+builder: (
+ctxt) => new GameActivity(),
+settings: RouteSettings(
+// arguments: Arguments(
+// comic.reference.id,
+// comic.data()["title"].toString(),
+// comic.data()["lang"].toString(),
+),
+));
+},
+child: const Text('Join'),
+),)])]
