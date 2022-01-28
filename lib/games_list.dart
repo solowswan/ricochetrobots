@@ -36,6 +36,16 @@ class GamesList extends StatelessWidget {
     }
   }
 
+  Future<void> joinGame(String gameId) async {
+    // Call the games's CollectionReference to add a new game
+    CollectionReference games = FirebaseFirestore.instance.collection('Games');
+    await games.doc(gameId).collection("Players").doc(_auth.currentUser?.email).set({'bet': 99,
+      'score': 0,
+      'timestampupdated': DateTime.now()
+    });
+  }
+
+
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
@@ -102,6 +112,7 @@ class GamesList extends StatelessWidget {
                                                   textStyle: TextStyle(fontSize: 16, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
                                                 ),
                                                 onPressed: () {
+                                                  joinGame(documentSnapshot.id.toString());
                                                   Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
