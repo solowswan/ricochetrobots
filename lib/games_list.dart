@@ -14,6 +14,14 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
+
+class Arguments {
+  final String gamename;
+
+  Arguments(this.gamename);
+}
+
+
 class GamesList extends StatelessWidget {
 
   final email = TextEditingController();
@@ -40,7 +48,7 @@ class GamesList extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Ricochet Robots - List of all available games'),
+            Text('Ricochet Robots'),
           ],
 
         ),
@@ -64,7 +72,10 @@ class GamesList extends StatelessWidget {
       ),
 
 
-      body: StreamBuilder<QuerySnapshot>(
+      body:
+          Column(children: <Widget>[ Text("List of available games",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+
+          StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('Games').snapshots(), //.doc(_auth.currentUser.email).get(),
           builder: (context, AsyncSnapshot<QuerySnapshot> gameslist ) {
             if (gameslist.hasData) {
@@ -82,12 +93,13 @@ class GamesList extends StatelessWidget {
               List<DataRow> _createRows(QuerySnapshot snapshot) {
 
                 List<DataRow> newList = snapshot.docs.map((DocumentSnapshot documentSnapshot) {
-                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString()),) ,
-                                              DataCell(Text(documentSnapshot['Round'].toString())),
-                                              DataCell(Text(documentSnapshot['Host'].toString())),
+                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString(),style: TextStyle(fontSize: 14)),) ,
+                                              DataCell(Text(documentSnapshot['Round'].toString(),style: TextStyle(fontSize: 14))),
+                                              DataCell(Text(documentSnapshot['Host'].toString(),style: TextStyle(fontSize: 14))),
                                               DataCell(TextButton(
                                                 style: TextButton.styleFrom(
-                                                  primary: Colors.teal,
+                                                  primary: Colors.green,
+                                                  textStyle: TextStyle(fontSize: 16, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
                                                 ),
                                                 onPressed: () {
                                                   Navigator.push(
@@ -96,7 +108,7 @@ class GamesList extends StatelessWidget {
                                                         builder: (
                                                             ctxt) => new GameActivity(),
                                                         settings: RouteSettings(
-                            // arguments: Arguments(
+                             arguments: Arguments(documentSnapshot.id.toString())
                             // comic.reference.id,
                             // comic.data()["title"].toString(),
                             // comic.data()["lang"].toString(),
@@ -124,15 +136,17 @@ class GamesList extends StatelessWidget {
                   itemCount: 1,
                   itemBuilder: (BuildContext context, int index) {
                     return DataTable(
-                      headingRowHeight: 30,
-                      dataRowHeight: 20,
+                      headingRowHeight: 60,
+                      dataRowHeight: 60,
                       headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black26),
                       showBottomBorder: true,
-                        columns: [
-                          DataColumn(label: Text('NAME',style: TextStyle(fontWeight: FontWeight.bold),)),
-                          DataColumn(label: Text('ROUND',style: TextStyle(fontWeight: FontWeight.bold),)),
-                          DataColumn(label: Text('HOST',style: TextStyle(fontWeight: FontWeight.bold),)),
-                          DataColumn(label: Text('',style: TextStyle(fontWeight: FontWeight.bold),))
+                      horizontalMargin: 5,
+                      columnSpacing: 0,
+                      columns: [
+                          DataColumn(label: Text('NAME',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
+                          DataColumn(label: Text('ROUND',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
+                          DataColumn(label: Text('HOST',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
+                          DataColumn(label: Text('',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),))
                         ],
                       rows: _createRows(gameslist.data!),
 
@@ -147,7 +161,7 @@ class GamesList extends StatelessWidget {
             //return new ListView(children: getExpenseItems(snapshot1));
           }
       ),
-
+    ]   )
     );
   }
 

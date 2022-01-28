@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'game_activity.dart';
 import 'games_list.dart';
+import 'menulist.dart';
 import 'signup.dart';
 
 
@@ -49,7 +50,7 @@ class LandingPage extends StatelessWidget {
           if (user == null) {
            return SignInPage();
           } else {
-          return GamesList();} //FirstScreen();
+          return MenuList();} //FirstScreen();
        // return SignInPage();}
         } else {
           return Scaffold(

@@ -122,6 +122,8 @@ enum ImageType {
 
 class GameActivity extends StatelessWidget {
 
+
+
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   int _start = 10;
 
@@ -194,6 +196,8 @@ class GameActivity extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final Arguments args = ModalRoute.of(context)?.settings.arguments as Arguments;
+
     return Scaffold(
       appBar: new AppBar(
         backgroundColor: Colors.red,
@@ -235,10 +239,12 @@ class GameActivity extends StatelessWidget {
 
       body:
       StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Games').doc("TestGame").snapshots(), //counterStream,
+          stream: FirebaseFirestore.instance.collection('Games').doc(args.gamename).snapshots(), //counterStream,
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             //if(snapshot.hasData) {
             if (snapshot.hasData) {
+              print(args.gamename);
+
               int PositionBlueI = snapshot.data?.data()!["bluei"];
               int PositionBlueAltI = snapshot.data?.data()!["bluealti"];
               int PositionBlueJ=snapshot.data?.data()!["bluej"];
@@ -296,7 +302,7 @@ class GameActivity extends StatelessWidget {
                           children: <Widget>[
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,1); };
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(args.gamename,PositionRedI,PositionRedJ,1); };
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -309,7 +315,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(args.gamename,PositionRedI,PositionRedJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -322,7 +328,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(args.gamename,PositionRedI,PositionRedJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -335,7 +341,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(PositionRedI,PositionRedJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(args.gamename,PositionRedI,PositionRedJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -348,7 +354,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,1);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(args.gamename,PositionBlueI,PositionBlueJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -361,7 +367,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(args.gamename,PositionBlueI,PositionBlueJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -374,7 +380,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(args.gamename,PositionBlueI,PositionBlueJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -387,7 +393,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(PositionBlueI,PositionBlueJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(args.gamename,PositionBlueI,PositionBlueJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -412,7 +418,7 @@ class GameActivity extends StatelessWidget {
                             InkWell(
                               onTap: () {
                                 //if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
-                                _handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);
+                                _handleMoveGreenAlt(args.gamename,PositionGreenI,PositionGreenJ,1);
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -425,7 +431,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(args.gamename,PositionGreenI,PositionGreenJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -438,7 +444,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(args.gamename,PositionGreenI,PositionGreenJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -451,7 +457,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(args.gamename,PositionGreenI,PositionGreenJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -464,7 +470,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,1);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(args.gamename,PositionYellowI,PositionYellowJ,1);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -477,7 +483,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,2);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(args.gamename,PositionYellowI,PositionYellowJ,2);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -490,7 +496,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,3);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(args.gamename,PositionYellowI,PositionYellowJ,3);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -503,7 +509,7 @@ class GameActivity extends StatelessWidget {
                             ),
                             InkWell(
                               onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(PositionYellowI,PositionYellowJ,4);};
+                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(args.gamename,PositionYellowI,PositionYellowJ,4);};
                               },
                               child: CircleAvatar(
                                 child: Icon(
@@ -536,7 +542,7 @@ class GameActivity extends StatelessWidget {
                               icon: const Icon(Icons.replay),
                               tooltip: 'Reset',
                               onPressed: () {
-                                if(_auth.currentUser?.email==hostplayer) {_resetGame("TestGame",PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ,PositionGreenI,PositionGreenJ,PositionYellowI,PositionYellowJ);}
+                                if(_auth.currentUser?.email==hostplayer) {_resetGame(args.gamename,PositionBlueI,PositionBlueJ,PositionRedI,PositionRedJ,PositionGreenI,PositionGreenJ,PositionYellowI,PositionYellowJ);}
                               },
                             ),
                               Text('Reset')]),
@@ -544,7 +550,7 @@ class GameActivity extends StatelessWidget {
                               icon: const Icon(Icons.arrow_forward),
                               tooltip: 'Next Round',
                               onPressed: () {
-                                if(_auth.currentUser?.email==hostplayer) {_nextRound("TestGame",GameRound,lowestbidder,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                                if(_auth.currentUser?.email==hostplayer) {_nextRound(args.gamename,GameRound,lowestbidder,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               },
                             ),
                               Text('NextRound')]),
@@ -552,7 +558,7 @@ class GameActivity extends StatelessWidget {
                               icon: const Icon(Icons.accessibility),
                               tooltip: 'Next bid',
                               onPressed: () {
-                                if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);};
+                                if(_auth.currentUser?.email==hostplayer) {_nextBestBet(args.gamename,lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);};
                               },
                             ),
                               Text('NextBid')]),
@@ -568,7 +574,7 @@ class GameActivity extends StatelessWidget {
 
                         child:Row(mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
-                            Text("ROUND: " +GameRound.toString() + "     ",style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),
+                            Text("ROUND: " +GameRound.toString() + " ",style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),
 
                             IconButton(
                               icon: Icon(
@@ -608,14 +614,14 @@ class GameActivity extends StatelessWidget {
 
                               child: Text('SUBMIT BET'),
                               onPressed: isEnabled?() {
-                                _submitBet("TestGame",_auth.currentUser?.email,_counter.value, GameRound, RunningTimer);
+                                _submitBet(args.gamename,_auth.currentUser?.email,_counter.value, GameRound, RunningTimer);
                                 //bet.clear();
                                 myFocusNode.unfocus();
                               }:null,
 
                             ),
 
-                            Text("         COUNTDOWN:    " +RunningTimer.toString(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),
+
 
                           ],
                         ),
@@ -623,7 +629,7 @@ class GameActivity extends StatelessWidget {
                       ),
 
                       StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').where("Round",isEqualTo: GameRound).snapshots(), //.doc(_auth.currentUser.email).get(),
+                          stream: FirebaseFirestore.instance.collection('Games/'+args.gamename+'/Collectibles').where("Round",isEqualTo: GameRound).snapshots(), //.doc(_auth.currentUser.email).get(),
                           builder: (context, AsyncSnapshot<QuerySnapshot> collectibles ) {
                             if (collectibles.hasData) {
                               List<String> target = [];
@@ -646,7 +652,8 @@ class GameActivity extends StatelessWidget {
                                 print(boardpos[PositionGreenI][PositionGreenJ].collectible);
                                 print(target[0].toString().substring(0,5));
                                 msg="$lowestbidder has won!!!";
-                               // _nextRound("TestGame",GameRound,lowestbidder);
+                                _setwinner(args.gamename, 1,lowestbidder);
+                                // _nextRound("TestGame",GameRound,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
@@ -659,6 +666,7 @@ class GameActivity extends StatelessWidget {
                                 print(boardpos[PositionRedI][PositionRedJ].collectible);
                                 print(target[0].toString().substring(0,3));
                                 msg="$lowestbidder has won!!!";
+                                _setwinner(args.gamename, 1,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="red" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
@@ -671,6 +679,7 @@ class GameActivity extends StatelessWidget {
                                 print(boardpos[PositionBlueI][PositionBlueJ].collectible);
                                 print(target[0].toString().substring(0,4));
                                 msg="$lowestbidder has won!!!";
+                                _setwinner(args.gamename, 1,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="blue" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
@@ -683,6 +692,7 @@ class GameActivity extends StatelessWidget {
                                 print(boardpos[PositionYellowI][PositionYellowJ].collectible);
                                 print(target[0].toString().substring(0,6));
                                 msg="$lowestbidder has won!!!";
+                                _setwinner(args.gamename, 1,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="yellow" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
@@ -699,11 +709,11 @@ class GameActivity extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children:<Widget>[
                                       Row(mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
+                                        children: <Widget>[ Container(child:Text("  COUNTDOWN: " +RunningTimer.toString() + "     ",style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold))),
                                         Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),),
                                       ] ,
                                       ),
-                                      Container(child: Text(msg),
+                                      Container(child: Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
                                       )
                                     ],
 
@@ -1211,7 +1221,7 @@ class GameActivity extends StatelessWidget {
   }
 
 
-  Future _reinitialiseGame(int PositionBlueI, int PositionBlueJ, int PositionRedI,int PositionRedJ, int PositionGreenI,int PositionGreenJ, int PositionYellowI,int PositionYellowJ) async {
+  Future _reinitialiseGame(String gamename, int PositionBlueI, int PositionBlueJ, int PositionRedI,int PositionRedJ, int PositionGreenI,int PositionGreenJ, int PositionYellowI,int PositionYellowJ) async {
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[PositionBlueI][PositionBlueJ].blueposition = false;
@@ -1414,21 +1424,21 @@ class GameActivity extends StatelessWidget {
     boardpos[yellowi][yellowj].yellowposition = false;      // print(snapshot.connectionState);
 
 
-    await game.doc("TestGame").update({'redalti': PositionRedI,'redaltj':PositionRedJ});
-    await game.doc("TestGame").update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
-    await game.doc("TestGame").update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
-    await game.doc("TestGame").update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
+    await game.doc(gamename).update({'redalti': PositionRedI,'redaltj':PositionRedJ});
+    await game.doc(gamename).update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
+    await game.doc(gamename).update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
+    await game.doc(gamename).update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
 
-    await game.doc("TestGame").update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
-    await game.doc("TestGame").update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
-    await game.doc("TestGame").update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
-    await game.doc("TestGame").update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
+    await game.doc(gamename).update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
+    await game.doc(gamename).update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
+    await game.doc(gamename).update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
+    await game.doc(gamename).update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
 
-    await game.doc("TestGame").update({'movecount': 0});
-    await game.doc("TestGame").update({'bluei': 4,'bluej':4});
-    await game.doc("TestGame").update({'redi': 3,'redj':3});
-    await game.doc("TestGame").update({'greeni': 8,'greenj':2});
-    await game.doc("TestGame").update({'yellowi': 13,'yellowj':13});
+    await game.doc(gamename).update({'movecount': 0});
+    await game.doc(gamename).update({'bluei': 4,'bluej':4});
+    await game.doc(gamename).update({'redi': 3,'redj':3});
+    await game.doc(gamename).update({'greeni': 8,'greenj':2});
+    await game.doc(gamename).update({'yellowi': 13,'yellowj':13});
 
     var list = new List<int>.filled(16, 0);
     for (var i = 0; i < list.length; i++) {
@@ -1444,7 +1454,7 @@ class GameActivity extends StatelessWidget {
       list[b]=avalue;
     }
 print("a");
-    CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/TestGame/Collectibles');
+    CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Collectibles');
 
     await collectibleupdate.doc("redsaturn").update({'Round': list[1]});
     await collectibleupdate.doc("bluestar").update({'Round': list[2]});
@@ -1467,7 +1477,7 @@ print("a");
   // This function opens other squares around the target square which don't have any bombs around them.
   // We use a recursive function which stops at squares which have a non zero number of bombs around them.
 
-  Future _handleMoveRedAlt(int i, int j, int t) async {
+  Future _handleMoveRedAlt(String gamename, int i, int j, int t) async {
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[i][j].redposition = false;
@@ -1498,12 +1508,13 @@ print("a");
     boardpos[i][j].redposition = true;
     redi=i;
     redj=j;
-    await game.doc("TestGame").update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
-    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
-    //setState(() {});
+    await game.doc(gamename).update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
+    if(ialt!=i || jalt!=j) {
+      await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
+    }    //setState(() {});
   }
 
-  Future _handleMoveBlueAlt(int i, int j, int t) async {
+  Future _handleMoveBlueAlt(String gamename, int i, int j, int t) async {
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[i][j].blueposition = false;
@@ -1535,12 +1546,13 @@ print("a");
     bluei=i;
     bluej=j;
 
-    await game.doc("TestGame").update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
-    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
-    // setState(() {});
+    await game.doc(gamename).update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
+    if(ialt!=i || jalt!=j) {
+      await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
+    }    // setState(() {});
   }
 
-  Future _handleMoveGreenAlt(int i, int j, int t) async {
+  Future _handleMoveGreenAlt(String gamename, int i, int j, int t) async {
 
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
@@ -1573,12 +1585,15 @@ print("a");
     greeni=i;
     greenj=j;
 
-    await game.doc("TestGame").update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
-    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
+    await game.doc(gamename).update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
+    print("MOVED");
+    if(ialt!=i || jalt!=j) {
+      await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
+    }
     //setState(() {});
   }
 
-  Future _handleMoveYellowAlt(int i, int j, int t) async {
+  Future _handleMoveYellowAlt(String gamename, int i, int j, int t) async {
 
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
@@ -1611,9 +1626,10 @@ print("a");
     yellowi=i;
     yellowj=j;
 
-    await game.doc("TestGame").update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
-    await game.doc("TestGame").update({'movecount': FieldValue.increment(1) });
-    //setState(() {});
+    await game.doc(gamename).update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
+    if(ialt!=i || jalt!=j) {
+      await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
+    }    //setState(() {});
   }
 
   Image getImage(ImageType type) {
@@ -1834,12 +1850,12 @@ print("a");
     }
   }
 
-  Future _submitBet(String game, String? uid, int bet, int Round, int Timer) async {
-    CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ game +'/Players');
+  Future _submitBet(String gamename, String? uid, int bet, int Round, int Timer) async {
+    CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference round2update = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
 
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').orderBy('bet', descending: false).limit(1).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
     List<int> bets = [];
     list.forEach((f) => bets.add(f.data()['bet']));
@@ -1855,15 +1871,15 @@ print("a");
 
     print(bets);
     if(bets.first == 99 && Timer!=0) {
-      await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
-      await gameupdate.doc(game).update({'lowestbid': bet});
-      await gameupdate.doc(game).update({'firstbet': DateTime.now()});
+      await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
+      await gameupdate.doc(gamename).update({'lowestbid': bet});
+      await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
       startTimer();
       print(bets);
     }
     if(bet < lowestbid  && Timer!=0){
-      await gameupdate.doc(game).update({'lowestbidder': uid.toString()});
-      await gameupdate.doc(game).update({'lowestbid': bet});
+      await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
+      await gameupdate.doc(gamename).update({'lowestbid': bet});
     }
     await betupdate.doc(uid).update({'bet': bet, 'timestampupdated': DateTime.now()});
 
@@ -1871,41 +1887,52 @@ print("a");
 
   }
 
-  Future _nextRound(String game, int Round,String uid,PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
+  Future _setwinner(String gamename, int Round,String uid) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
-    CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
+    await gameupdate.doc(gamename).update({'winner': uid});
+  }
 
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
+  Future _nextRound(String gamename, int Round,String uid,PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
+    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
+    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Players');
+    CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Rounds');
+    DocumentSnapshot gamedata = await FirebaseFirestore.instance.collection('Games').doc(gamename).get();
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players').get();
     var list = querySnapshot.docs;
     list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
-    list.where((element) => element.id==uid).forEach((element) { playerupdate.doc(element.id).update({'score': FieldValue.increment(1)}); });
+    if(gamedata.data()!["winner"]==gamedata.data()!["lowestbidder"]) {
+      list.where((element) => element.id == uid).forEach((element) {
+        playerupdate.doc(element.id).update({'score': FieldValue.increment(1)});
+      });
+    }
 
 
-    await gameupdate.doc(game).update({'Round': Round+1});
-    await gameupdate.doc(game).update({'lowestbidder': "a@a.at"});
-    await gameupdate.doc(game).update({'lowestbid': 99});
-    await gameupdate.doc(game).update({'firstbet': DateTime.now()});
-    await gameupdate.doc(game).update({'movecount': 0});
-    await gameupdate.doc(game).update({'Timer': 10});
+    await gameupdate.doc(gamename).update({'Round': Round+1});
+    await gameupdate.doc(gamename).update({'lowestbidder': "a@a.at"});
+    await gameupdate.doc(gamename).update({'lowestbid': 99});
+    await gameupdate.doc(gamename).update({'winner': ""});
+    await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
+    await gameupdate.doc(gamename).update({'movecount': 0});
+    await gameupdate.doc(gamename).update({'Timer': 10});
     _start=10;
     await roundupdate.doc((Round+1).toString())
         .set({
       'Start': DateTime.now().add(const Duration(minutes: 5))
     });
 
-    await gameupdate.doc("TestGame").update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
-    await gameupdate.doc("TestGame").update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
-    await gameupdate.doc("TestGame").update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
-    await gameupdate.doc("TestGame").update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
+    await gameupdate.doc(gamename).update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
+    await gameupdate.doc(gamename).update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
+    await gameupdate.doc(gamename).update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
+    await gameupdate.doc(gamename).update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
 
   }
 
-  Future _nextBestBet(String uid,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
+  Future _nextBestBet(String gamename, String uid,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
     //_reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
+    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    DocumentSnapshot gamedata = await FirebaseFirestore.instance.collection('Games').doc("TestGame").get();
+    DocumentSnapshot gamedata = await FirebaseFirestore.instance.collection('Games').doc(gamename).get();
 
     print(gamedata.data()!["bluei"]);;
     print(gamedata.data()!["bluej"]);;
@@ -1921,7 +1948,7 @@ print("a");
 
     playerupdate.doc(uid).update({'bet': 100});
     print("NextBestBet");
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).limit(1).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+gamename+'/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
     List<String> player = [];
     List<int> bid = [];
@@ -1931,46 +1958,46 @@ print("a");
 
     print( "Debug1" + player.first);
 
-    await gameupdate.doc("TestGame").update({'lowestbidder': player.first});
-    await gameupdate.doc("TestGame").update({'lowestbid': bid.first});
-    await gameupdate.doc("TestGame").update({'movecount': 0});
+    await gameupdate.doc(gamename).update({'lowestbidder': player.first});
+    await gameupdate.doc(gamename).update({'lowestbid': bid.first});
+    await gameupdate.doc(gamename).update({'movecount': 0});
 
 
-    await gameupdate.doc("TestGame").update({'redalti': PositionRedI,'redaltj':PositionRedJ});
-    await gameupdate.doc("TestGame").update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
-    await gameupdate.doc("TestGame").update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
-    await gameupdate.doc("TestGame").update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
+    await gameupdate.doc(gamename).update({'redalti': PositionRedI,'redaltj':PositionRedJ});
+    await gameupdate.doc(gamename).update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
+    await gameupdate.doc(gamename).update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
+    await gameupdate.doc(gamename).update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
 
-    await gameupdate.doc("TestGame").update({'redi': newredi,'redj':newredj});
-    await gameupdate.doc("TestGame").update({'bluei': newbluei,'bluej':newbluej});
-    await gameupdate.doc("TestGame").update({'greeni': newgreeni,'greenj':newgreenj});
-    await gameupdate.doc("TestGame").update({'yellowi': newyellowi,'yellowj':newyellowj});
+    await gameupdate.doc(gamename).update({'redi': newredi,'redj':newredj});
+    await gameupdate.doc(gamename).update({'bluei': newbluei,'bluej':newbluej});
+    await gameupdate.doc(gamename).update({'greeni': newgreeni,'greenj':newgreenj});
+    await gameupdate.doc(gamename).update({'yellowi': newyellowi,'yellowj':newyellowj});
 
 
 
   }
 
 
-  Future _resetGame(String game,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
+  Future _resetGame(String gamename,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
     stopTimer();
-    await _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+    await _reinitialiseGame(gamename,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/TestGame/Players');
-    await gameupdate.doc(game).update({'lowestbidder': ""});
-    await gameupdate.doc(game).update({'lowestbid': 99});
-    await gameupdate.doc(game).update({'firstbet': DateTime.now()});
-    await gameupdate.doc(game).update({'movecount': 0});
-    await gameupdate.doc(game).update({'Round': 1});
-    await gameupdate.doc(game).update({'Timer': 10});
+    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Players');
+    await gameupdate.doc(gamename).update({'lowestbidder': ""});
+    await gameupdate.doc(gamename).update({'lowestbid': 99});
+    await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
+    await gameupdate.doc(gamename).update({'movecount': 0});
+    await gameupdate.doc(gamename).update({'Round': 1});
+    await gameupdate.doc(gamename).update({'Timer': 10});
 
 
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ game +'/Players').get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players').get();
     var list = querySnapshot.docs;
     list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
     list.forEach((element) { playerupdate.doc(element.id).update({'score': 0}); });
 
 
-    await _reinitialiseGame(PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+    await _reinitialiseGame(gamename,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
 
   }
 
