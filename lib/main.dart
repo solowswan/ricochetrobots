@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
       title: 'Ricochet Robots',
       theme: ThemeData(
         primarySwatch: Colors.red,
+        //  scaffoldBackgroundColor: const Color(0xFFEFEFEF)
         //scaffoldBackgroundColor: const Color(0xFF000000)
       ),
       //home: MyHomePage(title: 'Comic Reader Multi Language'),
@@ -99,7 +100,8 @@ class SignInPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text('Ricochet Robots')
+        appBar: AppBar(          backgroundColor: Colors.black,
+            title: Text('Ricochet Robots')
       ),
 
 

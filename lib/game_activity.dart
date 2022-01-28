@@ -200,7 +200,7 @@ class GameActivity extends StatelessWidget {
 
     return Scaffold(
       appBar: new AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Colors.black,
         //title: new Text("Comic Reader Multi Language"),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -943,7 +943,7 @@ class GameActivity extends StatelessWidget {
 ),
                       Center(child:Text("Moves " + movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold))),
                       StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance.collection('Games/TestGame/Players').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
+                          stream: FirebaseFirestore.instance.collection('Games/'+args.gamename+'/Players').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
                           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1 ) {
                             if (snapshot1.hasData) {
                               var data = [];

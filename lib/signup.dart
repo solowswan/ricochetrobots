@@ -75,10 +75,11 @@ class _MyHomePageState extends State<SignUp> {
 
   Future _signup(context, String uid, String pwd1,String pwd2) async {
 
-    CollectionReference users = FirebaseFirestore.instance.collection('Users');
 
     Future<void> addUser() {
       // Call the user's CollectionReference to add a new user
+      CollectionReference users = FirebaseFirestore.instance.collection('Users');
+
       return users.doc(uid)
           .set({
         'EMail': uid,
@@ -86,6 +87,95 @@ class _MyHomePageState extends State<SignUp> {
       })
           .then((value) => print("User Added"))
           .catchError((error) => print("Failed to add user: $error"));
+    }
+
+    Future<void> createGame() async {
+      // Call the games's CollectionReference to add a new game
+      CollectionReference games = FirebaseFirestore.instance.collection('Games');
+
+      await games.doc(uid).set({
+        'Host': uid,
+        'Round': 1,
+        'Timer': 1,
+        'timer': 1,
+        'bluealti': 4,
+        'blueorigi': 4,
+        'bluei': 4,
+        'bluealtj': 4,
+        'blueorigj': 4,
+        'bluej': 4,
+        'redalti': 3,
+        'redorigi': 3,
+        'redi': 3,
+        'redaltj': 3,
+        'redorigj': 3,
+        'redj': 3,
+        'greenalti': 13,
+        'greenorigi': 13,
+        'greeni': 13,
+        'greenaltj': 0,
+        'greenorigj': 0,
+        'greenj': 0,
+        'yellowalti': 13,
+        'yelloworigi': 13,
+        'yellowi': 13,
+        'yellowaltj': 13,
+        'yelloworigj': 13,
+        'yellowj': 13,
+        'lowestbid': 99,
+        'lowestbidder': '',
+        'movecount': 0,
+        'winner':'',
+        'firstbet': DateTime.now()
+      });
+      await games.doc(uid).collection("Rounds").doc("1").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("2").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("3").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("4").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("5").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("6").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("7").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("8").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("9").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("10").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("11").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("12").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("13").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("14").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("15").set({'Start': DateTime.now()});
+      await games.doc(uid).collection("Rounds").doc("16").set({'Start': DateTime.now()});
+
+      await games.doc(uid).collection("Collectibles").doc("bluecircle").set({'Round': 0});
+      await games.doc(uid).collection("Collectibles").doc("bluetriangle").set({'Round': 1});
+      await games.doc(uid).collection("Collectibles").doc("bluestar").set({'Round': 2});
+      await games.doc(uid).collection("Collectibles").doc("bluesaturn").set({'Round': 3});
+      await games.doc(uid).collection("Collectibles").doc("redcircle").set({'Round': 4});
+      await games.doc(uid).collection("Collectibles").doc("redtriangle").set({'Round': 5});
+      await games.doc(uid).collection("Collectibles").doc("redstar").set({'Round': 6});
+      await games.doc(uid).collection("Collectibles").doc("redsaturn").set({'Round': 7});
+      await games.doc(uid).collection("Collectibles").doc("greencircle").set({'Round': 8});
+      await games.doc(uid).collection("Collectibles").doc("greentriangle").set({'Round': 9});
+      await games.doc(uid).collection("Collectibles").doc("greenstar").set({'Round': 10});
+      await games.doc(uid).collection("Collectibles").doc("greensaturn").set({'Round': 11});
+      await games.doc(uid).collection("Collectibles").doc("yellowcircle").set({'Round': 12});
+      await games.doc(uid).collection("Collectibles").doc("yellowtriangle").set({'Round': 13});
+      await games.doc(uid).collection("Collectibles").doc("yellowstar").set({'Round': 14});
+      await games.doc(uid).collection("Collectibles").doc("yellowsaturn").set({'Round': 15});
+
+      await games.doc(uid).collection("Players").doc(uid).set({'bet': 99,
+        'score': 0,
+        'timestampupdated': DateTime.now()
+      });
+
+      //await games.doc(uid).collection("Players").doc(uid).set({'timestampupdated': DateTime.now()});
+
+
+
+      // .then((value) => print("User Added"))
+         // .catchError((error) => print("Failed to add user: $error"))
+
+       return(print("Failed to add user:"));
+
     }
 
     if (pwd1!=pwd2) {
@@ -97,6 +187,7 @@ class _MyHomePageState extends State<SignUp> {
           // print(userCredential.user)
           _showDialogSC(context),
           addUser(),
+          createGame()
           // ...
         })
         ;
@@ -118,7 +209,7 @@ class _MyHomePageState extends State<SignUp> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Ricochet Robots - Create a new user')),
+      appBar: AppBar(backgroundColor: Colors.black,title: Text('Ricochet Robots - Create a new user')),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: 0, // this will be set when a new tab is tapped

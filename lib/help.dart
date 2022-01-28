@@ -23,7 +23,7 @@ class Arguments {
 }
 
 
-class multiplayer_create extends StatelessWidget {
+class help extends StatelessWidget {
 
   final email = TextEditingController();
   final password1 = TextEditingController();
@@ -78,7 +78,22 @@ class multiplayer_create extends StatelessWidget {
             children: <Widget>[
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    Text('UNDER CONSTRUCTION'),
+                    Text('Physics: \n The red/blue/green and yellow robots will always move vertically'
+                        ' \n or horizontally until they bump into an obstacle (A wall or another robot).'
+                        '\n'
+                        'Target: '
+                        '\n To move a robot in the least number of moves into the given target. '
+                        '\n The color of the robot must match the color of the target. '
+                        '\n Other robots can also be moved. '
+                        '\n All moves of all robots are summed up'
+                        '\n Game mechanics: '
+                        '\n 1) Figure out the maximum number of moves required to reach the target.'
+                    '\n 2) Submit a bid with your minimum number of moves'
+                    '\n 3) When the first player submits a bid, the countdown will start'
+                    '\n 4) After countdown the lowest bidder must defend the bid'
+                        '\n 5) If the lowest bidder fails, the second lowest bidder takes over, etc..., until a winner is determined'
+                        '\n 6) New round with new target'
+                        ''),
                   ]),
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),

@@ -44,7 +44,7 @@ class about extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
-          backgroundColor: Colors.red,
+            backgroundColor: Colors.black,
           //title: new Text("Comic Reader Multi Language"),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,

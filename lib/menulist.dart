@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart'; //as firebase_storage;
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:ricochetrobots/games_list.dart';
+import 'package:ricochetrobots/help.dart';
 import 'package:ricochetrobots/about.dart';
 import 'package:ricochetrobots/multiplayer_create.dart';
 
@@ -49,7 +50,7 @@ class MenuList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: new AppBar(
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.black,
           //title: new Text("Comic Reader Multi Language"),
           title: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -132,6 +133,7 @@ class MenuList extends StatelessWidget {
                       child: const Text('MULTIPLAYER - JOIN'),
                     ),
                   ]),
+
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                     Text('---------------------------------------------------------------------------------------------------------'),
@@ -148,7 +150,7 @@ class MenuList extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (
-                                  ctxt) => new multiplayer_create(),
+                                  ctxt) => new help(),
                               settings: RouteSettings(
                                   arguments: Arguments("")
                                 // comic.reference.id,
@@ -157,9 +159,10 @@ class MenuList extends StatelessWidget {
                               ),
                             ));
                       },
-                      child: const Text('MULTIPLAYER - CREATE'),
+                      child: const Text('HELP/TUTORIAL'),
                     ),
                   ]),
+
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                     Text('---------------------------------------------------------------------------------------------------------'),
