@@ -42,7 +42,7 @@ class GamesList extends StatelessWidget {
     await games.doc(gameId).collection("Players").doc(_auth.currentUser?.email).set({'bet': 99,
       'score': 0,
       'timestampupdated': DateTime.now()
-    });
+    },SetOptions(merge: true));
   }
 
 
