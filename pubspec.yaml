@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   syncfusion_flutter_datagrid: ^19.4.47
   property_change_notifier: ^0.3.0
+  flutter_markdown: ^0.6.9
 
 dev_dependencies:
   flutter_test:
@@ -60,7 +61,10 @@ flutter:
 assets:
   - assets/
   - assets/images/
-
+  - assets/About.md-
+  - assets/General.md
+  - assets/Singleplayer.md
+  - assets/Multiplayer.md
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

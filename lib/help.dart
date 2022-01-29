@@ -12,6 +12,7 @@ import 'main.dart';
 import 'game_activity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -74,33 +75,95 @@ class help extends StatelessWidget {
 
 
         body:
-        Column(mainAxisAlignment: MainAxisAlignment.center,
+        new Container(
+        child: new SingleChildScrollView(
+        child: new Column(mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Row( mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    Text('Physics: \n The red/blue/green and yellow robots will always move vertically'
-                        ' \n or horizontally until they bump into an obstacle (A wall or another robot).'
-                        '\n'
-                        'Target: '
-                        '\n To move a robot in the least number of moves into the given target. '
-                        '\n The color of the robot must match the color of the target. '
-                        '\n Other robots can also be moved. '
-                        '\n All moves of all robots are summed up'
-                        '\n Game mechanics: '
-                        '\n 1) Figure out the maximum number of moves required to reach the target.'
-                    '\n 2) Submit a bid with your minimum number of moves'
-                    '\n 3) When the first player submits a bid, the countdown will start'
-                    '\n 4) After countdown the lowest bidder must defend the bid'
-                        '\n 5) If the lowest bidder fails, the second lowest bidder takes over, etc..., until a winner is determined'
-                        '\n 6) New round with new target'
-                        ''),
-                  ]),
+
+              FutureBuilder(
+                  future: rootBundle.loadString("assets/General.md"),
+                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(alignment: Alignment.center,child: Container(height: 400.0,
+                          child: Markdown(
+                              styleSheet: MarkdownStyleSheet(
+                                textAlign: WrapAlignment.center,
+                                h1Align: WrapAlignment.center,
+                              ),
+                              data: snapshot.data!)));
+                    }
+                    return Container(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
               Container(
                   color: Colors.grey,
                   child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
-                    Image.asset('assets/images/PathFinding.png',     height: 30,
-                      width: 30,),
-                  ])
+                    Image.asset('assets/images/PathFinding.png',
+                      //height: 30,
+                     // width: 30,
+                      ),
+                  ]),
+
+              ),
+              FutureBuilder(
+                  future: rootBundle.loadString("assets/Singleplayer.md"),
+                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(alignment: Alignment.center,child: Container(height: 100.0,
+                          child: Markdown(
+                              styleSheet: MarkdownStyleSheet(
+                                textAlign: WrapAlignment.center,
+                                h1Align: WrapAlignment.center,
+                              ),
+                              data: snapshot.data!)));
+                    }
+                    return Container(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
+              Container(
+                color: Colors.grey,
+                child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
+                  Image.asset('assets/images/Singleplayer.png',
+                    //height: 30,
+                    // width: 30,
+                  ),
+                ]),
+
+              ),
+           //Row( mainAxisAlignment: MainAxisAlignment.center,
+             //   children: <Widget>[Expanded(child: SizedBox(height: 200.0, child:
+              FutureBuilder(
+                  future: rootBundle.loadString("assets/Multiplayer.md"),
+                  builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    if (snapshot.hasData) {
+                      return Container(alignment: Alignment.center,child: Container(height: 100.0,
+                          child: Markdown(
+                              styleSheet: MarkdownStyleSheet(
+                                textAlign: WrapAlignment.center,
+                                h1Align: WrapAlignment.center,
+                              ),
+                          data: snapshot.data!)));
+                    }
+                    return Container(
+                      child: CircularProgressIndicator(),
+                    );
+                  }),
+             //   )
+              //  )
+              //  ]
+           // ),
+
+              Container(
+                color: Colors.grey,
+                child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
+                  Image.asset('assets/images/Multiplayer.png',
+                    //height: 30,
+                    // width: 30,
+                  ),
+                ]),
+
               ),
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
@@ -108,6 +171,8 @@ class help extends StatelessWidget {
                   ]),
 
             ]   )
+    )
+        )
     );
   }
 

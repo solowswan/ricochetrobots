@@ -12,6 +12,7 @@ import 'main.dart';
 import 'game_activity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -74,18 +75,22 @@ class about extends StatelessWidget {
 
 
         body:
-        Column(mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row( mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    Text('Programmed and designed by Johannes Micheler'),
-                  ]),
-              Row( mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    Text('2022'),
-                  ]),
+        new Container(
+        child: FutureBuilder(
+            future: rootBundle.loadString("assets/About.md"),
+            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+              if (snapshot.hasData) {
+                return Container(alignment: Alignment.center,child: Container(height: 100.0,child: Markdown(styleSheet: MarkdownStyleSheet(
+                  textAlign: WrapAlignment.center,
+                  h1Align: WrapAlignment.center,
+                ),data: snapshot.data!)));
+              }
 
-            ]   )
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
+    )
     );
   }
 
