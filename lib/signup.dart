@@ -147,19 +147,19 @@ class _MyHomePageState extends State<SignUp> {
 
       await games.doc(uid).collection("Collectibles").doc("bluecircle").set({'Round': 0});
       await games.doc(uid).collection("Collectibles").doc("bluetriangle").set({'Round': 1});
-      await games.doc(uid).collection("Collectibles").doc("bluestar").set({'Round': 2});
+      await games.doc(uid).collection("Collectibles").doc("bluecross").set({'Round': 2});
       await games.doc(uid).collection("Collectibles").doc("bluesaturn").set({'Round': 3});
       await games.doc(uid).collection("Collectibles").doc("redcircle").set({'Round': 4});
       await games.doc(uid).collection("Collectibles").doc("redtriangle").set({'Round': 5});
-      await games.doc(uid).collection("Collectibles").doc("redstar").set({'Round': 6});
+      await games.doc(uid).collection("Collectibles").doc("redcross").set({'Round': 6});
       await games.doc(uid).collection("Collectibles").doc("redsaturn").set({'Round': 7});
       await games.doc(uid).collection("Collectibles").doc("greencircle").set({'Round': 8});
       await games.doc(uid).collection("Collectibles").doc("greentriangle").set({'Round': 9});
-      await games.doc(uid).collection("Collectibles").doc("greenstar").set({'Round': 10});
+      await games.doc(uid).collection("Collectibles").doc("greencross").set({'Round': 10});
       await games.doc(uid).collection("Collectibles").doc("greensaturn").set({'Round': 11});
       await games.doc(uid).collection("Collectibles").doc("yellowcircle").set({'Round': 12});
       await games.doc(uid).collection("Collectibles").doc("yellowtriangle").set({'Round': 13});
-      await games.doc(uid).collection("Collectibles").doc("yellowstar").set({'Round': 14});
+      await games.doc(uid).collection("Collectibles").doc("yellowcross").set({'Round': 14});
       await games.doc(uid).collection("Collectibles").doc("yellowsaturn").set({'Round': 15});
 
       await games.doc(uid).collection("Players").doc(uid).set({'bet': 99,
