@@ -706,8 +706,8 @@ class singleplayer extends StatelessWidget {
                                           Container(
                                               color: Colors.grey,
                                               child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
-                                                Image.asset('assets/images/'+target[0].toString()+'southwest.png',     height: 30,
-                                                  width: 30,),
+                                                Image.asset('assets/images/'+target[0].toString()+'SouthWest.png',     height: 40,
+                                                  width: 40,),
                                               ])
                                           ),
                                           Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.black))

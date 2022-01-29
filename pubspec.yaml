@@ -61,7 +61,7 @@ flutter:
 assets:
   - assets/
   - assets/images/
-  - assets/About.md-
+  - assets/About.md
   - assets/General.md
   - assets/Singleplayer.md
   - assets/Multiplayer.md

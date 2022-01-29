@@ -1462,22 +1462,22 @@ class GameActivity extends StatelessWidget {
 print("a");
     CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Collectibles');
 
-    await collectibleupdate.doc("redsaturn").update({'Round': list[1]});
-    await collectibleupdate.doc("bluestar").update({'Round': list[2]});
-    await collectibleupdate.doc("bluetriangle").update({'Round': list[3]});
-    await collectibleupdate.doc("greencircle").update({'Round': list[4]});
-    await collectibleupdate.doc("redtriangle").update({'Round': list[5]});
-    await collectibleupdate.doc("greenstar").update({'Round': list[6]});
-    await collectibleupdate.doc("yellowsaturn").update({'Round': list[7]});
-    await collectibleupdate.doc("yellowcircle").update({'Round': list[8]});
-    await collectibleupdate.doc("yellowstar").update({'Round': list[9]});
-    await collectibleupdate.doc("redstar").update({'Round': list[10]});
-    await collectibleupdate.doc("redcircle").update({'Round': list[11]});
-    await collectibleupdate.doc("greensaturn").update({'Round': list[12]});
-    await collectibleupdate.doc("bluesaturn").update({'Round': list[13]});
-    await collectibleupdate.doc("yellowtriangle").update({'Round': list[14]});
-    await collectibleupdate.doc("greentriangle").update({'Round': list[15]});
-    await collectibleupdate.doc("bluecircle").update({'Round': list[0]});
+    await collectibleupdate.doc("RedSaturn").update({'Round': list[1]});
+    await collectibleupdate.doc("BlueStar").update({'Round': list[2]});
+    await collectibleupdate.doc("BlueTriangle").update({'Round': list[3]});
+    await collectibleupdate.doc("GreenCircle").update({'Round': list[4]});
+    await collectibleupdate.doc("RedTriangle").update({'Round': list[5]});
+    await collectibleupdate.doc("GreenStar").update({'Round': list[6]});
+    await collectibleupdate.doc("YellowSaturn").update({'Round': list[7]});
+    await collectibleupdate.doc("YellowCircle").update({'Round': list[8]});
+    await collectibleupdate.doc("YellowStar").update({'Round': list[9]});
+    await collectibleupdate.doc("RedStar").update({'Round': list[10]});
+    await collectibleupdate.doc("RedCircle").update({'Round': list[11]});
+    await collectibleupdate.doc("GreenSaturn").update({'Round': list[12]});
+    await collectibleupdate.doc("BlueSaturn").update({'Round': list[13]});
+    await collectibleupdate.doc("YellowTriangle").update({'Round': list[14]});
+    await collectibleupdate.doc("GreenTriangle").update({'Round': list[15]});
+    await collectibleupdate.doc("BlueCircle").update({'Round': list[0]});
 
   }
   // This function opens other squares around the target square which don't have any bombs around them.
