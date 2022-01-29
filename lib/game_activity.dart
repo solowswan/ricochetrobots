@@ -612,7 +612,7 @@ class GameActivity extends StatelessWidget {
 
                             ElevatedButton(
 
-                              child: Text('SUBMIT BET'),
+                              child: Text('SUBMIT BID'),
                               onPressed: isEnabled?() {
                                 _submitBet(args.gamename,_auth.currentUser?.email,_counter.value, GameRound, RunningTimer);
                                 //bet.clear();
@@ -709,7 +709,7 @@ class GameActivity extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children:<Widget>[
                                       Row(mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[ //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
+                                        children: <Widget>[ Container(child:Text("  CLOCK: " +RunningTimer.toString() + "  ",style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold))),//Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
                                           Text("TARGET: ", style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
                                           Container(
                                               color: Colors.grey,

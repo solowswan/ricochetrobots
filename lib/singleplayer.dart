@@ -603,7 +603,7 @@ class singleplayer extends StatelessWidget {
 
                             ElevatedButton(
 
-                              child: Text('SUBMIT BET'),
+                              child: Text('SUBMIT BID'),
                               onPressed: isEnabled?() {
                                 _submitBet(_auth.currentUser?.email,_auth.currentUser?.email,_counter.value, GameRound, RunningTimer);
                                 //bet.clear();

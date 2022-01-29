@@ -95,6 +95,13 @@ class help extends StatelessWidget {
                         '\n 6) New round with new target'
                         ''),
                   ]),
+              Container(
+                  color: Colors.grey,
+                  child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
+                    Image.asset('assets/images/PathFinding.png',     height: 30,
+                      width: 30,),
+                  ])
+              ),
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                     Text(''),
