@@ -538,7 +538,7 @@ class GameActivity extends StatelessWidget {
                                 _initialiseGame();
                               },
                             ),
-                              Text('Init')]),Column(children: <Widget>[IconButton(
+                              Text('START')]),Column(children: <Widget>[IconButton(
                               icon: const Icon(Icons.replay),
                               tooltip: 'Reset',
                               onPressed: () {
@@ -678,7 +678,7 @@ class GameActivity extends StatelessWidget {
                               {
                                 print(boardpos[PositionBlueI][PositionBlueJ].collectible);
                                 print(target[0].toString().substring(0,4));
-                                msg="$lowestbidder has won!!!";
+                                msg="CONGRATULATIONS!!! $lowestbidder has won!!!";
                                 _setwinner(args.gamename, 1,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="blue" && movecount>lowestbid) {
@@ -1315,7 +1315,7 @@ class GameActivity extends StatelessWidget {
     boardpos[4][2].obstacleeast = true;
     boardpos[5][6].obstacleeast = true;
     boardpos[5][13].obstacleeast = true;
-    boardpos[6][1].obstacleeast = true;
+    boardpos[6][0].obstacleeast = true;
     boardpos[6][11].obstacleeast = true;
     boardpos[9][3].obstacleeast = true;
     boardpos[10][7].obstacleeast = true;
@@ -1338,7 +1338,7 @@ class GameActivity extends StatelessWidget {
     boardpos[4][3].obstaclewest = true;
     boardpos[5][7].obstaclewest = true;
     boardpos[5][14].obstaclewest = true;
-    boardpos[6][2].obstaclewest = true;
+    boardpos[6][1].obstaclewest = true;
     boardpos[6][12].obstaclewest = true;
     boardpos[9][4].obstaclewest = true;
     boardpos[10][8].obstaclewest = true;
@@ -1853,7 +1853,7 @@ print("a");
   Future _submitBet(String gamename, String? uid, int bet, int Round, int Timer) async {
     CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players');
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    CollectionReference round2update = FirebaseFirestore.instance.collection('Games/TestGame/Rounds');
+    CollectionReference round2update = FirebaseFirestore.instance.collection('Games/'+ gamename +'/Rounds');
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players').orderBy('bet', descending: false).limit(1).get();
     var list = querySnapshot.docs;
@@ -1862,7 +1862,7 @@ print("a");
 
     int lowestbid = 99;
     var collection = FirebaseFirestore.instance.collection('Games');
-    var docSnapshot = await collection.doc('TestGame').get();
+    var docSnapshot = await collection.doc(gamename).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
       int value = data?['lowestbid'];

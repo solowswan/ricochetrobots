@@ -95,8 +95,10 @@ class MenuList extends StatelessWidget {
                     builder: (
                         ctxt) => new singleplayer(),
                     settings: RouteSettings(
-                        arguments: Arguments("")
-                      // comic.reference.id,
+                        //arguments: Arguments("")
+                        //arguments: Arguments(_auth.currentUser?.email)
+
+                // comic.reference.id,
                       // comic.data()["title"].toString(),
                       // comic.data()["lang"].toString(),
                     ),

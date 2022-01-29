@@ -164,7 +164,8 @@ class _MyHomePageState extends State<SignUp> {
 
       await games.doc(uid).collection("Players").doc(uid).set({'bet': 99,
         'score': 0,
-        'timestampupdated': DateTime.now()
+        'timestampupdated': DateTime.now(),
+        'isHost': true
       });
 
       //await games.doc(uid).collection("Players").doc(uid).set({'timestampupdated': DateTime.now()});
