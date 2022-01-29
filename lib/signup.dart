@@ -96,8 +96,8 @@ class _MyHomePageState extends State<SignUp> {
       await games.doc(uid).set({
         'Host': uid,
         'Round': 1,
-        'Timer': 1,
-        'timer': 1,
+        'Timer': 10,
+        'timer': 10,
         'bluealti': 4,
         'blueorigi': 4,
         'bluei': 4,
@@ -208,7 +208,7 @@ class _MyHomePageState extends State<SignUp> {
   @override
 
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( backgroundColor: Colors.black,
       appBar: AppBar(backgroundColor: Colors.black,title: Text('Ricochet Robots - Create a new user')),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
@@ -245,9 +245,14 @@ class _MyHomePageState extends State<SignUp> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
                             decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                hintText: 'Email'),
+                                border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                hintText: 'Email',
+                                hintStyle: TextStyle(color: Colors.white)
+                            ),
                             controller: email),
                       ),
                     ],
@@ -259,12 +264,17 @@ class _MyHomePageState extends State<SignUp> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
                             enableSuggestions: false,
                             autocorrect: false,
                             obscureText: true,
                             decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                hintText: 'Password'),
+                                border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                hintText: 'Password',
+                                hintStyle: TextStyle(color: Colors.white)
+                  ),
                             controller: password1),
                       ),
                     ],
@@ -276,12 +286,17 @@ class _MyHomePageState extends State<SignUp> {
                     children: [
                       Expanded(
                         child: TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
                             enableSuggestions: false,
                             autocorrect: false,
                             obscureText: true,
                             decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                hintText: 'Password'),
+                                border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                hintText: 'Password',
+                                hintStyle: TextStyle(color: Colors.white)
+                            ),
                             controller: password2),
                       ),
                     ],

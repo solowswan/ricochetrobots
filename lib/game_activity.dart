@@ -127,7 +127,7 @@ class GameActivity extends StatelessWidget {
   Timer _timer = Timer(Duration(milliseconds: 1), () {});
   int _start = 10;
 
-  Future startTimer() async {
+  Future startTimer(gamename) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     const oneSec = const Duration(seconds: 1);
     _timer = new Timer.periodic(
@@ -135,12 +135,12 @@ class GameActivity extends StatelessWidget {
           (Timer timer) {
         if (_start == 0) {
           //setState(() {
-          gameupdate.doc("TestGame").update({'Timer': _start });
+          gameupdate.doc(gamename).update({'Timer': _start });
           timer.cancel();
           //  });
         } else {
           // setState(() {
-          gameupdate.doc("TestGame").update({'Timer': _start });
+          gameupdate.doc(gamename).update({'Timer': _start });
           _start--;
           //  });
         }
@@ -198,7 +198,7 @@ class GameActivity extends StatelessWidget {
 
     final Arguments args = ModalRoute.of(context)?.settings.arguments as Arguments;
 
-    return Scaffold(
+    return Scaffold( backgroundColor: Colors.white,
       appBar: new AppBar(
         backgroundColor: Colors.black,
         //title: new Text("Comic Reader Multi Language"),
@@ -1874,7 +1874,7 @@ print("a");
       await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
       await gameupdate.doc(gamename).update({'lowestbid': bet});
       await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
-      startTimer();
+      startTimer(gamename);
       print(bets);
     }
     if(bet < lowestbid  && Timer!=0){

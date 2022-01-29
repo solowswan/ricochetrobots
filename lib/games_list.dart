@@ -51,7 +51,7 @@ class GamesList extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( backgroundColor: Colors.black87,
       appBar: new AppBar(
         backgroundColor: Colors.black,
         //title: new Text("Comic Reader Multi Language"),
@@ -83,7 +83,7 @@ class GamesList extends StatelessWidget {
 
 
       body:
-          Column(children: <Widget>[ Text("List of available games",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+          Column(children: <Widget>[ Text("List of available games",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold,color: Colors.white)),
 
           StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('Games').snapshots(), //.doc(_auth.currentUser.email).get(),
@@ -103,9 +103,9 @@ class GamesList extends StatelessWidget {
               List<DataRow> _createRows(QuerySnapshot snapshot) {
 
                 List<DataRow> newList = snapshot.docs.map((DocumentSnapshot documentSnapshot) {
-                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString(),style: TextStyle(fontSize: 14)),) ,
-                                              DataCell(Text(documentSnapshot['Round'].toString(),style: TextStyle(fontSize: 14))),
-                                              DataCell(Text(documentSnapshot['Host'].toString(),style: TextStyle(fontSize: 14))),
+                  return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString(),style: TextStyle(fontSize: 14,color: Colors.white)),) ,
+                                              DataCell(Text(documentSnapshot['Round'].toString(),style: TextStyle(fontSize: 14,color: Colors.white))),
+                                              DataCell(Text(documentSnapshot['Host'].toString(),style: TextStyle(fontSize: 14,color: Colors.white))),
                                               DataCell(TextButton(
                                                 style: TextButton.styleFrom(
                                                   primary: Colors.green,
@@ -149,15 +149,15 @@ class GamesList extends StatelessWidget {
                     return DataTable(
                       headingRowHeight: 60,
                       dataRowHeight: 60,
-                      headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black26),
+                      headingRowColor: MaterialStateColor.resolveWith((states) => Colors.white),
                       showBottomBorder: true,
                       horizontalMargin: 5,
                       columnSpacing: 0,
                       columns: [
-                          DataColumn(label: Text('NAME',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
-                          DataColumn(label: Text('ROUND',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
-                          DataColumn(label: Text('HOST',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),)),
-                          DataColumn(label: Text('',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),))
+                          DataColumn(label: Text('NAME',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,color: Colors.black),)),
+                          DataColumn(label: Text('ROUND',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,color: Colors.black),)),
+                          DataColumn(label: Text('HOST',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,color: Colors.black),)),
+                          DataColumn(label: Text('',style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold,color: Colors.black),))
                         ],
                       rows: _createRows(gameslist.data!),
 

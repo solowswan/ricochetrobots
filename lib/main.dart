@@ -98,7 +98,7 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
         appBar: AppBar(          backgroundColor: Colors.black,
             title: Text('Ricochet Robots')
@@ -118,9 +118,16 @@ class SignInPage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
+                            enableSuggestions: true,
+                            autocorrect: true,
                             decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                hintText: 'Email'),
+                                border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                hintText: 'Email',
+                                hintStyle: TextStyle(color: Colors.white)
+                            ),
                             controller: username),
                       ),
                     ],
@@ -132,12 +139,18 @@ class SignInPage extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextFormField(
+                            style: TextStyle(color: Colors.white),
+                            cursorColor: Colors.white,
                             enableSuggestions: false,
                             autocorrect: false,
                             obscureText: true,
                             decoration: const InputDecoration(
-                                border: UnderlineInputBorder(),
-                                hintText: 'Password'),
+                                border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white), ),
+                                fillColor: Colors.white,
+                                hintText: 'Password',
+                                hintStyle: TextStyle(color: Colors.white)
+                                ),
                             controller: password),
                       ),
                     ],
@@ -172,7 +185,7 @@ class SignInPage extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Don't have an account? "),
+                      Text("Don't have an account? ", style: TextStyle(color: Colors.white)),
                       Text(
                         'Sign up.',
                         style: TextStyle(

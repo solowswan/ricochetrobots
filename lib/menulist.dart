@@ -48,7 +48,7 @@ class MenuList extends StatelessWidget {
   @override
 
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( backgroundColor: Colors.black,
         appBar: new AppBar(
           backgroundColor: Colors.black,
           //title: new Text("Comic Reader Multi Language"),
@@ -85,7 +85,7 @@ class MenuList extends StatelessWidget {
             children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
           TextButton(
             style: TextButton.styleFrom(
-                primary: Colors.black,
+                primary: Colors.white,
                 textStyle: TextStyle(fontSize: 32, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
             ),
             onPressed: () {
@@ -107,13 +107,13 @@ class MenuList extends StatelessWidget {
           ]),
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    Text('---------------------------------------------------------------------------------------------------------'),
+                    Text('---------------------------------------------------------------------------------------------------------', style: TextStyle(color: Colors.white)),
                   ]),
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                     TextButton(
                       style: TextButton.styleFrom(
-                          primary: Colors.black,
+                          primary: Colors.white,
                           textStyle: TextStyle(fontSize: 32, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
                       ),
                       onPressed: () {
@@ -136,13 +136,13 @@ class MenuList extends StatelessWidget {
 
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    Text('---------------------------------------------------------------------------------------------------------'),
+                    Text('---------------------------------------------------------------------------------------------------------', style: TextStyle(color: Colors.white)),
                   ]),
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                     TextButton(
                       style: TextButton.styleFrom(
-                          primary: Colors.black,
+                          primary: Colors.white,
                           textStyle: TextStyle(fontSize: 32, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
                       ),
                       onPressed: () {
@@ -165,13 +165,13 @@ class MenuList extends StatelessWidget {
 
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                    Text('---------------------------------------------------------------------------------------------------------'),
+                    Text('---------------------------------------------------------------------------------------------------------', style: TextStyle(color: Colors.white)),
                   ]),
               Row( mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
                     TextButton(
                       style: TextButton.styleFrom(
-                          primary: Colors.black,
+                          primary: Colors.white,
                           textStyle: TextStyle(fontSize: 32, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
                       ),
                       onPressed: () {
