@@ -642,10 +642,10 @@ class GameActivity extends StatelessWidget {
                               print(target[0]);
                               //WIN CONDITION!!!!
                               if(RunningTimer==0) {
-                                msg="The lowest bidder is $lowestbidder. Show us the shortest path in $lowestbid moves";
+                                msg=" The lowest bidder is $lowestbidder.\n Show us the shortest path in $lowestbid moves";
                                 print("Lowest $RunningTimer");
-                              } else if(GameRound==1) {msg="Let the game begin. Please provide your lowest bid";}
-                              else if(GameRound>1) {msg="Let the next round begin. Please provide your lowest bid";}
+                              } else if(GameRound==1) {msg=" Let the game begin.\n Please provide your lowest bid";}
+                              else if(GameRound>1) {msg=" Let the next round begin.\n Please provide your lowest bid";}
 
                               if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid && lowestbid!=99)
                               {
@@ -657,7 +657,7 @@ class GameActivity extends StatelessWidget {
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
+                                msg=" $lowestbidder has failed miserable.\n Please proceed to the next best bidding player.";
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
@@ -670,7 +670,7 @@ class GameActivity extends StatelessWidget {
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="red" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
+                                msg=" $lowestbidder has failed miserable.\n Please proceed to the next best bidding player.";
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
@@ -683,7 +683,7 @@ class GameActivity extends StatelessWidget {
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="blue" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
+                                msg=" $lowestbidder has failed miserable.\n Please proceed to the next best bidding player.";
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
@@ -696,7 +696,7 @@ class GameActivity extends StatelessWidget {
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
                               } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="yellow" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                msg="$lowestbidder has failed miserable. Please proceed to the next best bidding player.";
+                                msg=" $lowestbidder has failed miserable.\n Please proceed to the next best bidding player.";
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
@@ -709,12 +709,18 @@ class GameActivity extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children:<Widget>[
                                       Row(mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[ Container(child:Text("  COUNTDOWN: " +RunningTimer.toString() + "     ",style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold))),
-                                        Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),),
+                                        children: <Widget>[ //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
+                                          Text("TARGET: ", style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
+                                          Container(
+                                              color: Colors.grey,
+                                              child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
+                                                Image.asset('assets/images/'+target[0].toString()+'southwest.png',     height: 30,
+                                                  width: 30,),
+                                              ])
+                                          ),
+                                          Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.black))
                                       ] ,
                                       ),
-                                      Container(child: Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
-                                      )
                                     ],
 
                                   )

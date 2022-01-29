@@ -635,8 +635,8 @@ class singleplayer extends StatelessWidget {
                               if(RunningTimer==0) {
                                 msg="Show us the shortest path in $lowestbid moves";
                                 print("Lowest $RunningTimer");
-                              } else if(GameRound==1) {msg="Let the game begin. Please provide your lowest bid";}
-                              else if(GameRound>1) {msg="Let the next round begin. Please provide your lowest bid";}
+                              } else if(GameRound==1) {msg=" Let the game begin.\n Please provide your lowest bid";}
+                              else if(GameRound>1) {msg=" Let the next round begin.\n Please provide your lowest bid";}
 
                               if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid && lowestbid!=99)
                               {
@@ -701,11 +701,19 @@ class singleplayer extends StatelessWidget {
                                     children:<Widget>[
                                       Row(mainAxisAlignment: MainAxisAlignment.center,
                                         children: <Widget>[
-                                          Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),),
+                                          //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
+                                          Text("TARGET: ", style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
+                                          Container(
+                                              color: Colors.grey,
+                                              child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
+                                                Image.asset('assets/images/'+target[0].toString()+'southwest.png',     height: 30,
+                                                  width: 30,),
+                                              ])
+                                          ),
+                                          Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.black))
                                         ] ,
                                       ),
-                                      Container(child: Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
-                                      )
+
                                     ],
 
                                   )
