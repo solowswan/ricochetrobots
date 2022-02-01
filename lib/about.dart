@@ -11,7 +11,6 @@ import 'package:ricochetrobots/games_list.dart';
 import 'main.dart';
 import 'game_activity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;

@@ -175,6 +175,7 @@ class singleplayer extends StatelessWidget {
   late FocusNode myFocusNode;
 
   ValueNotifier<int> _counter = ValueNotifier<int>(10);
+  ValueNotifier<int> _switch = ValueNotifier<int>(1);
 
   final bet = TextEditingController();
   int counter = 5;
@@ -241,7 +242,7 @@ class singleplayer extends StatelessWidget {
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             //if(snapshot.hasData) {
             if (snapshot.hasData) {
-              print(_auth.currentUser?.email);
+//              print(_auth.currentUser?.email);
 
               int PositionBlueI = snapshot.data?.data()!["bluei"];
               int PositionBlueAltI = snapshot.data?.data()!["bluealti"];
@@ -270,11 +271,11 @@ class singleplayer extends StatelessWidget {
               String hostplayer = snapshot.data?.data()!["Host"];
 
               int lowestbid = snapshot.data?.data()!["lowestbid"];
-              print(lowestbidder);
-              print(lowestbid);
-              print(GameRound);
-              print(RunningTimer);
-              print(_auth.currentUser?.email);
+      //        print(lowestbidder);
+     //         print(lowestbid);
+        //      print(GameRound);
+      //        print(RunningTimer);
+       //       print(_auth.currentUser?.email);
               //QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/TestGame/Collectibles').orderBy('Round', descending: false).limit(1).get();
               //var list = querySnapshot.docs;
               //List<int> collectibleslist = [];
@@ -283,246 +284,13 @@ class singleplayer extends StatelessWidget {
 
               bool isEnabled = false;
               if(RunningTimer>0){isEnabled=true;}else{isEnabled=false;}
-              print(isEnabled);
+    //          print(isEnabled);
 
               return (
 
                   ListView(
                     children: <Widget>[
-
-
-                      ConstrainedBox(
-                        //color: Colors.grey,
-                        //height: 60.0,
-                        constraints:BoxConstraints(maxWidth: 1),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(_auth.currentUser?.email,PositionRedI,PositionRedJ,1); };
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_upward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.red,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(_auth.currentUser?.email,PositionRedI,PositionRedJ,2);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.red,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(_auth.currentUser?.email,PositionRedI,PositionRedJ,3);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.red,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveRedAlt(_auth.currentUser?.email,PositionRedI,PositionRedJ,4);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.red,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(_auth.currentUser?.email,PositionBlueI,PositionBlueJ,1);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_upward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.blue,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(_auth.currentUser?.email,PositionBlueI,PositionBlueJ,2);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.blue,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(_auth.currentUser?.email,PositionBlueI,PositionBlueJ,3);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.blue,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveBlueAlt(_auth.currentUser?.email,PositionBlueI,PositionBlueJ,4);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.blue,
-                              ),
-                            ),
-
-                          ],
-                        ),
-                      ),
-                      ConstrainedBox(
-                        //color: Colors.grey,
-                        //height: 60.0,
-                        constraints:BoxConstraints(maxWidth: 1),
-                        child:Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () {
-                                //if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(PositionGreenI,PositionGreenJ,1);};
-                                _handleMoveGreenAlt(_auth.currentUser?.email,PositionGreenI,PositionGreenJ,1);
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_upward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.green,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(_auth.currentUser?.email,PositionGreenI,PositionGreenJ,2);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.green,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(_auth.currentUser?.email,PositionGreenI,PositionGreenJ,3);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.green,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveGreenAlt(_auth.currentUser?.email,PositionGreenI,PositionGreenJ,4);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.green,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(_auth.currentUser?.email,PositionYellowI,PositionYellowJ,1);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_upward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.yellow,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(_auth.currentUser?.email,PositionYellowI,PositionYellowJ,2);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_forward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.yellow,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(_auth.currentUser?.email,PositionYellowI,PositionYellowJ,3);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_downward,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.yellow,
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                if(RunningTimer==0 && _auth.currentUser?.email==lowestbidder) {_handleMoveYellowAlt(_auth.currentUser?.email,PositionYellowI,PositionYellowJ,4);};
-                              },
-                              child: CircleAvatar(
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: Colors.black,
-                                  size: 40.0,
-                                ),
-                                backgroundColor: Colors.yellow,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                      ),
-                      ConstrainedBox(
+                 ConstrainedBox(
                         //color: Colors.grey,
                         //height: 60.0,
                         constraints:BoxConstraints(maxWidth: 1),
@@ -577,7 +345,7 @@ class singleplayer extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                               onPressed: () {
                                 _counter.value--;
-                                print(_counter.value);
+                 //               print(_counter.value);
                               },
                             ),
 
@@ -630,18 +398,18 @@ class singleplayer extends StatelessWidget {
                               //snapshot1.data?.docs.forEach((f) => print(f.id));
                               collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
                               //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
-                              print(target[0]);
+               //               print(target[0]);
                               //WIN CONDITION!!!!
                               if(RunningTimer==0) {
                                 msg="Show us the shortest path in $lowestbid moves";
-                                print("Lowest $RunningTimer");
+                                //print("Lowest $RunningTimer");
                               } else if(GameRound==1) {msg=" Let the game begin.\n Please provide your lowest bid";}
                               else if(GameRound>1) {msg=" Let the next round begin.\n Please provide your lowest bid";}
 
-                              if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="green" && movecount<=lowestbid && lowestbid!=99)
+                              if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Green" && movecount<=lowestbid && lowestbid!=99)
                               {
-                                print(boardpos[PositionGreenI][PositionGreenJ].collectible);
-                                print(target[0].toString().substring(0,5));
+                                //print(boardpos[PositionGreenI][PositionGreenJ].collectible);
+                                //print(target[0].toString().substring(0,5));
                                 msg="$lowestbidder has won!!!";
                                 _setwinner(_auth.currentUser?.email, 1,lowestbidder);
                                 // _nextRound("TestGame",GameRound,lowestbidder);
@@ -652,47 +420,47 @@ class singleplayer extends StatelessWidget {
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
-                              if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="red" && movecount<=lowestbid && lowestbid!=99)
+                              if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="Red" && movecount<=lowestbid && lowestbid!=99)
                               {
-                                print(boardpos[PositionRedI][PositionRedJ].collectible);
-                                print(target[0].toString().substring(0,3));
+                                //print(boardpos[PositionRedI][PositionRedJ].collectible);
+                                //print(target[0].toString().substring(0,3));
                                 msg="$lowestbidder has won!!!";
                                 _setwinner(_auth.currentUser?.email, 1,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
-                              } else if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="red" && movecount>lowestbid) {
+                              } else if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Red" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
                                 msg="You have failed. Please proceed to the next round.";
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
-                              if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="blue" && movecount<=lowestbid && lowestbid!=99)
+                              if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="Blue" && movecount<=lowestbid && lowestbid!=99)
                               {
-                                print(boardpos[PositionBlueI][PositionBlueJ].collectible);
-                                print(target[0].toString().substring(0,4));
+                                //print(boardpos[PositionBlueI][PositionBlueJ].collectible);
+                                //print(target[0].toString().substring(0,4));
                                 msg="$lowestbidder has won!!!";
                                 _setwinner(_auth.currentUser?.email, 1,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
-                              } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="blue" && movecount>lowestbid) {
+                              } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Blue" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
                                 msg="You have failed. Please proceed to the next round.";
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
-                              if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="yellow" && movecount<=lowestbid && lowestbid!=99)
+                              if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="Yellow" && movecount<=lowestbid && lowestbid!=99)
                               {
-                                print(boardpos[PositionYellowI][PositionYellowJ].collectible);
-                                print(target[0].toString().substring(0,6));
+                                //print(boardpos[PositionYellowI][PositionYellowJ].collectible);
+                                //print(target[0].toString().substring(0,6));
                                 msg="CONGRATULATIONS!!! You have won!!!";
                                 _setwinner(_auth.currentUser?.email, 1,lowestbidder);
                                 //showAlertDialogWIN(context,GameRound,lowestbidder);
-                              } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="yellow" && movecount>lowestbid) {
+                              } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Yellow" && movecount>lowestbid) {
                                 //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
                                 msg="You have failed. Please proceed to the next round.";
                                 //sleep(Duration(seconds:2));
                                 //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
                               }
 
-                              print("Debug");
+                              //print("Debug");
                               //print(players.length);
                               //print(GameRound);
                               return (
@@ -733,6 +501,11 @@ class singleplayer extends StatelessWidget {
 
                         width: 800,
                         child:
+            ValueListenableBuilder(
+            valueListenable: _switch ,
+            builder: (context, value, child)
+            {
+            return (
                         GridView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
@@ -740,204 +513,399 @@ class singleplayer extends StatelessWidget {
                             crossAxisCount: columnCount,
                           ),
                           itemBuilder: (context, position) {
-                            // Get row and column number of square
-                            int rowNumber = (position / columnCount).floor();
-                            int columnNumber = (position % columnCount);
-                            Image image;
+                              //print(_switch.value);
+                              if(_switch.value==-1) {
+                                if(PositionBlueI<15){boardpos[PositionBlueI+1][PositionBlueJ].downarrow=true;}
+                                if(PositionBlueJ<15){boardpos[PositionBlueI][PositionBlueJ+1].rightarrow=true;}
+                                if(PositionBlueI>0){boardpos[PositionBlueI-1][PositionBlueJ].uparrow=true;}
+                                if(PositionBlueJ>0){boardpos[PositionBlueI][PositionBlueJ-1].leftarrow=true;}
+                              } else if(_switch.value==-2) {
+                                if(PositionRedI<15){boardpos[PositionRedI+1][PositionRedJ].downarrow=true;}
+                                if(PositionRedJ<15){boardpos[PositionRedI][PositionRedJ+1].rightarrow=true;}
+                                if(PositionRedI>0){boardpos[PositionRedI-1][PositionRedJ].uparrow=true;}
+                                if(PositionRedJ>0){boardpos[PositionRedI][PositionRedJ-1].leftarrow=true;}
+                              }else if(_switch.value==-3) {
+                                if(PositionGreenI<15){boardpos[PositionGreenI+1][PositionGreenJ].downarrow=true;}
+                                if(PositionGreenJ<15){boardpos[PositionGreenI][PositionGreenJ+1].rightarrow=true;}
+                                if(PositionGreenI>0){boardpos[PositionGreenI-1][PositionGreenJ].uparrow=true;}
+                                if(PositionGreenJ>0){boardpos[PositionGreenI][PositionGreenJ-1].leftarrow=true;}
+                              }else if(_switch.value==-4) {
+                                if(PositionYellowI<15){boardpos[PositionYellowI+1][PositionYellowJ].downarrow=true;}
+                                if(PositionYellowJ<15){boardpos[PositionYellowI][PositionYellowJ+1].rightarrow=true;}
+                                if(PositionYellowI>0){boardpos[PositionYellowI-1][PositionYellowJ].uparrow=true;}
+                                if(PositionYellowJ>0){boardpos[PositionYellowI][PositionYellowJ-1].leftarrow=true;}
+                              }else if (_switch.value.sign==1) {
+                                boardpos.forEach((f) => {f.forEach((x) => {x.downarrow=false}) });
+                                boardpos.forEach((f) => {f.forEach((x) => {x.rightarrow=false}) });
+                                boardpos.forEach((f) => {f.forEach((x) => {x.uparrow=false}) });
+                                boardpos.forEach((f) => {f.forEach((x) => {x.leftarrow=false}) });
+                              }
+                                  // Get row and column number of square
+                              int rowNumber = (position / columnCount).floor();
+                              int columnNumber = (position % columnCount);
+                              Image image;
 
-                            image = getImage(ImageType.facingDown);
+                              image = getImage(ImageType.facingDown);
 
-                            //boardpos[redi][redj].redposition = true;
-                            boardpos[PositionBlueAltI][PositionBlueAltJ].blueposition = false;
-                            boardpos[PositionBlueI][PositionBlueJ].blueposition = true;
-                            boardpos[PositionRedAltI][PositionRedAltJ].redposition = false;
-                            boardpos[PositionRedI][PositionRedJ].redposition = true;
-                            boardpos[PositionGreenAltI][PositionGreenAltJ].greenposition = false;
-                            boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
-                            boardpos[PositionYellowAltI][PositionYellowAltJ].yellowposition = false;
-                            boardpos[PositionYellowI][PositionYellowJ].yellowposition = true;
-                            if ((rowNumber == 7) && (columnNumber == 7)) {
-                              image = getImage(ImageType.bombnw);
-                            }
-                            else if ((rowNumber == 8) && (columnNumber == 7)) {
-                              image = getImage(ImageType.bombsw);
-                            }
-                            else if ((rowNumber == 7) && (columnNumber == 8)) {
-                              image = getImage(ImageType.bombne);
-                            }
-                            else if ((rowNumber == 8) && (columnNumber == 8)) {
-                              image = getImage(ImageType.bombse);
-                            }
-                            //Quadrant 1
-                            else if ((rowNumber == 4) && (columnNumber == 2)) {
-                              image = getImage(ImageType.greencirclene);
-                            }
-                            else if ((rowNumber == 2) && (columnNumber == 5)) {
-                              image = getImage(ImageType.bluecrossse);
-                            }
-                            else if ((rowNumber == 6) && (columnNumber == 1)) {
-                              image = getImage(ImageType.yellowsaturnnw);
-                            }
-                            else if ((rowNumber == 5) && (columnNumber == 7)) {
-                              image = getImage(ImageType.redtrianglesw);
-                            }
-                            else if ((rowNumber == 5) && (columnNumber == 0)) {
-                              image = getImage(ImageType.walln);
-                            }
-                            else if ((rowNumber == 4) && (columnNumber == 0)) {
-                              image = getImage(ImageType.walls);
-                            }
-                            else if ((rowNumber == 0) && (columnNumber == 3)) {
-                              image = getImage(ImageType.walle);
-                            }
-                            else if ((rowNumber == 0) && (columnNumber == 4)) {
-                              image = getImage(ImageType.wallw);
-                            }
-                            //Quadrant 2
-                            else if ((rowNumber == 2) && (columnNumber == 9)) {
-                              image = getImage(ImageType.bluetrianglese);
-                            }
-                            else if ((rowNumber == 1) && (columnNumber == 13)) {
-                              image = getImage(ImageType.redsaturnnw);
-                            }
-                            else if ((rowNumber == 6) && (columnNumber == 11)) {
-                              image = getImage(ImageType.yellowcirclene);
-                            }
-                            else if ((rowNumber == 5) && (columnNumber == 14)) {
-                              image = getImage(ImageType.greencrosssw);
-                            }
-                            else if ((rowNumber == 0) && (columnNumber == 11)) {
-                              image = getImage(ImageType.walle);
-                            }
-                            else if ((rowNumber == 0) && (columnNumber == 12)) {
-                              image = getImage(ImageType.wallw);
-                            }
-                            else if ((rowNumber == 3) && (columnNumber == 15)) {
-                              image = getImage(ImageType.walls);
-                            }
-                            else if ((rowNumber == 4) && (columnNumber == 15)) {
-                              image = getImage(ImageType.walln);
-                            }
-                            //Quadrant 3
-                            else if ((rowNumber == 11) && (columnNumber == 1)) {
-                              image = getImage(ImageType.redcirclesw);
-                            }
-                            else if ((rowNumber == 9) && (columnNumber == 3)) {
-                              image = getImage(ImageType.yellowcrossne);
-                            }
-                            else if ((rowNumber == 14) && (columnNumber == 2)) {
-                              image = getImage(ImageType.greentrianglenw);
-                            }
-                            else if ((rowNumber == 12) && (columnNumber == 6)) {
-                              image = getImage(ImageType.bluesaturnse);
-                            }
-                            else if ((rowNumber == 15) && (columnNumber == 5)) {
-                              image = getImage(ImageType.walle);
-                            }
-                            else if ((rowNumber == 15) && (columnNumber == 6)) {
-                              image = getImage(ImageType.wallw);
-                            }
-                            else if ((rowNumber == 13) && (columnNumber == 0)) {
-                              image = getImage(ImageType.walls);
-                            }
-                            else if ((rowNumber == 14) && (columnNumber == 0)) {
-                              image = getImage(ImageType.walln);
-                            }
-                            //Quadrant 4
-                            else if ((rowNumber == 10) && (columnNumber == 8)) {
-                              image = getImage(ImageType.rainbownw);
-                            }
-                            else if ((rowNumber == 10) && (columnNumber == 13)) {
-                              image = getImage(ImageType.redcrossnw);
-                            }
-                            else if ((rowNumber == 12) && (columnNumber == 14)) {
-                              image = getImage(ImageType.yellowtrianglesw);
-                            }
-                            else if ((rowNumber == 11) && (columnNumber == 10)) {
-                              image = getImage(ImageType.greensaturnse);
-                            }
-                            else if ((rowNumber == 14) && (columnNumber == 9)) {
-                              image = getImage(ImageType.bluecirclene);
-                            }
-                            else if ((rowNumber == 15) && (columnNumber == 11)) {
-                              image = getImage(ImageType.walle);
-                            }
-                            else if ((rowNumber == 15) && (columnNumber == 12)) {
-                              image = getImage(ImageType.wallw);
-                            }
-                            else if ((rowNumber == 8) && (columnNumber == 15)) {
-                              image = getImage(ImageType.walls);
-                            }
-                            else if ((rowNumber == 9) && (columnNumber == 15)) {
-                              image = getImage(ImageType.walln);
-                            }
-                            else if ((rowNumber == 9) && (columnNumber == 15)) {
-                              image = getImage(ImageType.walln);
-                            }
-                            else if ((rowNumber == 8) && (columnNumber == 15)) {
-                              image = getImage(ImageType.walls);
-                            }
-                            if (boardpos[rowNumber][columnNumber].blueposition) {
-                              return InkWell(
-                                onTap: () {
-                                },
-                                splashColor: Colors.grey,
-                                child: Container(
-                                    color: Colors.grey,
-                                    child: Stack(children: <Widget>[image,
-                                      Image.asset('assets/images/blueplayer.png'),
-                                    ])
-                                ),
-                              );
-                            } else if (boardpos[rowNumber][columnNumber].redposition) {
-                              return InkWell(
-                                onTap: () {
-                                },
-                                splashColor: Colors.grey,
-                                child: Container(
-                                    color: Colors.grey,
-                                    child: Stack(children: <Widget>[image,
-                                      Image.asset('assets/images/redplayer.png'),
-                                    ])
-                                ),
-                              );
-                            } else if (boardpos[rowNumber][columnNumber].greenposition) {
-                              return InkWell(
-                                onTap: () {
-                                },
-                                splashColor: Colors.grey,
-                                child: Container(
-                                    color: Colors.grey,
-                                    child: Stack(children: <Widget>[image,
-                                      Image.asset('assets/images/greenplayer.png'),
-                                    ])
-                                ),
-                              );
-                            } else if (boardpos[rowNumber][columnNumber].yellowposition) {
-                              return InkWell(
-                                onTap: () {
-                                },
-                                splashColor: Colors.grey,
-                                child: Container(
-                                    color: Colors.grey,
-                                    child: Stack(children: <Widget>[image,
-                                      Image.asset('assets/images/yellowplayer.png'),
-                                    ])
-                                ),
-                              );
-                            } else {
-                              return InkWell(
-                                splashColor: Colors.grey,
-                                child: Container(
-                                    color: Colors.grey,
-                                    child: Stack(children: <Widget>[image,
-                                    ])
-                                ),
-                              );
-                            }
+                              //boardpos[redi][redj].redposition = true;
+                              boardpos[PositionBlueAltI][PositionBlueAltJ].blueposition = false;
+                              boardpos[PositionBlueI][PositionBlueJ].blueposition = true;
+                              boardpos[PositionRedAltI][PositionRedAltJ].redposition = false;
+                              boardpos[PositionRedI][PositionRedJ].redposition = true;
+                              boardpos[PositionGreenAltI][PositionGreenAltJ].greenposition = false;
+                              boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
+                              boardpos[PositionYellowAltI][PositionYellowAltJ].yellowposition = false;
+                              boardpos[PositionYellowI][PositionYellowJ].yellowposition = true;
+                              if ((rowNumber == 7) && (columnNumber == 7)) {
+                                image = getImage(ImageType.bombnw);
+                              }
+                              else if ((rowNumber == 8) &&
+                                  (columnNumber == 7)) {
+                                image = getImage(ImageType.bombsw);
+                              }
+                              else
+                              if ((rowNumber == 7) && (columnNumber == 8)) {
+                                image = getImage(ImageType.bombne);
+                              }
+                              else
+                              if ((rowNumber == 8) && (columnNumber == 8)) {
+                                image = getImage(ImageType.bombse);
+                              }
+                              //Quadrant 1
+                              else
+                              if ((rowNumber == 4) && (columnNumber == 2)) {
+                                image = getImage(ImageType.greencirclene);
+                              }
+                              else
+                              if ((rowNumber == 2) && (columnNumber == 5)) {
+                                image = getImage(ImageType.bluecrossse);
+                              }
+                              else
+                              if ((rowNumber == 6) && (columnNumber == 1)) {
+                                image = getImage(ImageType.yellowsaturnnw);
+                              }
+                              else
+                              if ((rowNumber == 5) && (columnNumber == 7)) {
+                                image = getImage(ImageType.redtrianglesw);
+                              }
+                              else
+                              if ((rowNumber == 5) && (columnNumber == 0)) {
+                                image = getImage(ImageType.walln);
+                              }
+                              else
+                              if ((rowNumber == 4) && (columnNumber == 0)) {
+                                image = getImage(ImageType.walls);
+                              }
+                              else
+                              if ((rowNumber == 0) && (columnNumber == 3)) {
+                                image = getImage(ImageType.walle);
+                              }
+                              else
+                              if ((rowNumber == 0) && (columnNumber == 4)) {
+                                image = getImage(ImageType.wallw);
+                              }
+                              //Quadrant 2
+                              else
+                              if ((rowNumber == 2) && (columnNumber == 9)) {
+                                image = getImage(ImageType.bluetrianglese);
+                              }
+                              else
+                              if ((rowNumber == 1) && (columnNumber == 13)) {
+                                image = getImage(ImageType.redsaturnnw);
+                              }
+                              else
+                              if ((rowNumber == 6) && (columnNumber == 11)) {
+                                image = getImage(ImageType.yellowcirclene);
+                              }
+                              else
+                              if ((rowNumber == 5) && (columnNumber == 14)) {
+                                image = getImage(ImageType.greencrosssw);
+                              }
+                              else
+                              if ((rowNumber == 0) && (columnNumber == 11)) {
+                                image = getImage(ImageType.walle);
+                              }
+                              else
+                              if ((rowNumber == 0) && (columnNumber == 12)) {
+                                image = getImage(ImageType.wallw);
+                              }
+                              else
+                              if ((rowNumber == 3) && (columnNumber == 15)) {
+                                image = getImage(ImageType.walls);
+                              }
+                              else
+                              if ((rowNumber == 4) && (columnNumber == 15)) {
+                                image = getImage(ImageType.walln);
+                              }
+                              //Quadrant 3
+                              else
+                              if ((rowNumber == 11) && (columnNumber == 1)) {
+                                image = getImage(ImageType.redcirclesw);
+                              }
+                              else
+                              if ((rowNumber == 9) && (columnNumber == 3)) {
+                                image = getImage(ImageType.yellowcrossne);
+                              }
+                              else
+                              if ((rowNumber == 14) && (columnNumber == 2)) {
+                                image = getImage(ImageType.greentrianglenw);
+                              }
+                              else
+                              if ((rowNumber == 12) && (columnNumber == 6)) {
+                                image = getImage(ImageType.bluesaturnse);
+                              }
+                              else
+                              if ((rowNumber == 15) && (columnNumber == 5)) {
+                                image = getImage(ImageType.walle);
+                              }
+                              else
+                              if ((rowNumber == 15) && (columnNumber == 6)) {
+                                image = getImage(ImageType.wallw);
+                              }
+                              else
+                              if ((rowNumber == 13) && (columnNumber == 0)) {
+                                image = getImage(ImageType.walls);
+                              }
+                              else
+                              if ((rowNumber == 14) && (columnNumber == 0)) {
+                                image = getImage(ImageType.walln);
+                              }
+                              //Quadrant 4
+                              else
+                              if ((rowNumber == 10) && (columnNumber == 8)) {
+                                image = getImage(ImageType.rainbownw);
+                              }
+                              else
+                              if ((rowNumber == 10) && (columnNumber == 13)) {
+                                image = getImage(ImageType.redcrossnw);
+                              }
+                              else
+                              if ((rowNumber == 12) && (columnNumber == 14)) {
+                                image = getImage(ImageType.yellowtrianglesw);
+                              }
+                              else
+                              if ((rowNumber == 11) && (columnNumber == 10)) {
+                                image = getImage(ImageType.greensaturnse);
+                              }
+                              else
+                              if ((rowNumber == 14) && (columnNumber == 9)) {
+                                image = getImage(ImageType.bluecirclene);
+                              }
+                              else
+                              if ((rowNumber == 15) && (columnNumber == 11)) {
+                                image = getImage(ImageType.walle);
+                              }
+                              else
+                              if ((rowNumber == 15) && (columnNumber == 12)) {
+                                image = getImage(ImageType.wallw);
+                              }
+                              else
+                              if ((rowNumber == 8) && (columnNumber == 15)) {
+                                image = getImage(ImageType.walls);
+                              }
+                              else
+                              if ((rowNumber == 9) && (columnNumber == 15)) {
+                                image = getImage(ImageType.walln);
+                              }
+                              else
+                              if ((rowNumber == 9) && (columnNumber == 15)) {
+                                image = getImage(ImageType.walln);
+                              }
+                              else
+                              if ((rowNumber == 8) && (columnNumber == 15)) {
+                                image = getImage(ImageType.walls);
+                              }
+                              if (boardpos[rowNumber][columnNumber].rightarrow) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value * -1;
+                                   // print("Switch");
+                                    //print(_switch.value);
+                                   // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                  //  {
+                                    if(_switch.value==1 || _switch.value==-1) {
+                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 2);
+                                    } else if(_switch.value==2 || _switch.value==-2) {
+                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 2);
+                                    } else if(_switch.value==3|| _switch.value==-3) {
+                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 2);
+                                    } else if(_switch.value==4|| _switch.value==-4) {
+                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 2);
+                                    }
+                                 //   };
+
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/0.png'),
+                                      ])
+                                  ),
+                                );
+                              }
+                              else if (boardpos[rowNumber][columnNumber].uparrow) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value * -1;
+                                  //  print("Switch");
+                                  //  print(_switch.value);
+                                    // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                    //  {
+                                    if(_switch.value==1 || _switch.value==-1) {
+                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 1);
+                                    } else if(_switch.value==2 || _switch.value==-2) {
+                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 1);
+                                    } else if(_switch.value==3|| _switch.value==-3) {
+                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 1);
+                                    } else if(_switch.value==4|| _switch.value==-4) {
+                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 1);
+                                    }
+                                    //   };
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/0.png'),
+                                      ])
+                                  ),
+                                );
+                              }
+                              else if (boardpos[rowNumber][columnNumber].leftarrow) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value * -1;
+                                   // print("Switch");
+                                  //  print(_switch.value);
+                                    // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                    //  {
+                                    if(_switch.value==1 || _switch.value==-1) {
+                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 4);
+                                    } else if(_switch.value==2 || _switch.value==-2) {
+                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 4);
+                                    } else if(_switch.value==3|| _switch.value==-3) {
+                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 4);
+                                    } else if(_switch.value==4|| _switch.value==-4) {
+                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 4);
+                                    }
+                                    //   };
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/0.png'),
+                                      ])
+                                  ),
+                                );
+                              }
+                              else if (boardpos[rowNumber][columnNumber].downarrow) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value * -1;
+                                  //  print("Switch");
+                                  //  print(_switch.value);
+                                    // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                    //  {
+                                    if(_switch.value==1 || _switch.value==-1) {
+                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 3);
+                                    } else if(_switch.value==2 || _switch.value==-2) {
+                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 3);
+                                    } else if(_switch.value==3|| _switch.value==-3) {
+                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 3);
+                                    } else if(_switch.value==4|| _switch.value==-4) {
+                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 3);
+                                    }
+                                    //   };
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/0.png'),
+                                      ])
+                                  ),
+                                );
+                              }
+                              else if (boardpos[rowNumber][columnNumber].blueposition) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value.sign * 1 * -1;
+                                 //   print(_switch.value);
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/blueplayer.png'),
+                                      ])
+                                  ),
+                                );
+                              } else if (boardpos[rowNumber][columnNumber].redposition) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value.sign * 2 * -1;
+                                 //   print(_switch.value);
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/redplayer.png'),
+                                      ])
+                                  ),
+                                );
+                              } else if (boardpos[rowNumber][columnNumber].greenposition) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value.sign * 3 * -1;
+                                 //   print(_switch.value);
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/greenplayer.png'),
+                                      ])
+                                  ),
+                                );
+                              } else if (boardpos[rowNumber][columnNumber].yellowposition) {
+                                return InkWell(
+                                  onTap: () {
+                                    _switch.value = _switch.value.sign * 4 * -1;
+                              //      print(_switch.value);
+                                  },
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                        Image.asset(
+                                            'assets/images/yellowplayer.png'),
+                                      ])
+                                  ),
+                                );
+                              } else {
+                                return InkWell(
+                                  splashColor: Colors.grey,
+                                  child: Container(
+                                      color: Colors.grey,
+                                      child: Stack(children: <Widget>[image,
+                                      ])
+                                  ),
+                                );
+                              }
                           },
                           itemCount: rowCount * columnCount,
-                        ),
+                        )
+            );})
                       ),
                       ),
                       Center(child:Text("Moves " + movecount.toString(),style: TextStyle(fontSize: 32.0,fontWeight:FontWeight.bold))),
@@ -1190,22 +1158,22 @@ class singleplayer extends StatelessWidget {
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
-    boardpos[1][13].collectible = "redsaturn";
-    boardpos[2][5].collectible = "bluestar";
-    boardpos[2][9].collectible = "bluetriangle";
-    boardpos[4][2].collectible = "greencircle";
-    boardpos[5][7].collectible = "redtriangle";
-    boardpos[5][14].collectible = "greenstar";
-    boardpos[6][1].collectible = "yellowsaturn";
-    boardpos[6][11].collectible = "yellowcircle";
-    boardpos[9][3].collectible = "yellowstar";
-    boardpos[10][13].collectible = "redstar";
-    boardpos[11][1].collectible = "redcircle";
-    boardpos[11][10].collectible = "greensaturn";
-    boardpos[12][6].collectible = "bluesaturn";
-    boardpos[12][14].collectible = "yellowtriangle";
-    boardpos[14][2].collectible = "greentriangle";
-    boardpos[14][9].collectible = "bluecircle";
+    boardpos[1][13].collectible = "RedSaturn";
+    boardpos[2][5].collectible = "BlueCross";
+    boardpos[2][9].collectible = "BlueTriangle";
+    boardpos[4][2].collectible = "GreenCircle";
+    boardpos[5][7].collectible = "RedTriangle";
+    boardpos[5][14].collectible = "GreenCross";
+    boardpos[6][1].collectible = "YellowSaturn";
+    boardpos[6][11].collectible = "YellowCircle";
+    boardpos[9][3].collectible = "YellowCross";
+    boardpos[10][13].collectible = "RedCross";
+    boardpos[11][1].collectible = "RedCircle";
+    boardpos[11][10].collectible = "GreenSaturn";
+    boardpos[12][6].collectible = "BlueSaturn";
+    boardpos[12][14].collectible = "YellowTriangle";
+    boardpos[14][2].collectible = "GreenTriangle";
+    boardpos[14][9].collectible = "BlueCircle";
 
 
 
@@ -1393,22 +1361,22 @@ class singleplayer extends StatelessWidget {
     //board[10][3].red = true;
     // Check bombs around and assign numbers
 
-    boardpos[1][13].collectible = "redsaturn";
-    boardpos[2][5].collectible = "bluestar";
-    boardpos[2][9].collectible = "bluetriangle";
-    boardpos[4][2].collectible = "greencircle";
-    boardpos[5][7].collectible = "redtriangle";
-    boardpos[5][14].collectible = "greenstar";
-    boardpos[6][1].collectible = "yellowsaturn";
-    boardpos[6][11].collectible = "yellowcircle";
-    boardpos[9][3].collectible = "yellowstar";
-    boardpos[10][13].collectible = "redstar";
-    boardpos[11][1].collectible = "redcircle";
-    boardpos[11][10].collectible = "greensaturn";
-    boardpos[12][6].collectible = "bluesaturn";
-    boardpos[12][14].collectible = "yellowtriangle";
-    boardpos[14][2].collectible = "greentriangle";
-    boardpos[14][9].collectible = "bluecircle";
+    boardpos[1][13].collectible = "RedSaturn";
+    boardpos[2][5].collectible = "BlueCross";
+    boardpos[2][9].collectible = "BlueTriangle";
+    boardpos[4][2].collectible = "GreenCircle";
+    boardpos[5][7].collectible = "RedTriangle";
+    boardpos[5][14].collectible = "GreenCross";
+    boardpos[6][1].collectible = "YellowSaturn";
+    boardpos[6][11].collectible = "YellowCircle";
+    boardpos[9][3].collectible = "YellowCross";
+    boardpos[10][13].collectible = "RedCross";
+    boardpos[11][1].collectible = "RedCircle";
+    boardpos[11][10].collectible = "GreenSaturn";
+    boardpos[12][6].collectible = "BlueSaturn";
+    boardpos[12][14].collectible = "YellowTriangle";
+    boardpos[14][2].collectible = "GreenTriangle";
+    boardpos[14][9].collectible = "BlueCircle";
 
 
     boardpos[redi][redj].redposition = false;      // print(snapshot.connectionState);
@@ -1446,25 +1414,25 @@ class singleplayer extends StatelessWidget {
       list[a]=bvalue;
       list[b]=avalue;
     }
-    print("a");
+  //  print("a");
     CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/'+gamename!+'/Collectibles');
 
-    await collectibleupdate.doc("redsaturn").update({'Round': list[1]});
-    await collectibleupdate.doc("bluestar").update({'Round': list[2]});
-    await collectibleupdate.doc("bluetriangle").update({'Round': list[3]});
-    await collectibleupdate.doc("greencircle").update({'Round': list[4]});
-    await collectibleupdate.doc("redtriangle").update({'Round': list[5]});
-    await collectibleupdate.doc("greenstar").update({'Round': list[6]});
-    await collectibleupdate.doc("yellowsaturn").update({'Round': list[7]});
-    await collectibleupdate.doc("yellowcircle").update({'Round': list[8]});
-    await collectibleupdate.doc("yellowstar").update({'Round': list[9]});
-    await collectibleupdate.doc("redstar").update({'Round': list[10]});
-    await collectibleupdate.doc("redcircle").update({'Round': list[11]});
-    await collectibleupdate.doc("greensaturn").update({'Round': list[12]});
-    await collectibleupdate.doc("bluesaturn").update({'Round': list[13]});
-    await collectibleupdate.doc("yellowtriangle").update({'Round': list[14]});
-    await collectibleupdate.doc("greentriangle").update({'Round': list[15]});
-    await collectibleupdate.doc("bluecircle").update({'Round': list[0]});
+    await collectibleupdate.doc("RedSaturn").update({'Round': list[1]});
+    await collectibleupdate.doc("BlueCross").update({'Round': list[2]});
+    await collectibleupdate.doc("BlueTriangle").update({'Round': list[3]});
+    await collectibleupdate.doc("GreenCircle").update({'Round': list[4]});
+    await collectibleupdate.doc("RedTriangle").update({'Round': list[5]});
+    await collectibleupdate.doc("GreenCross").update({'Round': list[6]});
+    await collectibleupdate.doc("YellowSaturn").update({'Round': list[7]});
+    await collectibleupdate.doc("YellowCircle").update({'Round': list[8]});
+    await collectibleupdate.doc("YellowCross").update({'Round': list[9]});
+    await collectibleupdate.doc("RedCross").update({'Round': list[10]});
+    await collectibleupdate.doc("RedCircle").update({'Round': list[11]});
+    await collectibleupdate.doc("GreenSaturn").update({'Round': list[12]});
+    await collectibleupdate.doc("BlueSaturn").update({'Round': list[13]});
+    await collectibleupdate.doc("YellowTriangle").update({'Round': list[14]});
+    await collectibleupdate.doc("GreenTriangle").update({'Round': list[15]});
+    await collectibleupdate.doc("BlueCircle").update({'Round': list[0]});
 
   }
   // This function opens other squares around the target square which don't have any bombs around them.
@@ -1579,7 +1547,7 @@ class singleplayer extends StatelessWidget {
     greenj=j;
 
     await game.doc(gamename).update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
-    print("MOVED");
+  //  print("MOVED");
     if(ialt!=i || jalt!=j) {
       await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
     }

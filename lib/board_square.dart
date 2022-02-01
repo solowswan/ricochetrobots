@@ -18,8 +18,18 @@ class BoardPosition {
   bool obstaclesouth;
   bool obstaclewest;
   String collectible;
+  bool rightarrow;
+  bool leftarrow;
+  bool uparrow;
+  bool downarrow;
 
-  BoardPosition({this.redposition = false, this.blueposition = false, this.greenposition = false,this.yellowposition = false,this.obstaclenorth = false, this.obstacleeast = false, this.obstaclesouth = false, this.obstaclewest = false, this.collectible=""});
+  BoardPosition({this.redposition = false, this.blueposition = false, this.greenposition = false,
+    this.yellowposition = false,this.obstaclenorth = false, this.obstacleeast = false, this.obstaclesouth = false, this.obstaclewest = false, this.collectible="",
+    this.rightarrow = false,
+    this.leftarrow = false,
+    this.uparrow = false,
+    this.downarrow = false,
+  });
 
 }
 

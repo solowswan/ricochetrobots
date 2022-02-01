@@ -9,7 +9,6 @@ import 'menulist.dart';
 import 'signup.dart';
 
 
-
 FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {

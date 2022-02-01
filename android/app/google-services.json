@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "47402973522",
+    "project_id": "ricochet-robots-78315",
+    "storage_bucket": "ricochet-robots-78315.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:47402973522:android:972c865a7b907cdb8f228b",
+        "android_client_info": {
+          "package_name": "com.micheler.ricochetrobots"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "47402973522-tgh127djigkiooh1m62tie23e72jh4t9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLQgK187JmCIESr0itwTy3-eFk-GDXrK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "47402973522-tgh127djigkiooh1m62tie23e72jh4t9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

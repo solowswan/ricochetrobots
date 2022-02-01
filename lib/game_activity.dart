@@ -714,7 +714,7 @@ class GameActivity extends StatelessWidget {
                                           Container(
                                               color: Colors.grey,
                                               child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
-                                                Image.asset('assets/images/'+target[0].toString()+'southwest.png',     height: 30,
+                                                Image.asset('assets/images/'+target[0].toString()+'SouthWest.png',     height: 30,
                                                   width: 30,),
                                               ])
                                           ),
@@ -1463,15 +1463,15 @@ print("a");
     CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Collectibles');
 
     await collectibleupdate.doc("RedSaturn").update({'Round': list[1]});
-    await collectibleupdate.doc("BlueStar").update({'Round': list[2]});
+    await collectibleupdate.doc("BlueCross").update({'Round': list[2]});
     await collectibleupdate.doc("BlueTriangle").update({'Round': list[3]});
     await collectibleupdate.doc("GreenCircle").update({'Round': list[4]});
     await collectibleupdate.doc("RedTriangle").update({'Round': list[5]});
-    await collectibleupdate.doc("GreenStar").update({'Round': list[6]});
+    await collectibleupdate.doc("GreenCross").update({'Round': list[6]});
     await collectibleupdate.doc("YellowSaturn").update({'Round': list[7]});
     await collectibleupdate.doc("YellowCircle").update({'Round': list[8]});
-    await collectibleupdate.doc("YellowStar").update({'Round': list[9]});
-    await collectibleupdate.doc("RedStar").update({'Round': list[10]});
+    await collectibleupdate.doc("YellowCross").update({'Round': list[9]});
+    await collectibleupdate.doc("RedCross").update({'Round': list[10]});
     await collectibleupdate.doc("RedCircle").update({'Round': list[11]});
     await collectibleupdate.doc("GreenSaturn").update({'Round': list[12]});
     await collectibleupdate.doc("BlueSaturn").update({'Round': list[13]});

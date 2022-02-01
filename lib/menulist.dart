@@ -15,7 +15,6 @@ import 'package:ricochetrobots/multiplayer_create.dart';
 import 'main.dart';
 import 'game_activity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import 'singleplayer.dart';
 

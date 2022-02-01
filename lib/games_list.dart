@@ -10,7 +10,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
 import 'game_activity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
