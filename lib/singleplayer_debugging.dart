@@ -171,10 +171,10 @@ class singleplayer_debugging extends StatelessWidget {
   int yellowi = 0;
   int yellowj = 5;
 
-  int PositionBlueI = 4;
-  int PositionBlueAltI = 4;
-  int PositionBlueJ=4;
-  int PositionBlueAltJ = 4;
+  int PositionBlueI = 2;
+  int PositionBlueAltI = 2;
+  int PositionBlueJ=8;
+  int PositionBlueAltJ = 2;
 
   int PositionRedI = 3;
   int PositionRedAltI = 3;
@@ -233,7 +233,7 @@ class singleplayer_debugging extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Ricochet Robots'),
+            Text('HURDLE'),
           ],
           // children: [
           //Image.asset(
@@ -450,12 +450,25 @@ class singleplayer_debugging extends StatelessWidget {
                                             boardpos.forEach((f) => {f.forEach((x) => {x.leftarrow=false}) });
                                           }
                                           boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
+                                          boardpos[PositionBlueI][PositionBlueJ].blueposition = true;
+                                          boardpos[PositionYellowI][PositionYellowJ].yellowposition = true;
+                                          boardpos[PositionRedI][PositionRedJ].redposition = true;
 
                                           _initialiseGame();
                                           double topwidth=0.0;
                                           double bottomwidth=0.0;
                                           double rightwidth=0.0;
                                           double leftwidth=0.0;
+                                          double saturn=0.0;
+                                          double circle=0.0;
+                                          int iconindex=-1;
+                                          List<IconData> _icons = [
+                                            Icons.wb_sunny_sharp,
+                                            Icons.add_alarm,
+                                            Icons.anchor,
+                                            Icons.vpn_lock,
+                                          ];
+                                          final Color myColor;
                                           if (boardpos[rowNumber][columnNumber].obstaclenorth) {
                                            topwidth=4;
                                           }
@@ -468,7 +481,57 @@ class singleplayer_debugging extends StatelessWidget {
                                           if (boardpos[rowNumber][columnNumber].obstaclewest) {
                                             leftwidth=4;
                                           }
-
+                                          if (boardpos[rowNumber][columnNumber].collectible == "GreenSaturn") {
+                                            iconindex=0;
+                                            myColor = Colors.green;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "RedSaturn") {
+                                            iconindex=0;
+                                            myColor = Colors.red;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "BlueSaturn") {
+                                            iconindex=0;
+                                            myColor = Colors.blue;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "YellowSaturn") {
+                                            iconindex=0;
+                                            myColor = Colors.yellow;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "GreenCircle") {
+                                            iconindex=1;
+                                            myColor = Colors.green;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "RedCircle") {
+                                            iconindex=1;
+                                            myColor = Colors.red;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "BlueCircle") {
+                                            iconindex=1;
+                                            myColor = Colors.blue;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "YellowCircle") {
+                                            iconindex=1;
+                                            myColor = Colors.yellow;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "GreenTriangle") {
+                                            iconindex=2;
+                                            myColor = Colors.green;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "RedTriangle") {
+                                            iconindex=2;
+                                            myColor = Colors.red;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "BlueTriangle") {
+                                            iconindex=2;
+                                            myColor = Colors.blue;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "YellowTriangle") {
+                                            iconindex=2;
+                                            myColor = Colors.yellow;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "GreenCross") {
+                                            iconindex=3;
+                                            myColor = Colors.green;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "RedCross") {
+                                            iconindex=3;
+                                            myColor = Colors.red;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "BlueCross") {
+                                            iconindex=3;
+                                            myColor = Colors.blue;
+                                          } else if (boardpos[rowNumber][columnNumber].collectible == "YellowCross") {
+                                            iconindex=3;
+                                            myColor = Colors.yellow;
+                                          }else {
+                                            myColor = Colors.white;
+                                          }
 
 
 
@@ -493,46 +556,43 @@ class singleplayer_debugging extends StatelessWidget {
                                                 //   };
 
                                               },
-                                              splashColor: Colors.grey,
-                                              child: Container(
-                                                  color: Colors.grey,
-                                                  child: Stack(children: <Widget>[Container(
-                                                    // padding: const EdgeInsets.all(1.0),
-                                                    padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
-                                                    //color: Colors.black,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          top: BorderSide(
-                                                              width: topwidth,
-                                                              color: Colors.black),
-                                                          bottom: BorderSide(
-                                                              width: bottomwidth,
-                                                              color: Colors.black),
-                                                          right: BorderSide(
-                                                              width: rightwidth,
-                                                              color: Colors.black),
-                                                          left: BorderSide(
-                                                              width: leftwidth,
-                                                              color: Colors.black)
-                                                      ),
-                                                      color: Colors.white,
+                                                splashColor: Colors.grey,
+                                                child: Stack(children: <Widget>[Container(
+                                                  padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        top: BorderSide(
+                                                            width: topwidth,
+                                                            color: Colors.black),
+                                                        bottom: BorderSide(
+                                                            width: bottomwidth,
+                                                            color: Colors.black),
+                                                        right: BorderSide(
+                                                            width: rightwidth,
+                                                            color: Colors.black),
+                                                        left: BorderSide(
+                                                            width: leftwidth,
+                                                            color: Colors.black)
                                                     ),
-                                                    child: Container(
-                                                        color: Colors.grey,
-                                                        child: Text(
-                                                            position.toString())
-                                                    ),
+                                                    color: Colors.grey,
                                                   ),
-                                                    Container(
-                                                      padding: const EdgeInsets.all(1.0),
-                                                      child: Icon(
-                                                        Icons.arrow_forward,
-                                                        color: Colors.red,
-                                                        size: MediaQuery.of(context).size.width/20, //48.0,
-                                                      ),
-                                                    )
-                                                  ])
-                                              ),
+                                                ),
+                                                  Container(
+                                                      color: Colors.grey,
+                                                      child: Text(
+                                                          position.toString())
+                                                  ),
+                                                  Container(
+                                                      child: Align(
+                                                        alignment: Alignment.center,
+                                                        child: Icon(
+                                                          Icons.arrow_forward,
+                                                          color: Colors.red,
+                                                          size: MediaQuery.of(context).size.width/20, //48.0,
+                                                        ),
+                                                      )
+                                                  )
+                                                ])
                                             );
                                           }
 
@@ -555,46 +615,43 @@ class singleplayer_debugging extends StatelessWidget {
                                                 }
                                                 //   };
                                               },
-                                              splashColor: Colors.grey,
-                                              child: Container(
-                                                  color: Colors.grey,
-                                                  child: Stack(children: <Widget>[Container(
-                                                    // padding: const EdgeInsets.all(1.0),
-                                                    padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
-                                                    //color: Colors.black,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          top: BorderSide(
-                                                              width: topwidth,
-                                                              color: Colors.black),
-                                                          bottom: BorderSide(
-                                                              width: bottomwidth,
-                                                              color: Colors.black),
-                                                          right: BorderSide(
-                                                              width: rightwidth,
-                                                              color: Colors.black),
-                                                          left: BorderSide(
-                                                              width: leftwidth,
-                                                              color: Colors.black)
-                                                      ),
-                                                      color: Colors.white,
+                                                splashColor: Colors.grey,
+                                                child: Stack(children: <Widget>[Container(
+                                                  padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        top: BorderSide(
+                                                            width: topwidth,
+                                                            color: Colors.black),
+                                                        bottom: BorderSide(
+                                                            width: bottomwidth,
+                                                            color: Colors.black),
+                                                        right: BorderSide(
+                                                            width: rightwidth,
+                                                            color: Colors.black),
+                                                        left: BorderSide(
+                                                            width: leftwidth,
+                                                            color: Colors.black)
                                                     ),
-                                                    child: Container(
-                                                        color: Colors.grey,
-                                                        child: Text(
-                                                            position.toString())
-                                                    ),
+                                                    color: Colors.grey,
                                                   ),
-                                                    Container(
-                                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                                      child: Icon(
-                                                        Icons.arrow_upward,
-                                                        color: Colors.red,
-                                                        size: MediaQuery.of(context).size.width/20, //48.0,
-                                                      ),
-                                                    )
-                                                  ])
-                                              ),
+                                                ),
+                                                  Container(
+                                                      color: Colors.grey,
+                                                      child: Text(
+                                                          position.toString())
+                                                  ),
+                                                  Container(
+                                                      child: Align(
+                                                        alignment: Alignment.center,
+                                                        child: Icon(
+                                                          Icons.arrow_upward,
+                                                          color: Colors.red,
+                                                          size: MediaQuery.of(context).size.width/20, //48.0,
+                                                        ),
+                                                      )
+                                                  )
+                                                ])
                                             );
                                           }
 
@@ -617,46 +674,43 @@ class singleplayer_debugging extends StatelessWidget {
                                                 }
                                                 //   };
                                               },
-                                              splashColor: Colors.grey,
-                                              child: Container(
-                                                  color: Colors.grey,
-                                                  child: Stack(children: <Widget>[Container(
-                                                    // padding: const EdgeInsets.all(1.0),
-                                                    padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
-                                                    //color: Colors.black,
-                                                    decoration: BoxDecoration(
-                                                      border: Border(
-                                                          top: BorderSide(
-                                                              width: topwidth,
-                                                              color: Colors.black),
-                                                          bottom: BorderSide(
-                                                              width: bottomwidth,
-                                                              color: Colors.black),
-                                                          right: BorderSide(
-                                                              width: rightwidth,
-                                                              color: Colors.black),
-                                                          left: BorderSide(
-                                                              width: leftwidth,
-                                                              color: Colors.black)
-                                                      ),
-                                                      color: Colors.white,
+                                                splashColor: Colors.grey,
+                                                child: Stack(children: <Widget>[Container(
+                                                  padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        top: BorderSide(
+                                                            width: topwidth,
+                                                            color: Colors.black),
+                                                        bottom: BorderSide(
+                                                            width: bottomwidth,
+                                                            color: Colors.black),
+                                                        right: BorderSide(
+                                                            width: rightwidth,
+                                                            color: Colors.black),
+                                                        left: BorderSide(
+                                                            width: leftwidth,
+                                                            color: Colors.black)
                                                     ),
-                                                    child: Container(
-                                                        color: Colors.grey,
-                                                        child: Text(
-                                                            position.toString())
-                                                    ),
+                                                    color: Colors.grey,
                                                   ),
-                                                    Container(
-                                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                                      child: Icon(
-                                                        Icons.arrow_back,
-                                                        color: Colors.red,
-                                                        size: MediaQuery.of(context).size.width/20, //48.0,
-                                                      ),
-                                                    ),
-                                                  ])
-                                              ),
+                                                ),
+                                                  Container(
+                                                      color: Colors.grey,
+                                                      child: Text(
+                                                          position.toString())
+                                                  ),
+                                                  Container(
+                                                      child: Align(
+                                                        alignment: Alignment.center,
+                                                        child: Icon(
+                                                          Icons.arrow_back,
+                                                          color: Colors.red,
+                                                          size: MediaQuery.of(context).size.width/20, //48.0,
+                                                        ),
+                                                      )
+                                                  )
+                                                ])
                                             );
                                           }
 
@@ -702,20 +756,94 @@ class singleplayer_debugging extends StatelessWidget {
                                                     ),
                                                     Container(
                                                         color: Colors.grey,
-                                                        child: Text(
-                                                            position.toString())
+                                                        child: Text(position.toString())
                                                     ),
-                                                    Container(
-                                                      child: Icon(
+                                                Container(
+                                                  child: Align(
+                                                    alignment: Alignment.center,
+                                                    child: Icon(
                                                         Icons.arrow_downward,
                                                         color: Colors.red,
                                                         size: MediaQuery.of(context).size.width/20, //48.0,
                                                       ),
+                                                  )
                                                     )
                                                   ])
                                             );
                                           }
 
+                                          if (boardpos[rowNumber][columnNumber].blueposition) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  _switch.value = _switch.value.sign * 1 * -1;
+                                                },
+                                                splashColor: Colors.grey,
+                                                child: Stack(children: <Widget>[Container(
+                                                  padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        top: BorderSide(
+                                                            width: topwidth,
+                                                            color: Colors.black),
+                                                        bottom: BorderSide(
+                                                            width: bottomwidth,
+                                                            color: Colors.black),
+                                                        right: BorderSide(
+                                                            width: rightwidth,
+                                                            color: Colors.black),
+                                                        left: BorderSide(
+                                                            width: leftwidth,
+                                                            color: Colors.black)
+                                                    ),
+                                                    color: Colors.blue,
+                                                  ),
+                                                ),
+                                                  Container(
+                                                      color: Colors.blue,
+                                                      child: Text(position.toString())
+                                                  )
+                                                  //Text(position.toString())
+                                                  //   Image.asset('assets/images/greenplayer.png'),
+                                                ])
+
+                                            );
+                                          } else
+                                          if (boardpos[rowNumber][columnNumber].redposition) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  _switch.value = _switch.value.sign * 2 * -1;
+                                                },
+                                                splashColor: Colors.grey,
+                                                child: Stack(children: <Widget>[Container(
+                                                  padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        top: BorderSide(
+                                                            width: topwidth,
+                                                            color: Colors.black),
+                                                        bottom: BorderSide(
+                                                            width: bottomwidth,
+                                                            color: Colors.black),
+                                                        right: BorderSide(
+                                                            width: rightwidth,
+                                                            color: Colors.black),
+                                                        left: BorderSide(
+                                                            width: leftwidth,
+                                                            color: Colors.black)
+                                                    ),
+                                                    color: Colors.red,
+                                                  ),
+                                                ),
+                                                  Container(
+                                                      color: Colors.red,
+                                                      child: Text(position.toString())
+                                                  )
+                                                  //Text(position.toString())
+                                                  //   Image.asset('assets/images/greenplayer.png'),
+                                                ])
+
+                                            );
+                                          } else
                                           if (boardpos[rowNumber][columnNumber].greenposition) {
                                             return InkWell(
                                               onTap: () {
@@ -751,9 +879,44 @@ class singleplayer_debugging extends StatelessWidget {
                                                   ])
 
                                             );
+                                          } if (boardpos[rowNumber][columnNumber].yellowposition) {
+                                            return InkWell(
+                                                onTap: () {
+                                                  _switch.value = _switch.value.sign * 4 * -1;
+                                                },
+                                                splashColor: Colors.grey,
+                                                child: Stack(children: <Widget>[Container(
+                                                  padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        top: BorderSide(
+                                                            width: topwidth,
+                                                            color: Colors.black),
+                                                        bottom: BorderSide(
+                                                            width: bottomwidth,
+                                                            color: Colors.black),
+                                                        right: BorderSide(
+                                                            width: rightwidth,
+                                                            color: Colors.black),
+                                                        left: BorderSide(
+                                                            width: leftwidth,
+                                                            color: Colors.black)
+                                                    ),
+                                                    color: Colors.yellow,
+                                                  ),
+                                                ),
+                                                  Container(
+                                                      color: Colors.yellow,
+                                                      child: Text(position.toString())
+                                                  )
+                                                  //Text(position.toString())
+                                                  //   Image.asset('assets/images/greenplayer.png'),
+                                                ])
+
+                                            );
                                           } else {
                                             return (
-                                                Container(
+                                                Stack(children: <Widget>[Container(
                                                   // padding: const EdgeInsets.all(1.0),
                                                   padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
                                                   //color: Colors.black,
@@ -772,14 +935,26 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.white,
+                                                    color: Colors.grey,
                                                   ),
-                                                  child: Container(
+                                                ),
+                                                  Container(
                                                       color: Colors.grey,
-                                                      child: Text(
-                                                          position.toString())
+                                                      child: Text(position.toString())
                                                   ),
-                                                )
+                                                  if(iconindex>-1) (
+                                                    Container(
+                                                        child: Align(
+                                                          alignment: Alignment.center,
+                                                          child: Icon(
+                                                            _icons[iconindex],//Icons.wb_sunny_sharp,
+                                                            color: myColor, //Colors.green,
+                                                            size: MediaQuery.of(context).size.width/30, //48.0,
+                                                          ),
+                                                        )
+                                                    )
+                                                  )
+                                          ])
                                             );
                                           }
                                         },
@@ -1279,6 +1454,10 @@ class singleplayer_debugging extends StatelessWidget {
     boardpos[i][j].redposition = true;
     redi=i;
     redj=j;
+    PositionRedI=i;
+    PositionRedJ=j;
+    PositionRedAltI=ialt;
+    PositionRedAltJ=jalt;
     await game.doc(gamename).update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
     if(ialt!=i || jalt!=j) {
       await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
@@ -1316,10 +1495,13 @@ class singleplayer_debugging extends StatelessWidget {
     boardpos[i][j].blueposition = true;
     bluei=i;
     bluej=j;
-
+    PositionBlueI=i;
+    PositionBlueJ=j;
+    PositionBlueAltI=ialt;
+    PositionBlueAltJ=jalt;
     await game.doc(gamename).update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
     if(ialt!=i || jalt!=j) {
-      await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
+    //  await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
     }    // setState(() {});
   }
 
@@ -1399,7 +1581,10 @@ class singleplayer_debugging extends StatelessWidget {
     boardpos[i][j].yellowposition = true;
     yellowi=i;
     yellowj=j;
-
+    PositionYellowI=i;
+    PositionYellowJ=j;
+    PositionYellowAltI=ialt;
+    PositionYellowAltJ=jalt;
     await game.doc(gamename).update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
     if(ialt!=i || jalt!=j) {
       await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
