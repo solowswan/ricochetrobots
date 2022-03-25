@@ -219,7 +219,7 @@ class singleplayer_debugging extends StatelessWidget {
 
 
   void initState() {
-    // //super.initState();
+    //super.initState();
     _initialiseGame();
   }
 
@@ -227,515 +227,573 @@ class singleplayer_debugging extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold( backgroundColor: Colors.white,
-        appBar: new AppBar(
-          backgroundColor: Colors.black,
-          //title: new Text("Comic Reader Multi Language"),
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Text('Ricochet Robots'),
-            ],
-            // children: [
-            //Image.asset(
-            // 'assets/images/BlueCrossNorthEast.png',
-            //     fit: BoxFit.contain,
-            //   height: 55,
-            //   ),
-            // ],
-
-          ),
-          actions: <Widget>[
-            TextButton(
-                child:
-                Text(
-                  //'Logout',
-                  'LogOut ${_auth.currentUser?.email}',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.white,
-                  ),
-                ),
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                  await Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new LandingPage()));
-                }
-            ),
+      appBar: new AppBar(
+        backgroundColor: Colors.black,
+        //title: new Text("Comic Reader Multi Language"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text('Ricochet Robots'),
           ],
+          // children: [
+          //Image.asset(
+          // 'assets/images/BlueCrossNorthEast.png',
+          //     fit: BoxFit.contain,
+          //   height: 55,
+          //   ),
+          // ],
+
         ),
-
-        body:
-        ListView(
-          children: <Widget>[
-            ConstrainedBox(
-              //color: Colors.grey,
-              //height: 60.0,
-              constraints: BoxConstraints(maxWidth: 1),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Column(children: <Widget>[IconButton(
-                    icon: const Icon(Icons.launch),
-                    tooltip: 'Initialise Board',
-                    onPressed: () {
-                      _initialiseGame();
-                    },
-                  ),
-                    Text('START')]), Column(children: <Widget>[
-                    IconButton(
-                      icon: const Icon(Icons.replay),
-                      tooltip: 'Reset',
-                      onPressed: () {
-                        if (_auth.currentUser?.email == hostplayer) {
-                          _resetGame(_auth.currentUser?.email,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                        }
-                      },
-                    ),
-                    Text('Reset')
-                  ]),
-                  Column(children: <Widget>[IconButton(
-                    icon: const Icon(Icons.arrow_forward),
-                    tooltip: 'Next Round',
-                    onPressed: () {
-                      if (_auth.currentUser?.email == hostplayer) {
-                        _nextRound(_auth.currentUser?.email, GameRound, lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                      }
-                    },
-                  ),
-                    Text('NextRound')]),
-                ],
-              ),
-
-            ),
-            ConstrainedBox(
-              //color: Colors.grey,
-              //height: 60.0,
-              constraints: BoxConstraints(maxWidth: 5),
-
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("ROUND: " + GameRound.toString() + " ",
-                      style: TextStyle(fontSize: 24.0,
-                          fontWeight: FontWeight.bold)),
-
-                  IconButton(
-                    icon: Icon(
-                      Icons.remove,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 4.0,
-                        horizontal: 0.0),
-                    iconSize: 32.0,
-                    color: Theme.of(context).primaryColor,
-                    onPressed: () {
-                      _counter.value--;
-                      //               print(_counter.value);
-                    },
-                  ),
-
-                  ValueListenableBuilder(
-                    valueListenable: _counter,
-                    builder: (context, value, child) =>
-                        Text('$value', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.red)),
-                  ),
-
-                  IconButton(
-                    icon: Icon(
-                      Icons.add,
-                      color: Theme.of(context).accentColor,
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 4.0,
-                        horizontal: 0.0),
-                    iconSize: 32.0,
-                    color: Theme.of(context).primaryColor,
-                    onPressed: () {
-                      _counter.value++;
-                    },
-                  ),
-
-                  ElevatedButton(
-                    child: Text('SUBMIT BID'),
-                    onPressed: isEnabled ? () {
-                      _submitBet(_auth.currentUser?.email, _auth.currentUser?.email, _counter.value, GameRound, RunningTimer);
-                      myFocusNode.unfocus();
-                    } : null,
-                  ),
-                ],
-              ),
-
-            ),
-
-            Center(child:
-            // The grid of squares
-            SizedBox(
-                width: 800,
-                child:
-                ValueListenableBuilder(
-                    valueListenable: _switch,
-                    builder: (context, value, child) {
-                      return (
-                          GridView.builder(
-                            itemCount: rowCount * columnCount,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: columnCount,
-                            ),
-                            itemBuilder: (context, position) {
-                              if(_switch.value==-1) {
-                                if(PositionBlueI<15){boardpos[PositionBlueI+1][PositionBlueJ].downarrow=true;}
-                                if(PositionBlueJ<15){boardpos[PositionBlueI][PositionBlueJ+1].rightarrow=true;}
-                                if(PositionBlueI>0){boardpos[PositionBlueI-1][PositionBlueJ].uparrow=true;}
-                                if(PositionBlueJ>0){boardpos[PositionBlueI][PositionBlueJ-1].leftarrow=true;}
-                              } else if(_switch.value==-2) {
-                                if(PositionRedI<15){boardpos[PositionRedI+1][PositionRedJ].downarrow=true;}
-                                if(PositionRedJ<15){boardpos[PositionRedI][PositionRedJ+1].rightarrow=true;}
-                                if(PositionRedI>0){boardpos[PositionRedI-1][PositionRedJ].uparrow=true;}
-                                if(PositionRedJ>0){boardpos[PositionRedI][PositionRedJ-1].leftarrow=true;}
-                              }else if(_switch.value==-3) {
-                                if(PositionGreenI<15){boardpos[PositionGreenI+1][PositionGreenJ].downarrow=true;}
-                                if(PositionGreenJ<15){boardpos[PositionGreenI][PositionGreenJ+1].rightarrow=true;}
-                                if(PositionGreenI>0){boardpos[PositionGreenI-1][PositionGreenJ].uparrow=true;}
-                                if(PositionGreenJ>0){boardpos[PositionGreenI][PositionGreenJ-1].leftarrow=true;}
-                              }else if(_switch.value==-4) {
-                                if(PositionYellowI<15){boardpos[PositionYellowI+1][PositionYellowJ].downarrow=true;}
-                                if(PositionYellowJ<15){boardpos[PositionYellowI][PositionYellowJ+1].rightarrow=true;}
-                                if(PositionYellowI>0){boardpos[PositionYellowI-1][PositionYellowJ].uparrow=true;}
-                                if(PositionYellowJ>0){boardpos[PositionYellowI][PositionYellowJ-1].leftarrow=true;}
-                              }else if (_switch.value.sign==1) {
-                                boardpos.forEach((f) => {f.forEach((x) => {x.downarrow=false}) });
-                                boardpos.forEach((f) => {f.forEach((x) => {x.rightarrow=false}) });
-                                boardpos.forEach((f) => {f.forEach((x) => {x.uparrow=false}) });
-                                boardpos.forEach((f) => {f.forEach((x) => {x.leftarrow=false}) });
-                              }
-                              boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
-                              int rowNumber = (position / columnCount).floor();
-                              int columnNumber = (position % columnCount);
-
-                              if ((rowNumber == 7) && (columnNumber == 7)) {
-                                return (
-                                    Container(
-                                      padding: const EdgeInsets.all(0.0),
-                                      child: Container(
-                                        color: Colors.black,
-                                      ),
-                                    )
-                                );
-                              }
-                              else if ((rowNumber == 8) && (columnNumber == 7)) {
-                                return (Container(
-                                  padding: const EdgeInsets.all(0.0),
-                                  child: Container(
-                                    color: Colors.black,
-                                  ),
-                                )
-                                );
-                              }
-                              else
-                              if ((rowNumber == 7) && (columnNumber == 8)) {
-                                return (Container(
-                                  padding: const EdgeInsets.all(0.0),
-                                  child: Container(
-                                    color: Colors.black,
-                                  ),
-                                )
-                                );
-                              }
-                              else
-                              if ((rowNumber == 8) && (columnNumber == 8)) {
-                                return (Container(
-                                  padding: const EdgeInsets.all(0.0),
-                                  child: Container(
-                                    color: Colors.black,
-                                  ),
-                                )
-                                );
-                              } else
-                              if (boardpos[rowNumber][columnNumber].rightarrow) {
-                                return InkWell(
-                                  onTap: () {
-                                    _switch.value = _switch.value * -1;
-                                    // print("Switch");
-                                    //print(_switch.value);
-                                    // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
-                                    //  {
-                                    if(_switch.value==1 || _switch.value==-1) {
-                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 2);
-                                    } else if(_switch.value==2 || _switch.value==-2) {
-                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 2);
-                                    } else if(_switch.value==3|| _switch.value==-3) {
-                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 2);
-                                    } else if(_switch.value==4|| _switch.value==-4) {
-                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 2);
-                                    }
-                                    //   };
-
-                                  },
-                                  splashColor: Colors.grey,
-                                  child: Container(
-                                      color: Colors.grey,
-                                      child: Stack(children: <Widget>[Container(
-                                        padding: const EdgeInsets.all(1.0),
-                                        child: Container(
-                                            color: Colors.grey,
-                                            child: Text(position.toString())
-                                        ),
-                                      ),
-                                        Container(
-                                          padding: const EdgeInsets.all(1.0),
-                                          child: Icon(
-                                            Icons.arrow_forward,
-                                            color: Colors.red,
-                                            size: MediaQuery.of(context).size.width/20, //48.0,
-                                          ),
-                                        )
-                                      ])
-                                  ),
-                                );
-                              }
-                              else if (boardpos[rowNumber][columnNumber].uparrow) {
-                                return InkWell(
-                                  onTap: () {
-                                    _switch.value = _switch.value * -1;
-                                    //  print("Switch");
-                                    //  print(_switch.value);
-                                    // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
-                                    //  {
-                                    if(_switch.value==1 || _switch.value==-1) {
-                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 1);
-                                    } else if(_switch.value==2 || _switch.value==-2) {
-                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 1);
-                                    } else if(_switch.value==3|| _switch.value==-3) {
-                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 1);
-                                    } else if(_switch.value==4|| _switch.value==-4) {
-                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 1);
-                                    }
-                                    //   };
-                                  },
-                                  splashColor: Colors.grey,
-                                  child: Container(
-                                      color: Colors.grey,
-                                      child: Stack(children: <Widget>[Container(
-                                        padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                        child: Container(
-                                            color: Colors.grey,
-                                            child: Text(position.toString())
-                                        ),
-                                      ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                          child: Icon(
-                                            Icons.arrow_upward,
-                                            color: Colors.red,
-                                            size: MediaQuery.of(context).size.width/20, //48.0,
-                                          ),
-                                        )
-                                      ])
-                                  ),
-                                );
-                              } else if (boardpos[rowNumber][columnNumber].leftarrow) {
-                                return InkWell(
-                                  onTap: () {
-                                    _switch.value = _switch.value * -1;
-                                    // print("Switch");
-                                    //  print(_switch.value);
-                                    // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
-                                    //  {
-                                    if(_switch.value==1 || _switch.value==-1) {
-                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 4);
-                                    } else if(_switch.value==2 || _switch.value==-2) {
-                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 4);
-                                    } else if(_switch.value==3|| _switch.value==-3) {
-                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 4);
-                                    } else if(_switch.value==4|| _switch.value==-4) {
-                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 4);
-                                    }
-                                    //   };
-                                  },
-                                  splashColor: Colors.grey,
-                                  child: Container(
-                                      color: Colors.grey,
-                                      child: Stack(children: <Widget>[Container(
-                                        padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                        child: Container(
-                                            color: Colors.grey,
-                                            child: Text(position.toString())
-                                        ),
-                                      ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                          child: Icon(
-                                            Icons.arrow_back,
-                                            color: Colors.red,
-                                            size: MediaQuery.of(context).size.width/20, //48.0,
-                                          ),
-                                        ),
-                                      ])
-                                  ),
-                                );
-                              }
-                              else if (boardpos[rowNumber][columnNumber].downarrow) {
-                                return InkWell(
-                                  onTap: () {
-                                    _switch.value = _switch.value * -1;
-                                    //  print("Switch");
-                                    //  print(_switch.value);
-                                    // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
-                                    //  {
-                                    if(_switch.value==1 || _switch.value==-1) {
-                                      _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 3);
-                                    } else if(_switch.value==2 || _switch.value==-2) {
-                                      _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 3);
-                                    } else if(_switch.value==3|| _switch.value==-3) {
-                                      _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 3);
-                                    } else if(_switch.value==4|| _switch.value==-4) {
-                                      _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 3);
-                                    }
-                                    //   };
-                                  },
-                                  splashColor: Colors.grey,
-                                  child: Container(
-                                      color: Colors.grey,
-                                      child: Stack(children: <Widget>[Padding(
-                                        padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                        child: Container(
-                                            color: Colors.grey,
-                                            child: Text(position.toString())
-                                        ),
-                                      ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                          child: Icon(
-                                            Icons.arrow_downward,
-                                            color: Colors.red,
-                                            size: MediaQuery.of(context).size.width/20, //48.0,
-                                          ),
-                                        )
-                                      ])
-                                  ),
-                                );
-                              }
-                              else if (boardpos[rowNumber][columnNumber].obstaclenorth) {
-                                return (
-                                    Container(
-                                      // padding: const EdgeInsets.all(1.0),
-                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                      //color: Colors.black,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                            top: BorderSide(width: 6.0, color: Colors.black)
-                                        ),
-                                        color: Colors.white,
-                                      ),
-                                      child: Container(
-                                          color: Colors.grey,
-                                          child: Text(position.toString())
-                                      ),
-                                    )
-                                );
-                              }
-                              else if (boardpos[rowNumber][columnNumber].obstacleeast) {
-                                return (
-                                    Container(
-                                      // padding: const EdgeInsets.all(1.0),
-                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                      //color: Colors.black,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                            right: BorderSide(width: 6.0, color: Colors.black)
-                                        ),
-                                        color: Colors.white,
-                                      ),
-                                      child: Container(
-                                          color: Colors.grey,
-                                          child: Text(position.toString())
-                                      ),
-                                    )
-                                );
-                              }
-                              else if (boardpos[rowNumber][columnNumber].obstaclewest) {
-                                return (
-                                    Container(
-                                      // padding: const EdgeInsets.all(1.0),
-                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                      //color: Colors.black,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                            left: BorderSide(width: 6.0, color: Colors.black)
-                                        ),
-                                        color: Colors.white,
-                                      ),
-                                      child: Container(
-                                          color: Colors.grey,
-                                          child: Text(position.toString())
-                                      ),
-                                    )
-                                );
-                              }
-                              else if (boardpos[rowNumber][columnNumber].obstaclesouth) {
-                                return (
-                                    Container(
-                                      // padding: const EdgeInsets.all(1.0),
-                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                      //color: Colors.black,
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(width: 6.0, color: Colors.black)
-                                        ),
-                                        color: Colors.white,
-                                      ),
-                                      child: Container(
-                                          color: Colors.grey,
-                                          child: Text(position.toString())
-                                      ),
-                                    )
-                                );
-                              }
-                              else if (boardpos[rowNumber][columnNumber].greenposition) {
-                                return InkWell(
-                                  onTap: () {
-                                    _switch.value = _switch.value.sign * 3 * -1;
-                                  },
-                                  splashColor: Colors.grey,
-                                  child: Container(
-                                      color: Colors.grey,
-                                      child: Stack(children: <Widget>[Container(
-                                        padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                        color: Colors.black,
-                                        child: Container(
-                                            color: Colors.grey,
-                                            child: Text(position.toString())
-                                        ),
-                                      ),
-                                        Image.asset('assets/images/greenplayer.png'),
-                                      ])
-                                  ),
-                                );
-                              } else {
-                                return (
-                                    Container(
-                                      // padding: const EdgeInsets.all(1.0),
-                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
-                                      //color: Colors.black,
-                                      child: Container(
-                                          color: Colors.grey,
-                                          child: Text(position.toString())
-                                      ),
-                                    )
-                                );
-                              }
-                            },
-                          )
-                      );
-                    })
-            ),
-            ),
-            Center(child: Text("Moves " + movecount.toString(),
+        actions: <Widget>[
+          TextButton(
+              child:
+              Text(
+                //'Logout',
+                'LogOut ${_auth.currentUser?.email}',
                 style: TextStyle(
-                    fontSize: 32.0, fontWeight: FontWeight.bold))),
-          ],
-        )
-    );
+                  fontSize: 18.0,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+                await Navigator.push(context, MaterialPageRoute(builder: (ctxt) => new LandingPage()));
+              }
+          ),
+        ],
+      ),
+
+      body:
+                    ListView(
+                      children: <Widget>[
+                        ConstrainedBox(
+                          //color: Colors.grey,
+                          //height: 60.0,
+                          constraints: BoxConstraints(maxWidth: 1),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Column(children: <Widget>[IconButton(
+                                icon: const Icon(Icons.launch),
+                                tooltip: 'Initialise Board',
+                                onPressed: () {
+                                  _initialiseGame();
+                                },
+                              ),
+                                Text('START')]), Column(children: <Widget>[
+                                IconButton(
+                                  icon: const Icon(Icons.replay),
+                                  tooltip: 'Reset',
+                                  onPressed: () {
+                                    if (_auth.currentUser?.email == hostplayer) {
+                                      _resetGame(_auth.currentUser?.email,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                    }
+                                  },
+                                ),
+                                Text('Reset')
+                              ]),
+                              Column(children: <Widget>[IconButton(
+                                icon: const Icon(Icons.arrow_forward),
+                                tooltip: 'Next Round',
+                                onPressed: () {
+                                  if (_auth.currentUser?.email == hostplayer) {
+                                    _nextRound(_auth.currentUser?.email, GameRound, lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                  }
+                                },
+                              ),
+                                Text('NextRound')]),
+                            ],
+                          ),
+
+                        ),
+                        ConstrainedBox(
+                          //color: Colors.grey,
+                          //height: 60.0,
+                          constraints: BoxConstraints(maxWidth: 5),
+
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text("ROUND: " + GameRound.toString() + " ",
+                                  style: TextStyle(fontSize: 24.0,
+                                      fontWeight: FontWeight.bold)),
+
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 4.0,
+                                    horizontal: 0.0),
+                                iconSize: 32.0,
+                                color: Theme.of(context).primaryColor,
+                                onPressed: () {
+                                  _counter.value--;
+                                  //               print(_counter.value);
+                                },
+                              ),
+
+                              ValueListenableBuilder(
+                                valueListenable: _counter,
+                                builder: (context, value, child) =>
+                                    Text('$value', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.red)),
+                              ),
+
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                                padding: EdgeInsets.symmetric(vertical: 4.0,
+                                    horizontal: 0.0),
+                                iconSize: 32.0,
+                                color: Theme.of(context).primaryColor,
+                                onPressed: () {
+                                  _counter.value++;
+                                },
+                              ),
+
+                              ElevatedButton(
+                                child: Text('SUBMIT BID'),
+                                onPressed: isEnabled ? () {
+                                  _submitBet(_auth.currentUser?.email, _auth.currentUser?.email, _counter.value, GameRound, RunningTimer);
+                                  myFocusNode.unfocus();
+                                } : null,
+                              ),
+                            ],
+                          ),
+
+                        ),
+
+                        Center(child:
+                        // The grid of squares
+                        SizedBox(
+                            width: 800,
+                            child:
+                            ValueListenableBuilder(
+                                valueListenable: _switch,
+                                builder: (context, value, child) {
+                                  return (
+                                      GridView.builder(
+                                        itemCount: rowCount * columnCount,
+                                        shrinkWrap: true,
+                                        physics: NeverScrollableScrollPhysics(),
+                                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: columnCount,
+                                        ),
+                                        itemBuilder: (context, position) {
+                                          int rowNumber = (position /columnCount).floor();
+                                          int columnNumber = (position %columnCount);
+                                          if ((rowNumber == 7) && (columnNumber == 7)) {
+                                            return (
+                                                Container(
+                                                  padding: const EdgeInsets.all(0.0),
+                                                  child: Container(
+                                                    color: Colors.black,
+                                                  ),
+                                                )
+                                            );
+                                          }
+                                          else if ((rowNumber == 8) && (columnNumber == 7)) {
+                                            return (Container(
+                                              padding: const EdgeInsets.all(0.0),
+                                              child: Container(
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                            );
+                                          }
+                                          else
+                                          if ((rowNumber == 7) && (columnNumber == 8)) {
+                                            return (Container(
+                                              padding: const EdgeInsets.all(0.0),
+                                              child: Container(
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                            );
+                                          }
+                                          else
+                                          if ((rowNumber == 8) && (columnNumber == 8)) {
+                                            return (Container(
+                                              padding: const EdgeInsets.all(0.0),
+                                              child: Container(
+                                                color: Colors.black,
+                                              ),
+                                            )
+                                            );
+                                          }
+                                          if(_switch.value==-1) {
+                                            if(PositionBlueI<15){boardpos[PositionBlueI+1][PositionBlueJ].downarrow=true;}
+                                            if(PositionBlueJ<15){boardpos[PositionBlueI][PositionBlueJ+1].rightarrow=true;}
+                                            if(PositionBlueI>0){boardpos[PositionBlueI-1][PositionBlueJ].uparrow=true;}
+                                            if(PositionBlueJ>0){boardpos[PositionBlueI][PositionBlueJ-1].leftarrow=true;}
+                                          } else if(_switch.value==-2) {
+                                            if(PositionRedI<15){boardpos[PositionRedI+1][PositionRedJ].downarrow=true;}
+                                            if(PositionRedJ<15){boardpos[PositionRedI][PositionRedJ+1].rightarrow=true;}
+                                            if(PositionRedI>0){boardpos[PositionRedI-1][PositionRedJ].uparrow=true;}
+                                            if(PositionRedJ>0){boardpos[PositionRedI][PositionRedJ-1].leftarrow=true;}
+                                          }else if(_switch.value==-3) {
+                                            if(PositionGreenI<15){boardpos[PositionGreenI+1][PositionGreenJ].downarrow=true;}
+                                            if(PositionGreenJ<15){boardpos[PositionGreenI][PositionGreenJ+1].rightarrow=true;}
+                                            if(PositionGreenI>0){boardpos[PositionGreenI-1][PositionGreenJ].uparrow=true;}
+                                            if(PositionGreenJ>0){boardpos[PositionGreenI][PositionGreenJ-1].leftarrow=true;}
+                                          }else if(_switch.value==-4) {
+                                            if(PositionYellowI<15){boardpos[PositionYellowI+1][PositionYellowJ].downarrow=true;}
+                                            if(PositionYellowJ<15){boardpos[PositionYellowI][PositionYellowJ+1].rightarrow=true;}
+                                            if(PositionYellowI>0){boardpos[PositionYellowI-1][PositionYellowJ].uparrow=true;}
+                                            if(PositionYellowJ>0){boardpos[PositionYellowI][PositionYellowJ-1].leftarrow=true;}
+                                          }else if (_switch.value.sign==1) {
+                                            boardpos.forEach((f) => {f.forEach((x) => {x.downarrow=false}) });
+                                            boardpos.forEach((f) => {f.forEach((x) => {x.rightarrow=false}) });
+                                            boardpos.forEach((f) => {f.forEach((x) => {x.uparrow=false}) });
+                                            boardpos.forEach((f) => {f.forEach((x) => {x.leftarrow=false}) });
+                                          }
+                                          boardpos[PositionGreenI][PositionGreenJ].greenposition = true;
+
+                                          _initialiseGame();
+                                          double topwidth=0.0;
+                                          double bottomwidth=0.0;
+                                          double rightwidth=0.0;
+                                          double leftwidth=0.0;
+                                          if (boardpos[rowNumber][columnNumber].obstaclenorth) {
+                                           topwidth=4;
+                                          }
+                                          if (boardpos[rowNumber][columnNumber].obstaclesouth) {
+                                            bottomwidth=4;
+                                          }
+                                          if (boardpos[rowNumber][columnNumber].obstacleeast) {
+                                            rightwidth=4;
+                                          }
+                                          if (boardpos[rowNumber][columnNumber].obstaclewest) {
+                                            leftwidth=4;
+                                          }
+
+
+
+
+
+                                          if (boardpos[rowNumber][columnNumber].rightarrow) {
+                                            return InkWell(
+                                              onTap: () {
+                                                _switch.value = _switch.value * -1;
+                                                // print("Switch");
+                                                //print(_switch.value);
+                                                // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                                //  {
+                                                if(_switch.value==1 || _switch.value==-1) {
+                                                  _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 2);
+                                                } else if(_switch.value==2 || _switch.value==-2) {
+                                                  _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 2);
+                                                } else if(_switch.value==3|| _switch.value==-3) {
+                                                  _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 2);
+                                                } else if(_switch.value==4|| _switch.value==-4) {
+                                                  _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 2);
+                                                }
+                                                //   };
+
+                                              },
+                                              splashColor: Colors.grey,
+                                              child: Container(
+                                                  color: Colors.grey,
+                                                  child: Stack(children: <Widget>[Container(
+                                                    // padding: const EdgeInsets.all(1.0),
+                                                    padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                    //color: Colors.black,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                          top: BorderSide(
+                                                              width: topwidth,
+                                                              color: Colors.black),
+                                                          bottom: BorderSide(
+                                                              width: bottomwidth,
+                                                              color: Colors.black),
+                                                          right: BorderSide(
+                                                              width: rightwidth,
+                                                              color: Colors.black),
+                                                          left: BorderSide(
+                                                              width: leftwidth,
+                                                              color: Colors.black)
+                                                      ),
+                                                      color: Colors.white,
+                                                    ),
+                                                    child: Container(
+                                                        color: Colors.grey,
+                                                        child: Text(
+                                                            position.toString())
+                                                    ),
+                                                  ),
+                                                    Container(
+                                                      padding: const EdgeInsets.all(1.0),
+                                                      child: Icon(
+                                                        Icons.arrow_forward,
+                                                        color: Colors.red,
+                                                        size: MediaQuery.of(context).size.width/20, //48.0,
+                                                      ),
+                                                    )
+                                                  ])
+                                              ),
+                                            );
+                                          }
+
+                                          if (boardpos[rowNumber][columnNumber].uparrow) {
+                                            return InkWell(
+                                              onTap: () {
+                                                _switch.value = _switch.value * -1;
+                                                //  print("Switch");
+                                                //  print(_switch.value);
+                                                // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                                //  {
+                                                if(_switch.value==1 || _switch.value==-1) {
+                                                  _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 1);
+                                                } else if(_switch.value==2 || _switch.value==-2) {
+                                                  _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 1);
+                                                } else if(_switch.value==3|| _switch.value==-3) {
+                                                  _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 1);
+                                                } else if(_switch.value==4|| _switch.value==-4) {
+                                                  _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 1);
+                                                }
+                                                //   };
+                                              },
+                                              splashColor: Colors.grey,
+                                              child: Container(
+                                                  color: Colors.grey,
+                                                  child: Stack(children: <Widget>[Container(
+                                                    // padding: const EdgeInsets.all(1.0),
+                                                    padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                    //color: Colors.black,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                          top: BorderSide(
+                                                              width: topwidth,
+                                                              color: Colors.black),
+                                                          bottom: BorderSide(
+                                                              width: bottomwidth,
+                                                              color: Colors.black),
+                                                          right: BorderSide(
+                                                              width: rightwidth,
+                                                              color: Colors.black),
+                                                          left: BorderSide(
+                                                              width: leftwidth,
+                                                              color: Colors.black)
+                                                      ),
+                                                      color: Colors.white,
+                                                    ),
+                                                    child: Container(
+                                                        color: Colors.grey,
+                                                        child: Text(
+                                                            position.toString())
+                                                    ),
+                                                  ),
+                                                    Container(
+                                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
+                                                      child: Icon(
+                                                        Icons.arrow_upward,
+                                                        color: Colors.red,
+                                                        size: MediaQuery.of(context).size.width/20, //48.0,
+                                                      ),
+                                                    )
+                                                  ])
+                                              ),
+                                            );
+                                          }
+
+                                          if (boardpos[rowNumber][columnNumber].leftarrow) {
+                                            return InkWell(
+                                              onTap: () {
+                                                _switch.value = _switch.value * -1;
+                                                // print("Switch");
+                                                //  print(_switch.value);
+                                                // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                                //  {
+                                                if(_switch.value==1 || _switch.value==-1) {
+                                                  _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 4);
+                                                } else if(_switch.value==2 || _switch.value==-2) {
+                                                  _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 4);
+                                                } else if(_switch.value==3|| _switch.value==-3) {
+                                                  _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 4);
+                                                } else if(_switch.value==4|| _switch.value==-4) {
+                                                  _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 4);
+                                                }
+                                                //   };
+                                              },
+                                              splashColor: Colors.grey,
+                                              child: Container(
+                                                  color: Colors.grey,
+                                                  child: Stack(children: <Widget>[Container(
+                                                    // padding: const EdgeInsets.all(1.0),
+                                                    padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                    //color: Colors.black,
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                          top: BorderSide(
+                                                              width: topwidth,
+                                                              color: Colors.black),
+                                                          bottom: BorderSide(
+                                                              width: bottomwidth,
+                                                              color: Colors.black),
+                                                          right: BorderSide(
+                                                              width: rightwidth,
+                                                              color: Colors.black),
+                                                          left: BorderSide(
+                                                              width: leftwidth,
+                                                              color: Colors.black)
+                                                      ),
+                                                      color: Colors.white,
+                                                    ),
+                                                    child: Container(
+                                                        color: Colors.grey,
+                                                        child: Text(
+                                                            position.toString())
+                                                    ),
+                                                  ),
+                                                    Container(
+                                                      padding: EdgeInsets.only(top: 2, bottom: 2, right:2, left:2),
+                                                      child: Icon(
+                                                        Icons.arrow_back,
+                                                        color: Colors.red,
+                                                        size: MediaQuery.of(context).size.width/20, //48.0,
+                                                      ),
+                                                    ),
+                                                  ])
+                                              ),
+                                            );
+                                          }
+
+                                          if (boardpos[rowNumber][columnNumber].downarrow) {
+                                            return InkWell(
+                                              onTap: () {
+                                                _switch.value = _switch.value * -1;
+                                                //  print("Switch");
+                                                //  print(_switch.value);
+                                                // if(_auth.currentUser?.email==lowestbidder && (_switch.value==-1))
+                                                //  {
+                                                if(_switch.value==1 || _switch.value==-1) {
+                                                  _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 3);
+                                                } else if(_switch.value==2 || _switch.value==-2) {
+                                                  _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 3);
+                                                } else if(_switch.value==3|| _switch.value==-3) {
+                                                  _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 3);
+                                                } else if(_switch.value==4|| _switch.value==-4) {
+                                                  _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 3);
+                                                }
+                                                //   };
+                                              },
+                                              splashColor: Colors.grey,
+                                              child: Stack(children: <Widget>[Container(
+                                                      padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                      decoration: BoxDecoration(
+                                                        border: Border(
+                                                            top: BorderSide(
+                                                                width: topwidth,
+                                                                color: Colors.black),
+                                                            bottom: BorderSide(
+                                                                width: bottomwidth,
+                                                                color: Colors.black),
+                                                            right: BorderSide(
+                                                                width: rightwidth,
+                                                                color: Colors.black),
+                                                            left: BorderSide(
+                                                                width: leftwidth,
+                                                                color: Colors.black)
+                                                        ),
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                        color: Colors.grey,
+                                                        child: Text(
+                                                            position.toString())
+                                                    ),
+                                                    Container(
+                                                      child: Icon(
+                                                        Icons.arrow_downward,
+                                                        color: Colors.red,
+                                                        size: MediaQuery.of(context).size.width/20, //48.0,
+                                                      ),
+                                                    )
+                                                  ])
+                                            );
+                                          }
+
+                                          if (boardpos[rowNumber][columnNumber].greenposition) {
+                                            return InkWell(
+                                              onTap: () {
+                                                _switch.value = _switch.value.sign * 3 * -1;
+                                              },
+                                              splashColor: Colors.grey,
+                                              child: Stack(children: <Widget>[Container(
+                                                    padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                    decoration: BoxDecoration(
+                                                      border: Border(
+                                                          top: BorderSide(
+                                                              width: topwidth,
+                                                              color: Colors.black),
+                                                          bottom: BorderSide(
+                                                              width: bottomwidth,
+                                                              color: Colors.black),
+                                                          right: BorderSide(
+                                                              width: rightwidth,
+                                                              color: Colors.black),
+                                                          left: BorderSide(
+                                                              width: leftwidth,
+                                                              color: Colors.black)
+                                                      ),
+                                                      color: Colors.green,
+                                                    ),
+                                                  ),
+                                                Container(
+                                                    color: Colors.green,
+                                                    child: Text(position.toString())
+                                                )
+                                                    //Text(position.toString())
+                                                 //   Image.asset('assets/images/greenplayer.png'),
+                                                  ])
+
+                                            );
+                                          } else {
+                                            return (
+                                                Container(
+                                                  // padding: const EdgeInsets.all(1.0),
+                                                  padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
+                                                  //color: Colors.black,
+                                                  decoration: BoxDecoration(
+                                                    border: Border(
+                                                        top: BorderSide(
+                                                            width: topwidth,
+                                                            color: Colors.black),
+                                                        bottom: BorderSide(
+                                                            width: bottomwidth,
+                                                            color: Colors.black),
+                                                        right: BorderSide(
+                                                            width: rightwidth,
+                                                            color: Colors.black),
+                                                        left: BorderSide(
+                                                            width: leftwidth,
+                                                            color: Colors.black)
+                                                    ),
+                                                    color: Colors.white,
+                                                  ),
+                                                  child: Container(
+                                                      color: Colors.grey,
+                                                      child: Text(
+                                                          position.toString())
+                                                  ),
+                                                )
+                                            );
+                                          }
+                                        },
+                                      )
+                                  );
+                                })
+                        ),
+                        ),
+                        Center(child: Text("Moves " + movecount.toString(),
+                            style: TextStyle(
+                                fontSize: 32.0, fontWeight: FontWeight.bold))),
+                      ],
+                    )
+                );
   }
   // Initialises all lists
   Future _initialiseGame() async {
@@ -1166,7 +1224,7 @@ class singleplayer_debugging extends StatelessWidget {
       list[a]=bvalue;
       list[b]=avalue;
     }
-    //  print("a");
+  //  print("a");
     CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/'+gamename!+'/Collectibles');
 
     await collectibleupdate.doc("RedSaturn").update({'Round': list[1]});
@@ -1302,9 +1360,9 @@ class singleplayer_debugging extends StatelessWidget {
     PositionGreenAltI=ialt;
     PositionGreenAltJ=jalt;
     await game.doc(gamename).update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
-    //  print("MOVED");
+  //  print("MOVED");
     if(ialt!=i || jalt!=j) {
-      //    await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
+  //    await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
     }
     //setState(() {});
   }
@@ -1587,18 +1645,18 @@ class singleplayer_debugging extends StatelessWidget {
 
 //    print(bets);
 //    if(bets.first == 99 && Timer!=0) {
-    await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
-    await gameupdate.doc(gamename).update({'lowestbid': bet});
-    await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
-    await gameupdate.doc(gamename).update({'Timer': 0});
+      await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
+      await gameupdate.doc(gamename).update({'lowestbid': bet});
+      await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
+      await gameupdate.doc(gamename).update({'Timer': 0});
 
-    //startTimer(gamename);
+      //startTimer(gamename);
 //      print(bets);
 //    }
-    //   if(bet < lowestbid  && Timer!=0){
+ //   if(bet < lowestbid  && Timer!=0){
 //      await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
-    //     await gameupdate.doc(gamename).update({'lowestbid': bet});
-    //   }
+ //     await gameupdate.doc(gamename).update({'lowestbid': bet});
+ //   }
 //    await betupdate.doc(uid).update({'bet': bet, 'timestampupdated': DateTime.now()});
 
     //await betupdate.doc(uid).update({'bet': bet});

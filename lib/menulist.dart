@@ -15,8 +15,11 @@ import 'package:ricochetrobots/multiplayer_create.dart';
 import 'main.dart';
 import 'game_activity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'singleplayer.dart';
+import 'singleplayer_debugging.dart';
+import 'singleplayer_debugging.dart';
+
+
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -190,6 +193,35 @@ class MenuList extends StatelessWidget {
                             ));
                       },
                       child: const Text('ABOUT'),
+                    ),
+                  ]),
+
+              Row( mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                    Text('---------------------------------------------------------------------------------------------------------', style: TextStyle(color: Colors.white)),
+                  ]),
+              Row( mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                          primary: Colors.white,
+                          textStyle: TextStyle(fontSize: 32, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (
+                                  ctxt) => new singleplayer_debugging(),
+                              settings: RouteSettings(
+                                  arguments: Arguments("")
+                                // comic.reference.id,
+                                // comic.data()["title"].toString(),
+                                // comic.data()["lang"].toString(),
+                              ),
+                            ));
+                      },
+                      child: const Text('Singleplayer Debug'),
                     ),
                   ])
         ]   )
