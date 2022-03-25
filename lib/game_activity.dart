@@ -205,7 +205,7 @@ class GameActivity extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Ricochet Robots'),
+            Text('TURDLE'),
           ],
          // children: [
             //Image.asset(

@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Ricochet Robots',
+      title: 'TURDLE',
       theme: ThemeData(
         primarySwatch: Colors.red,
         //  scaffoldBackgroundColor: const Color(0xFFEFEFEF)
@@ -100,7 +100,7 @@ class SignInPage extends StatelessWidget {
     return Scaffold( backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
         appBar: AppBar(          backgroundColor: Colors.black,
-            title: Text('Ricochet Robots')
+            title: Text('TURDLE')
       ),
 
 
