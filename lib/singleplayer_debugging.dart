@@ -1,159 +1,15 @@
-//import 'package:flutter/services.dart';
-//import 'package:provider/provider.dart';
-//import 'package:cloud_functions/cloud_functions.dart';
-//import 'dart:html';
 import 'dart:math';
 import 'dart:async';
-//import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ricochetrobots/main.dart';
 import 'board_square.dart';
-//import 'helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-//import 'package:numberpicker/numberpicker.dart';
-//import 'games_list.dart';
-
-// Types of images available
-enum ImageType {
-  zero,
-  one,
-  two,
-  three,
-  four,
-  five,
-  six,
-  seven,
-  eight,
-  bomb,
-  facingDown,
-  flagged,
-  bombnw,
-  bombsw,
-  bombne,
-  bombse,
-  redcircle,
-  bluecrossne,
-  bluecrossnw,
-  bluecrossse,
-  bluecrosssw,
-  bluetrianglene,
-  bluetrianglenw,
-  bluetrianglese,
-  bluetrianglesw,
-  bluesaturnne,
-  bluesaturnnw,
-  bluesaturnse,
-  bluesaturnsw,
-  bluecirclene,
-  bluecirclenw,
-  bluecirclese,
-  bluecirclesw,
-  redcrossne,
-  redcrossnw,
-  redcrossse,
-  redcrosssw,
-  redtrianglene,
-  redtrianglenw,
-  redtrianglese,
-  redtrianglesw,
-  redsaturnne,
-  redsaturnnw,
-  redsaturnse,
-  redsaturnsw,
-  redcirclene,
-  redcirclenw,
-  redcirclese,
-  redcirclesw,
-  greencrossne,
-  greencrossnw,
-  greencrossse,
-  greencrosssw,
-  greentrianglene,
-  greentrianglenw,
-  greentrianglese,
-  greentrianglesw,
-  greensaturnne,
-  greensaturnnw,
-  greensaturnse,
-  greensaturnsw,
-  greencirclene,
-  greencirclenw,
-  greencirclese,
-  greencirclesw,
-  yellowcrossne,
-  yellowcrossnw,
-  yellowcrossse,
-  yellowcrosssw,
-  yellowtrianglene,
-  yellowtrianglenw,
-  yellowtrianglese,
-  yellowtrianglesw,
-  yellowsaturnne,
-  yellowsaturnnw,
-  yellowsaturnse,
-  yellowsaturnsw,
-  yellowcirclene,
-  yellowcirclenw,
-  yellowcirclese,
-  yellowcirclesw,
-  rainbowne,
-  rainbownw,
-  rainbowse,
-  rainbowsw,
-  walle,
-  wallw,
-  walln,
-  walls,
-  redplayer,
-  bluepleyer,
-  greenplayer,
-  yellowpleyer
-}
-
-
-
-//class GameActivity extends StatefulWidget {
-//  @override
-//  _GameActivityState createState() => _GameActivityState();
-//}
-
 
 
 class singleplayer_debugging extends StatelessWidget {
 
-
-
-  Timer _timer = Timer(Duration(milliseconds: 1), () {});
-  int _start = 10;
-
-  Future startTimer(gamename) async {
-    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    const oneSec = const Duration(seconds: 1);
-    _timer = new Timer.periodic(
-      oneSec,
-          (Timer timer) {
-        if (_start == 0) {
-          //setState(() {
-          gameupdate.doc(gamename).update({'Timer': _start });
-          timer.cancel();
-          //  });
-        } else {
-          // setState(() {
-          gameupdate.doc(gamename).update({'Timer': _start });
-          _start--;
-          //  });
-        }
-      },
-    );
-  }
-
-  Future stopTimer() async {
-    _timer.cancel();
-  }
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
-
 
   // Row and column count of the board
   int rowCount = 16;
@@ -192,20 +48,18 @@ class singleplayer_debugging extends StatelessWidget {
   int PositionYellowAltJ = 13;
   int movecount = 1;
 
-  int GameRound = 1;
-  int RunningTimer = 1;
+  //int GameRound = 1;
   String lowestbidder = "asd";
-  String hostplayer = "qwsde";
 
   int lowestbid = 1;
-  bool isEnabled = false;
+  bool isEnabled = true;
 
   String msg="";
   late FocusNode myFocusNode;
 
-  ValueNotifier<int> _counter = ValueNotifier<int>(10);
   ValueNotifier<int> _switch = ValueNotifier<int>(1);
   ValueNotifier<int> _move = ValueNotifier<int>(1);
+  ValueNotifier<int> _GameRound = ValueNotifier<int>(1);
 
   final bet = TextEditingController();
   int counter = 5;
@@ -265,6 +119,11 @@ class singleplayer_debugging extends StatelessWidget {
       ),
 
       body:
+      ValueListenableBuilder(
+          valueListenable: _GameRound,
+          builder: (context, value, child) {
+            if(_GameRound.value>2){isEnabled=false;}else{isEnabled=true;}
+            return (
                     ListView(
                       children: <Widget>[
                         ConstrainedBox(
@@ -274,21 +133,12 @@ class singleplayer_debugging extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Column(children: <Widget>[IconButton(
-                                icon: const Icon(Icons.launch),
-                                tooltip: 'Initialise Board',
-                                onPressed: () {
-                                  _initialiseGame();
-                                },
-                              ),
-                                Text('START')]), Column(children: <Widget>[
+                              Column(children: <Widget>[
                                 IconButton(
                                   icon: const Icon(Icons.replay),
                                   tooltip: 'Reset',
                                   onPressed: () {
-                                    if (_auth.currentUser?.email == hostplayer) {
                                       _resetGame(_auth.currentUser?.email,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                    }
                                   },
                                 ),
                                 Text('Reset')
@@ -296,11 +146,9 @@ class singleplayer_debugging extends StatelessWidget {
                               Column(children: <Widget>[IconButton(
                                 icon: const Icon(Icons.arrow_forward),
                                 tooltip: 'Next Round',
-                                onPressed: () {
-                                  if (_auth.currentUser?.email == hostplayer) {
-                                    _nextRound(_auth.currentUser?.email, GameRound, lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                  }
-                                },
+                                onPressed: isEnabled?() {
+                                  _GameRound.value=_GameRound.value+1;
+                                  }:null,
                               ),
                                 Text('NextRound')]),
                             ],
@@ -315,56 +163,113 @@ class singleplayer_debugging extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text("ROUND: " + GameRound.toString() + " ",
+                              Text("ROUND: " + _GameRound.value.toString() + " ",
                                   style: TextStyle(fontSize: 24.0,
                                       fontWeight: FontWeight.bold)),
-
-                              IconButton(
-                                icon: Icon(
-                                  Icons.remove,
-                                  color: Theme.of(context).accentColor,
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 4.0,
-                                    horizontal: 0.0),
-                                iconSize: 32.0,
-                                color: Theme.of(context).primaryColor,
-                                onPressed: () {
-                                  _counter.value--;
-                                  //               print(_counter.value);
-                                },
-                              ),
-
-                              ValueListenableBuilder(
-                                valueListenable: _counter,
-                                builder: (context, value, child) =>
-                                    Text('$value', style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold, color: Colors.red)),
-                              ),
-
-                              IconButton(
-                                icon: Icon(
-                                  Icons.add,
-                                  color: Theme.of(context).accentColor,
-                                ),
-                                padding: EdgeInsets.symmetric(vertical: 4.0,
-                                    horizontal: 0.0),
-                                iconSize: 32.0,
-                                color: Theme.of(context).primaryColor,
-                                onPressed: () {
-                                  _counter.value++;
-                                },
-                              ),
-
-                              ElevatedButton(
-                                child: Text('SUBMIT BID'),
-                                onPressed: isEnabled ? () {
-                                  _submitBet(_auth.currentUser?.email, _auth.currentUser?.email, _counter.value, GameRound, RunningTimer);
-                                  myFocusNode.unfocus();
-                                } : null,
-                              ),
                             ],
                           ),
 
                         ),
+
+                        StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance.collection('Games/anon/Collectibles').where("Round",isEqualTo: _GameRound.value).snapshots(), //.doc(_auth.currentUser.email).get(),
+                            builder: (context, AsyncSnapshot<QuerySnapshot> collectibles ) {
+                              if (collectibles.hasData) {
+                                List<String> target = [];
+                                //List<String> bets = [];
+                                //List<List<Players>> players;
+                                //List<Map<String, dynamic>> send=[] ;
+                                //snapshot1.data?.docs.forEach((f) => print(f.id));
+                                collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
+                                //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
+                                //               print(target[0]);
+                                //WIN CONDITION!!!!
+
+                                if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Green" && movecount<=lowestbid && lowestbid!=99)
+                                {
+                                  //print(boardpos[PositionGreenI][PositionGreenJ].collectible);
+                                  //print(target[0].toString().substring(0,5));
+                                  msg="$lowestbidder has won!!!";
+                                  // _nextRound("TestGame",GameRound,lowestbidder);
+                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
+                                } else if(movecount>lowestbid) {
+                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                  msg="You have failed. Please proceed to the next round.";
+                                  //sleep(Duration(seconds:2));
+                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                                }
+                                if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="Red" && movecount<=lowestbid && lowestbid!=99)
+                                {
+                                  //print(boardpos[PositionRedI][PositionRedJ].collectible);
+                                  //print(target[0].toString().substring(0,3));
+                                  msg="$lowestbidder has b won!!!";
+                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
+                                } else if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Red" && movecount>lowestbid) {
+                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                  msg="You have failed. Please proceed to the next round.";
+                                  //sleep(Duration(seconds:2));
+                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                                }
+                                if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="Blue" && movecount<=lowestbid && lowestbid!=99)
+                                {
+                                  //print(boardpos[PositionBlueI][PositionBlueJ].collectible);
+                                  //print(target[0].toString().substring(0,4));
+                                  msg="$lowestbidder has won!!!";
+                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
+                                } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Blue" && movecount>lowestbid) {
+                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                  msg="You have failed. Please proceed to the next round.";
+                                  //sleep(Duration(seconds:2));
+                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                                }
+                                if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="Yellow" && movecount<=lowestbid && lowestbid!=99)
+                                {
+                                  //print(boardpos[PositionYellowI][PositionYellowJ].collectible);
+                                  //print(target[0].toString().substring(0,6));
+                                  msg="CONGRATULATIONS!!! You have won!!!";
+                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
+                                } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Yellow" && movecount>lowestbid) {
+                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
+                                  msg="You have failed. Please proceed to the next round.";
+                                  //sleep(Duration(seconds:2));
+                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                                }
+
+                                //print("Debug");
+                                //print(players.length);
+                                //print(GameRound);
+                                return (
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children:<Widget>[
+                                        Row(mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
+                                            Text("TARGET: ", style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
+                                            Container(
+                                                color: Colors.grey,
+                                                child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
+                                                  Image.asset('assets/images/'+target[0].toString()+'SouthWest.png',     height: 40,
+                                                    width: 40,),
+                                                ])
+                                            ),
+                                            Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.black))
+                                          ] ,
+                                        ),
+
+                                      ],
+
+                                    )
+
+                                );
+
+                              } else {return new Text("There is no data");}
+                              //return new ListView(children: getExpenseItems(snapshot1));
+                            }
+                        ),
+
+
+
 
                         Center(child:
                         // The grid of squares
@@ -974,6 +879,7 @@ class singleplayer_debugging extends StatelessWidget {
                             );})
                       ],
                     )
+            );})
                 );
   }
   // Initialises all lists
@@ -1165,13 +1071,8 @@ class singleplayer_debugging extends StatelessWidget {
     boardpos[12][14].collectible = "YellowTriangle";
     boardpos[14][2].collectible = "GreenTriangle";
     boardpos[14][9].collectible = "BlueCircle";
-
-
-
-
     //setState(() {});
   }
-
 
   Future _reinitialiseGame(String? gamename, int PositionBlueI, int PositionBlueJ, int PositionRedI,int PositionRedJ, int PositionGreenI,int PositionGreenJ, int PositionYellowI,int PositionYellowJ) async {
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
@@ -1603,267 +1504,6 @@ class singleplayer_debugging extends StatelessWidget {
     }    //setState(() {});
   }
 
-  Image getImage(ImageType type) {
-    switch (type) {
-      case ImageType.zero:
-        return Image.asset('images/0.png');
-      case ImageType.one:
-        return Image.asset('images/1.png');
-      case ImageType.two:
-        return Image.asset('images/2.png');
-      case ImageType.three:
-        return Image.asset('images/3.png');
-      case ImageType.four:
-        return Image.asset('images/4.png');
-      case ImageType.five:
-        return Image.asset('images/5.png');
-      case ImageType.six:
-        return Image.asset('images/6.png');
-      case ImageType.seven:
-        return Image.asset('images/7.png');
-      case ImageType.eight:
-        return Image.asset('images/8.png');
-      case ImageType.bomb:
-        return Image.asset('images/bomb.png');
-      case ImageType.facingDown:
-        return Image.asset('assets/images/facingDown.png');
-      case ImageType.flagged:
-        return Image.asset('assets/images/flagged.png');
-      case ImageType.bombnw:
-        return Image.asset('assets/images/bombNorthWest.png');
-      case ImageType.bombne:
-        return Image.asset('assets/images/bombNorthEast.png');
-      case ImageType.bombsw:
-        return Image.asset('assets/images/bombSouthWest.png');
-      case ImageType.bombse:
-        return Image.asset('assets/images/bombSouthEast.png');
-      case ImageType.bluecrossne:
-        return Image.asset('assets/images/BlueCrossNorthEast.png');
-      case ImageType.bluecrossnw:
-        return Image.asset('assets/images/BlueCrossNorthWest.png');
-      case ImageType.bluecrossse:
-        return Image.asset('assets/images/BlueCrossSouthEast.png');
-      case ImageType.bluecrosssw:
-        return Image.asset('assets/images/BlueCrossSouthWest.png');
-      case ImageType.bluetrianglene:
-        return Image.asset('assets/images/BlueTriangleNorthEast.png');
-      case ImageType.bluetrianglenw:
-        return Image.asset('assets/images/BlueTriangleNorthWest.png');
-      case ImageType.bluetrianglese:
-        return Image.asset('assets/images/BlueTriangleSouthEast.png');
-      case ImageType.bluetrianglesw:
-        return Image.asset('assets/images/BlueTriangleSouthWest.png');
-      case ImageType.bluesaturnne:
-        return Image.asset('assets/images/BlueSaturnNorthEast.png');
-      case ImageType.bluesaturnnw:
-        return Image.asset('assets/images/BlueSaturnNorthWest.png');
-      case ImageType.bluesaturnse:
-        return Image.asset('assets/images/BlueSaturnSouthEast.png');
-      case ImageType.bluesaturnsw:
-        return Image.asset('assets/images/BlueSaturnSouthWest.png');
-      case ImageType.bluecirclene:
-        return Image.asset('assets/images/BlueCircleNorthEast.png');
-      case ImageType.bluecirclenw:
-        return Image.asset('assets/images/BlueCircleNorthWest.png');
-      case ImageType.bluecirclese:
-        return Image.asset('assets/images/BlueCircleSouthEast.png');
-      case ImageType.bluecirclesw:
-        return Image.asset('assets/images/BlueCircleSouthWest.png');
-      case ImageType.redcrossne:
-        return Image.asset('assets/images/RedCrossNorthEast.png');
-      case ImageType.redcrossnw:
-        return Image.asset('assets/images/RedCrossNorthWest.png');
-      case ImageType.redcrossse:
-        return Image.asset('assets/images/RedCrossSouthEast.png');
-      case ImageType.redcrosssw:
-        return Image.asset('assets/images/RedCrossSouthWest.png');
-      case ImageType.redtrianglene:
-        return Image.asset('assets/images/RedTriangleNorthEast.png');
-      case ImageType.redtrianglenw:
-        return Image.asset('assets/images/RedTriangleNorthWest.png');
-      case ImageType.redtrianglese:
-        return Image.asset('assets/images/RedTriangleSouthEast.png');
-      case ImageType.redtrianglesw:
-        return Image.asset('assets/images/RedTriangleSouthWest.png');
-      case ImageType.redsaturnne:
-        return Image.asset('assets/images/RedSaturnNorthEast.png');
-      case ImageType.redsaturnnw:
-        return Image.asset('assets/images/RedSaturnNorthWest.png');
-      case ImageType.redsaturnse:
-        return Image.asset('assets/images/RedSaturnSouthEast.png');
-      case ImageType.redsaturnsw:
-        return Image.asset('assets/images/RedSaturnSouthWest.png');
-      case ImageType.redcirclene:
-        return Image.asset('assets/images/RedCircleNorthEast.png');
-      case ImageType.redcirclenw:
-        return Image.asset('assets/images/RedCircleNorthWest.png');
-      case ImageType.redcirclese:
-        return Image.asset('assets/images/RedCircleSouthEast.png');
-      case ImageType.redcirclesw:
-        return Image.asset('assets/images/RedCircleSouthWest.png');
-      case ImageType.greencrossne:
-        return Image.asset('assets/images/GreenCrossNorthEast.png');
-      case ImageType.greencrossnw:
-        return Image.asset('assets/images/GreenCrossNorthWest.png');
-      case ImageType.greencrossse:
-        return Image.asset('assets/images/GreenCrossSouthEast.png');
-      case ImageType.greencrosssw:
-        return Image.asset('assets/images/GreenCrossSouthWest.png');
-      case ImageType.greentrianglene:
-        return Image.asset('assets/images/GreenTriangleNorthEast.png');
-      case ImageType.greentrianglenw:
-        return Image.asset('assets/images/GreenTriangleNorthWest.png');
-      case ImageType.greentrianglese:
-        return Image.asset('assets/images/GreenTriangleSouthEast.png');
-      case ImageType.greentrianglesw:
-        return Image.asset('assets/images/GreenTriangleSouthWest.png');
-      case ImageType.greensaturnne:
-        return Image.asset('assets/images/GreenSaturnNorthEast.png');
-      case ImageType.greensaturnnw:
-        return Image.asset('assets/images/GreenSaturnNorthWest.png');
-      case ImageType.greensaturnse:
-        return Image.asset('assets/images/GreenSaturnSouthEast.png');
-      case ImageType.greensaturnsw:
-        return Image.asset('assets/images/GreenSaturnSouthWest.png');
-      case ImageType.greencirclene:
-        return Image.asset('assets/images/GreenCircleNorthEast.png');
-      case ImageType.greencirclenw:
-        return Image.asset('assets/images/GreenCircleNorthWest.png');
-      case ImageType.greencirclese:
-        return Image.asset('assets/images/GreenCircleSouthEast.png');
-      case ImageType.greencirclesw:
-        return Image.asset('assets/images/GreenCircleSouthWest.png');
-      case ImageType.yellowcrossne:
-        return Image.asset('assets/images/YellowCrossNorthEast.png');
-      case ImageType.yellowcrossnw:
-        return Image.asset('assets/images/YellowCrossNorthWest.png');
-      case ImageType.yellowcrossse:
-        return Image.asset('assets/images/YellowCrossSouthEast.png');
-      case ImageType.yellowcrosssw:
-        return Image.asset('assets/images/YellowCrossSouthWest.png');
-      case ImageType.yellowtrianglene:
-        return Image.asset('assets/images/YellowTriangleNorthEast.png');
-      case ImageType.yellowtrianglenw:
-        return Image.asset('assets/images/YellowTriangleNorthWest.png');
-      case ImageType.yellowtrianglese:
-        return Image.asset('assets/images/YellowTriangleSouthEast.png');
-      case ImageType.yellowtrianglesw:
-        return Image.asset('assets/images/YellowTriangleSouthWest.png');
-      case ImageType.yellowsaturnne:
-        return Image.asset('assets/images/YellowSaturnNorthEast.png');
-      case ImageType.yellowsaturnnw:
-        return Image.asset('assets/images/YellowSaturnNorthWest.png');
-      case ImageType.yellowsaturnse:
-        return Image.asset('assets/images/YellowSaturnSouthEast.png');
-      case ImageType.yellowsaturnsw:
-        return Image.asset('assets/images/YellowSaturnSouthWest.png');
-      case ImageType.yellowcirclene:
-        return Image.asset('assets/images/YellowCircleNorthEast.png');
-      case ImageType.yellowcirclenw:
-        return Image.asset('assets/images/YellowCircleNorthWest.png');
-      case ImageType.yellowcirclese:
-        return Image.asset('assets/images/YellowCircleSouthEast.png');
-      case ImageType.yellowcirclesw:
-        return Image.asset('assets/images/YellowCircleSouthWest.png');
-      case ImageType.rainbowne:
-        return Image.asset('assets/images/RainbowNorthEast.png');
-      case ImageType.rainbownw:
-        return Image.asset('assets/images/RainbowNorthWest.png');
-      case ImageType.rainbowse:
-        return Image.asset('assets/images/RainbowSouthEast.png');
-      case ImageType.rainbowsw:
-        return Image.asset('assets/images/RainbowSouthWest.png');
-      case ImageType.walle:
-        return Image.asset('assets/images/WallEast.png');
-      case ImageType.wallw:
-        return Image.asset('assets/images/WallWest.png');
-      case ImageType.walln:
-        return Image.asset('assets/images/WallNorth.png');
-      case ImageType.walls:
-        return Image.asset('assets/images/WallSouth.png');
-      case ImageType.redplayer:
-        return Image.asset('assets/images/redplayer.png');
-      case ImageType.bluepleyer:
-        return Image.asset('assets/images/blueplayer.png');
-      case ImageType.greenplayer:
-        return Image.asset('assets/images/greenplayer.png');
-      case ImageType.yellowpleyer:
-        return Image.asset('assets/images/yellowplayer.png');
-      case ImageType.flagged:
-        return Image.asset('assets/images/flagged.png');
-      default:
-        return Image.asset('assets/images/flagged.png');
-    }
-  }
-
-  ImageType getImageTypeFromNumber(int number) {
-    switch (number) {
-      case 0:
-        return ImageType.zero;
-      case 1:
-        return ImageType.one;
-      case 2:
-        return ImageType.two;
-      case 3:
-        return ImageType.three;
-      case 4:
-        return ImageType.four;
-      case 5:
-        return ImageType.five;
-      case 6:
-        return ImageType.six;
-      case 7:
-        return ImageType.seven;
-      case 8:
-        return ImageType.eight;
-      default:
-        return ImageType.eight;
-    }
-  }
-
-  Future _submitBet(String? gamename, String? uid, int bet, int Round, int Timer) async {
-    CollectionReference betupdate = FirebaseFirestore.instance.collection('Games/'+ gamename! +'/Players');
-    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    CollectionReference round2update = FirebaseFirestore.instance.collection('Games/'+ gamename + '/Rounds');
-
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players').orderBy('bet', descending: false).limit(1).get();
-    var list = querySnapshot.docs;
-    List<int> bets = [];
-    list.forEach((f) => bets.add(f.data()['bet']));
-
-    int lowestbid = 99;
-    var collection = FirebaseFirestore.instance.collection('Games');
-    var docSnapshot = await collection.doc(gamename).get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data();
-      int value = data?['lowestbid'];
-      lowestbid=value;// <-- The value you want to retrieve.
-    }
-
-//    print(bets);
-//    if(bets.first == 99 && Timer!=0) {
-      await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
-      await gameupdate.doc(gamename).update({'lowestbid': bet});
-      await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
-      await gameupdate.doc(gamename).update({'Timer': 0});
-
-      //startTimer(gamename);
-//      print(bets);
-//    }
- //   if(bet < lowestbid  && Timer!=0){
-//      await gameupdate.doc(gamename).update({'lowestbidder': uid.toString()});
- //     await gameupdate.doc(gamename).update({'lowestbid': bet});
- //   }
-//    await betupdate.doc(uid).update({'bet': bet, 'timestampupdated': DateTime.now()});
-
-    //await betupdate.doc(uid).update({'bet': bet});
-
-  }
-
-  Future _setwinner(String? gamename, int Round,String uid) async {
-    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    await gameupdate.doc(gamename).update({'winner': uid});
-  }
 
   Future _nextRound(String? gamename, int Round,String uid,PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
@@ -1879,8 +1519,6 @@ class singleplayer_debugging extends StatelessWidget {
         playerupdate.doc(element.id).update({'score': FieldValue.increment(1)});
       });
     }
-
-
     await gameupdate.doc(gamename).update({'Round': Round+1});
     await gameupdate.doc(gamename).update({'lowestbidder': "a@a.at"});
     await gameupdate.doc(gamename).update({'lowestbid': 99});
@@ -1888,7 +1526,7 @@ class singleplayer_debugging extends StatelessWidget {
     await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
     await gameupdate.doc(gamename).update({'movecount': 0});
     await gameupdate.doc(gamename).update({'Timer': 10});
-    _start=10;
+    //_start=10;
     await roundupdate.doc((Round+1).toString())
         .set({
       'Start': DateTime.now().add(const Duration(minutes: 5))
@@ -1902,7 +1540,6 @@ class singleplayer_debugging extends StatelessWidget {
   }
 
   Future _resetGame(String? gamename,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
-    stopTimer();
     await _reinitialiseGame(gamename,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
     CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
     CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/'+gamename!+'/Players');
