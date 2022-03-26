@@ -205,6 +205,7 @@ class singleplayer_debugging extends StatelessWidget {
 
   ValueNotifier<int> _counter = ValueNotifier<int>(10);
   ValueNotifier<int> _switch = ValueNotifier<int>(1);
+  ValueNotifier<int> _move = ValueNotifier<int>(1);
 
   final bet = TextEditingController();
   int counter = 5;
@@ -963,9 +964,14 @@ class singleplayer_debugging extends StatelessWidget {
                                 })
                         ),
                         ),
-                        Center(child: Text("Moves " + movecount.toString(),
-                            style: TextStyle(
-                                fontSize: 32.0, fontWeight: FontWeight.bold))),
+                            ValueListenableBuilder(
+                            valueListenable: _move,
+                            builder: (context, value, child) {
+                            return (
+                                                Center(child: Text("Moves " + _move.value.toString(),
+                                                    style: TextStyle(
+                                                        fontSize: 32.0, fontWeight: FontWeight.bold)))
+                            );})
                       ],
                     )
                 );
@@ -1458,6 +1464,7 @@ class singleplayer_debugging extends StatelessWidget {
     PositionRedJ=j;
     PositionRedAltI=ialt;
     PositionRedAltJ=jalt;
+    _move.value=_move.value+1;
     await game.doc(gamename).update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
     if(ialt!=i || jalt!=j) {
       await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
@@ -1499,6 +1506,7 @@ class singleplayer_debugging extends StatelessWidget {
     PositionBlueJ=j;
     PositionBlueAltI=ialt;
     PositionBlueAltJ=jalt;
+    _move.value=_move.value+1;
     await game.doc(gamename).update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
     if(ialt!=i || jalt!=j) {
     //  await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
@@ -1541,6 +1549,8 @@ class singleplayer_debugging extends StatelessWidget {
     PositionGreenJ=j;
     PositionGreenAltI=ialt;
     PositionGreenAltJ=jalt;
+    _move.value=_move.value+1;
+
     await game.doc(gamename).update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
   //  print("MOVED");
     if(ialt!=i || jalt!=j) {
@@ -1585,6 +1595,8 @@ class singleplayer_debugging extends StatelessWidget {
     PositionYellowJ=j;
     PositionYellowAltI=ialt;
     PositionYellowAltJ=jalt;
+    _move.value=_move.value+1;
+
     await game.doc(gamename).update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
     if(ialt!=i || jalt!=j) {
       await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
