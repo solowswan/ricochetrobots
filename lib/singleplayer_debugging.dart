@@ -48,7 +48,6 @@ class singleplayer_debugging extends StatelessWidget {
   int PositionYellowAltJ = 13;
   int movecount = 1;
 
-  //int GameRound = 1;
   String lowestbidder = "asd";
 
   int lowestbid = 1;
@@ -64,8 +63,6 @@ class singleplayer_debugging extends StatelessWidget {
   final bet = TextEditingController();
   int counter = 5;
 
-  //int movecount=0;
-  // The grid of squares
   List<List<BoardPosition>> boardpos = List.generate(16, (i) {
     return List.generate(16, (j) {
       return BoardPosition();
@@ -171,73 +168,32 @@ class singleplayer_debugging extends StatelessWidget {
 
                         ),
 
-                        StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance.collection('Games/anon/Collectibles').where("Round",isEqualTo: _GameRound.value).snapshots(), //.doc(_auth.currentUser.email).get(),
-                            builder: (context, AsyncSnapshot<QuerySnapshot> collectibles ) {
+                        StreamBuilder<DocumentSnapshot>(
+                            stream: FirebaseFirestore.instance.collection('Games/anon/Collectibles').doc(_GameRound.value.toString()).snapshots(), //.doc(_auth.currentUser.email).get(),
+                            builder: (context, AsyncSnapshot<DocumentSnapshot> collectibles ) {
                               if (collectibles.hasData) {
-                                List<String> target = [];
-                                //List<String> bets = [];
-                                //List<List<Players>> players;
-                                //List<Map<String, dynamic>> send=[] ;
-                                //snapshot1.data?.docs.forEach((f) => print(f.id));
-                                collectibles.data?.docs.forEach((f) => target.add(f.id.toString()));
-                                //collectibles.data?.docs.forEach((f) => players.add(f.id.toString()));
-                                //               print(target[0]);
-                                //WIN CONDITION!!!!
-
-                                if(boardpos[PositionGreenI][PositionGreenJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Green" && movecount<=lowestbid && lowestbid!=99)
-                                {
-                                  //print(boardpos[PositionGreenI][PositionGreenJ].collectible);
-                                  //print(target[0].toString().substring(0,5));
-                                  msg="$lowestbidder has won!!!";
-                                  // _nextRound("TestGame",GameRound,lowestbidder);
-                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
-                                } else if(movecount>lowestbid) {
-                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                  msg="You have failed. Please proceed to the next round.";
-                                  //sleep(Duration(seconds:2));
-                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
-                                }
-                                if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,3)=="Red" && movecount<=lowestbid && lowestbid!=99)
-                                {
-                                  //print(boardpos[PositionRedI][PositionRedJ].collectible);
-                                  //print(target[0].toString().substring(0,3));
-                                  msg="$lowestbidder has b won!!!";
-                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
-                                } else if(boardpos[PositionRedI][PositionRedJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Red" && movecount>lowestbid) {
-                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                  msg="You have failed. Please proceed to the next round.";
-                                  //sleep(Duration(seconds:2));
-                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
-                                }
-                                if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,4)=="Blue" && movecount<=lowestbid && lowestbid!=99)
-                                {
-                                  //print(boardpos[PositionBlueI][PositionBlueJ].collectible);
-                                  //print(target[0].toString().substring(0,4));
-                                  msg="$lowestbidder has won!!!";
-                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
-                                } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Blue" && movecount>lowestbid) {
-                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                  msg="You have failed. Please proceed to the next round.";
-                                  //sleep(Duration(seconds:2));
-                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
-                                }
-                                if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,6)=="Yellow" && movecount<=lowestbid && lowestbid!=99)
-                                {
-                                  //print(boardpos[PositionYellowI][PositionYellowJ].collectible);
-                                  //print(target[0].toString().substring(0,6));
-                                  msg="CONGRATULATIONS!!! You have won!!!";
-                                  //showAlertDialogWIN(context,GameRound,lowestbidder);
-                                } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==target[0].toString() && target[0].toString().substring(0,5)=="Yellow" && movecount>lowestbid) {
-                                  //showAlertDialogNEXTPLAYER(context,lowestbidder, PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                  msg="You have failed. Please proceed to the next round.";
-                                  //sleep(Duration(seconds:2));
-                                  //if(_auth.currentUser?.email==hostplayer) {_nextBestBet(lowestbidder,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);}
+                                final Color myColorTarget;
+                                if(collectibles.data?.data()!["color"] == "green") {
+                                  myColorTarget = Colors.green;
+                                } else if(collectibles.data?.data()!["color"] == "red") {
+                                  myColorTarget = Colors.red;
+                                } else if(collectibles.data?.data()!["color"] == "blue") {
+                                  myColorTarget = Colors.blue;
+                                } else if(collectibles.data?.data()!["color"] == "yellow") {
+                                  myColorTarget = Colors.yellow;
+                                } else {
+                                  myColorTarget = Colors.white;
                                 }
 
-                                //print("Debug");
-                                //print(players.length);
-                                //print(GameRound);
+                                List<IconData> _iconsTarget = [
+                                  Icons.wb_sunny_sharp,
+                                  Icons.add_alarm,
+                                  Icons.anchor,
+                                  Icons.vpn_lock,
+                                ];
+                               // print(collectibles.data?.data()!["color"]);
+                               // print(collectibles.data?.data()!["index"]);
+
                                 return (
                                     Column(
                                       mainAxisAlignment: MainAxisAlignment.center,
@@ -247,29 +203,23 @@ class singleplayer_debugging extends StatelessWidget {
                                             //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
                                             Text("TARGET: ", style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
                                             Container(
-                                                color: Colors.grey,
                                                 child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
-                                                  Image.asset('assets/images/'+target[0].toString()+'SouthWest.png',     height: 40,
-                                                    width: 40,),
+                                                  Icon(
+                                                    _iconsTarget[collectibles.data?.data()!["index"]],//Icons.wb_sunny_sharp,
+                                                    color: myColorTarget, //Colors.green, //Colors.green,
+                                                    size: MediaQuery.of(context).size.width/30, //48.0,
+                                                  ),
                                                 ])
                                             ),
                                             Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.black))
                                           ] ,
                                         ),
-
                                       ],
-
                                     )
-
                                 );
-
                               } else {return new Text("There is no data");}
-                              //return new ListView(children: getExpenseItems(snapshot1));
                             }
                         ),
-
-
-
 
                         Center(child:
                         // The grid of squares
@@ -365,8 +315,6 @@ class singleplayer_debugging extends StatelessWidget {
                                           double bottomwidth=0.0;
                                           double rightwidth=0.0;
                                           double leftwidth=0.0;
-                                          double saturn=0.0;
-                                          double circle=0.0;
                                           int iconindex=-1;
                                           List<IconData> _icons = [
                                             Icons.wb_sunny_sharp,
