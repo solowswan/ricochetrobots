@@ -33,6 +33,13 @@ class BoardPosition {
 
 }
 
+class RoundResults {
+  int moves;
+  RoundResults({this.moves = 0
+  });
+}
+
+
 class Players {
 
   String EMail;

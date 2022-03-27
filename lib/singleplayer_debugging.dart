@@ -27,6 +27,15 @@ class singleplayer_debugging extends StatelessWidget {
   int yellowi = 0;
   int yellowj = 5;
 
+  ValueNotifier<int> _PositionGreenI = ValueNotifier<int>(0);
+  ValueNotifier<int> _PositionGreenJ = ValueNotifier<int>(0);
+  ValueNotifier<int> _PositionRedI = ValueNotifier<int>(0);
+  ValueNotifier<int> _PositionRedJ = ValueNotifier<int>(0);
+  ValueNotifier<int> _PositionBlueI = ValueNotifier<int>(0);
+  ValueNotifier<int> _PositionBlueJ = ValueNotifier<int>(0);
+  ValueNotifier<int> _PositionYellowI = ValueNotifier<int>(0);
+  ValueNotifier<int> _PositionYellowJ = ValueNotifier<int>(0);
+
   int PositionBlueI = 2;
   int PositionBlueAltI = 2;
   int PositionBlueJ=8;
@@ -57,16 +66,17 @@ class singleplayer_debugging extends StatelessWidget {
   late FocusNode myFocusNode;
 
   ValueNotifier<int> _switch = ValueNotifier<int>(1);
-  ValueNotifier<int> _move = ValueNotifier<int>(1);
+  ValueNotifier<int> _move = ValueNotifier<int>(0);
   ValueNotifier<int> _GameRound = ValueNotifier<int>(1);
-
-  final bet = TextEditingController();
-  int counter = 5;
 
   List<List<BoardPosition>> boardpos = List.generate(16, (i) {
     return List.generate(16, (j) {
       return BoardPosition();
     });
+  });
+
+  List<RoundResults> roundres = List.generate(3, (i) {
+      return RoundResults();
   });
 
 
@@ -121,6 +131,7 @@ class singleplayer_debugging extends StatelessWidget {
           builder: (context, value, child) {
             if(_GameRound.value>2){isEnabled=false;}else{isEnabled=true;}
             return (
+
                     ListView(
                       children: <Widget>[
                         ConstrainedBox(
@@ -130,21 +141,13 @@ class singleplayer_debugging extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Column(children: <Widget>[
-                                IconButton(
-                                  icon: const Icon(Icons.replay),
-                                  tooltip: 'Reset',
-                                  onPressed: () {
-                                      _resetGame(_auth.currentUser?.email,PositionBlueI,PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-                                  },
-                                ),
-                                Text('Reset')
-                              ]),
                               Column(children: <Widget>[IconButton(
                                 icon: const Icon(Icons.arrow_forward),
                                 tooltip: 'Next Round',
                                 onPressed: isEnabled?() {
+                                  roundres[_GameRound.value-1].moves=_move.value;
                                   _GameRound.value=_GameRound.value+1;
+                                  _move.value=0;
                                   }:null,
                               ),
                                 Text('NextRound')]),
@@ -167,6 +170,38 @@ class singleplayer_debugging extends StatelessWidget {
                           ),
 
                         ),
+    ValueListenableBuilder(
+    valueListenable: _PositionBlueJ,
+    builder: (context, value, child) {
+    return (
+    ValueListenableBuilder(
+    valueListenable: _PositionBlueI,
+    builder: (context, value, child) {
+    return (
+    ValueListenableBuilder(
+    valueListenable: _PositionYellowJ,
+    builder: (context, value, child) {
+    return (
+    ValueListenableBuilder(
+    valueListenable: _PositionYellowI,
+    builder: (context, value, child) {
+    return (
+    ValueListenableBuilder(
+    valueListenable: _PositionRedJ,
+    builder: (context, value, child) {
+    return (
+    ValueListenableBuilder(
+    valueListenable: _PositionRedI,
+    builder: (context, value, child) {
+    return (
+            ValueListenableBuilder(
+            valueListenable: _PositionGreenJ,
+            builder: (context, value, child) {
+            return (
+            ValueListenableBuilder(
+            valueListenable: _PositionGreenI,
+            builder: (context, value, child) {
+            return (
 
                         StreamBuilder<DocumentSnapshot>(
                             stream: FirebaseFirestore.instance.collection('Games/anon/Collectibles').doc(_GameRound.value.toString()).snapshots(), //.doc(_auth.currentUser.email).get(),
@@ -191,36 +226,73 @@ class singleplayer_debugging extends StatelessWidget {
                                   Icons.anchor,
                                   Icons.vpn_lock,
                                 ];
-                               // print(collectibles.data?.data()!["color"]);
-                               // print(collectibles.data?.data()!["index"]);
+                                print(collectibles.data?.data()!["name"]);
+                                print(_PositionGreenI.value);
+                                print(_PositionGreenJ.value);
+                                print(boardpos[PositionGreenI][PositionGreenJ].collectible);
 
-                                return (
-                                    Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children:<Widget>[
-                                        Row(mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
-                                            Text("TARGET: ", style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.red)),
-                                            Container(
-                                                child: Stack(children: <Widget>[//getImage(ImageType.bluecirclene),
-                                                  Icon(
-                                                    _iconsTarget[collectibles.data?.data()!["index"]],//Icons.wb_sunny_sharp,
-                                                    color: myColorTarget, //Colors.green, //Colors.green,
-                                                    size: MediaQuery.of(context).size.width/30, //48.0,
-                                                  ),
-                                                ])
-                                            ),
-                                            Text(msg,style: TextStyle(fontSize: 14.0,fontWeight:FontWeight.bold, color: Colors.black))
-                                          ] ,
-                                        ),
-                                      ],
-                                    )
-                                );
+                                if(boardpos[PositionGreenI][PositionGreenJ].collectible==collectibles.data?.data()!["name"])
+                                {
+                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                } else if(boardpos[PositionRedI][PositionRedJ].collectible==collectibles.data?.data()!["name"])
+                                {
+                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==collectibles.data?.data()!["name"])
+                                {
+                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==collectibles.data?.data()!["name"])
+                                {
+                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                } else {
+                                  msg="Happy turdling";
+                                }
+                                  return (
+                                      Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: <Widget>[
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
+                                              Text("TARGET: ", style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.red)),
+                                              Container(
+                                                  child: Stack(
+                                                      children: <Widget>[
+                                                        //getImage(ImageType.bluecirclene),
+                                                        Icon(
+                                                          _iconsTarget[collectibles.data?.data()!["index"]],
+                                                          //Icons.wb_sunny_sharp,
+                                                          color: myColorTarget,
+                                                          //Colors.green, //Colors.green,
+                                                          size: MediaQuery.of(context).size.width / 30, //48.0,
+                                                        ),
+                                                      ])
+                                              ),
+                                              Text(msg, style: TextStyle(
+                                                  fontSize: 14.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black))
+                                            ],
+                                          ),
+                                        ],
+                                      )
+                                  );
                               } else {return new Text("There is no data");}
-                            }
-                        ),
 
+                            }
+                        )
+
+                        );})
+            );})
+            );})
+    );})
+            );})
+    );})
+    );})
+    );}),
                         Center(child:
                         // The grid of squares
                         SizedBox(
@@ -309,6 +381,7 @@ class singleplayer_debugging extends StatelessWidget {
                                           boardpos[PositionBlueI][PositionBlueJ].blueposition = true;
                                           boardpos[PositionYellowI][PositionYellowJ].yellowposition = true;
                                           boardpos[PositionRedI][PositionRedJ].redposition = true;
+
 
                                           _initialiseGame();
                                           double topwidth=0.0;
@@ -820,14 +893,18 @@ class singleplayer_debugging extends StatelessWidget {
                             ValueListenableBuilder(
                             valueListenable: _move,
                             builder: (context, value, child) {
-                            return (
-                                                Center(child: Text("Moves " + _move.value.toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 32.0, fontWeight: FontWeight.bold)))
+                            return (Column( children: <Widget>[ if(true)
+                                    Center(child: Text("Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),),
+                             // Center(child: Text("Moves " + _GameRound.value.toString(), style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),),
+                              if(_GameRound.value==1) Center(child: Text("Round 1: Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),), _GameRound.value>1 ? Center(child: Text("Round 1: Moves " + roundres[0].moves.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),) : Text(""),
+                              if(_GameRound.value==2) Center(child: Text("Round 2: Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),), _GameRound.value>2 ? Center(child: Text("Round 2: Moves " + roundres[1].moves.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),) : Text(""),
+                              if(_GameRound.value==3) Center(child: Text("Round 3: Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),), _GameRound.value>3 ? Center(child: Text("Round 3: Moves " + roundres[2].moves.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),) : Text(""),
+                              ])
                             );})
                       ],
                     )
             );})
+
                 );
   }
   // Initialises all lists
@@ -1000,8 +1077,6 @@ class singleplayer_debugging extends StatelessWidget {
     boardpos[13][14].obstaclenorth = true;
     boardpos[4][15].obstaclenorth = true;
     boardpos[9][15].obstaclenorth = true;
-    //board[10][3].red = true;
-    // Check bombs around and assign numbers
 
     boardpos[1][13].collectible = "RedSaturn";
     boardpos[2][5].collectible = "BlueCross";
@@ -1019,264 +1094,7 @@ class singleplayer_debugging extends StatelessWidget {
     boardpos[12][14].collectible = "YellowTriangle";
     boardpos[14][2].collectible = "GreenTriangle";
     boardpos[14][9].collectible = "BlueCircle";
-    //setState(() {});
   }
-
-  Future _reinitialiseGame(String? gamename, int PositionBlueI, int PositionBlueJ, int PositionRedI,int PositionRedJ, int PositionGreenI,int PositionGreenJ, int PositionYellowI,int PositionYellowJ) async {
-    CollectionReference game = FirebaseFirestore.instance.collection('Games');
-
-    boardpos[PositionBlueI][PositionBlueJ].blueposition = false;
-    boardpos[PositionRedI][PositionRedJ].redposition = false;
-    boardpos[PositionGreenI][PositionGreenJ].greenposition = false;
-    boardpos[PositionYellowI][PositionYellowJ].yellowposition = false;
-
-    //MIDDLE
-    boardpos[6][7].obstaclesouth = true;
-    boardpos[6][8].obstaclesouth = true;
-    boardpos[7][9].obstaclewest = true;
-    boardpos[8][9].obstaclewest = true;
-    boardpos[9][7].obstaclenorth = true;
-    boardpos[9][8].obstaclenorth = true;
-    boardpos[7][6].obstacleeast = true;
-    boardpos[8][6].obstacleeast = true;
-    //WALL
-    boardpos[0][0].obstaclenorth = true;
-    boardpos[0][0].obstaclewest = true;
-    boardpos[1][0].obstaclewest = true;
-    boardpos[1][0].obstaclewest = true;
-    boardpos[2][0].obstaclewest = true;
-    boardpos[3][0].obstaclewest = true;
-    boardpos[4][0].obstaclewest = true;
-    boardpos[5][0].obstaclewest = true;
-    boardpos[6][0].obstaclewest = true;
-    boardpos[7][0].obstaclewest = true;
-    boardpos[8][0].obstaclewest = true;
-    boardpos[9][0].obstaclewest = true;
-    boardpos[10][0].obstaclewest = true;
-    boardpos[11][0].obstaclewest = true;
-    boardpos[12][0].obstaclewest = true;
-    boardpos[13][0].obstaclewest = true;
-    boardpos[14][0].obstaclewest = true;
-    boardpos[15][0].obstaclewest = true;
-    boardpos[15][0].obstaclesouth = true;
-    boardpos[15][1].obstaclesouth = true;
-    boardpos[15][2].obstaclesouth = true;
-    boardpos[15][3].obstaclesouth = true;
-    boardpos[15][4].obstaclesouth = true;
-    boardpos[15][5].obstaclesouth = true;
-    boardpos[15][6].obstaclesouth = true;
-    boardpos[15][7].obstaclesouth = true;
-    boardpos[15][8].obstaclesouth = true;
-    boardpos[15][9].obstaclesouth = true;
-    boardpos[15][10].obstaclesouth = true;
-    boardpos[15][11].obstaclesouth = true;
-    boardpos[15][12].obstaclesouth = true;
-    boardpos[15][13].obstaclesouth = true;
-    boardpos[15][14].obstaclesouth = true;
-    boardpos[15][15].obstaclesouth = true;
-    boardpos[15][15].obstacleeast = true;
-    boardpos[14][15].obstacleeast = true;
-    boardpos[13][15].obstacleeast = true;
-    boardpos[12][15].obstacleeast = true;
-    boardpos[11][15].obstacleeast = true;
-    boardpos[10][15].obstacleeast = true;
-    boardpos[9][15].obstacleeast = true;
-    boardpos[8][15].obstacleeast = true;
-    boardpos[7][15].obstacleeast = true;
-    boardpos[6][15].obstacleeast = true;
-    boardpos[5][15].obstacleeast = true;
-    boardpos[4][15].obstacleeast = true;
-    boardpos[3][15].obstacleeast = true;
-    boardpos[2][15].obstacleeast = true;
-    boardpos[1][15].obstacleeast = true;
-    boardpos[0][15].obstacleeast = true;
-    boardpos[0][15].obstaclenorth = true;
-    boardpos[0][14].obstaclenorth = true;
-    boardpos[0][13].obstaclenorth = true;
-    boardpos[0][12].obstaclenorth = true;
-    boardpos[0][11].obstaclenorth = true;
-    boardpos[0][10].obstaclenorth = true;
-    boardpos[0][9].obstaclenorth = true;
-    boardpos[0][8].obstaclenorth = true;
-    boardpos[0][7].obstaclenorth = true;
-    boardpos[0][6].obstaclenorth = true;
-    boardpos[0][5].obstaclenorth = true;
-    boardpos[0][4].obstaclenorth = true;
-    boardpos[0][3].obstaclenorth = true;
-    boardpos[0][2].obstaclenorth = true;
-    boardpos[0][1].obstaclenorth = true;
-    boardpos[0][0].obstaclenorth = true;
-
-    //Reflectors East
-    boardpos[0][3].obstacleeast = true;
-    boardpos[0][11].obstacleeast = true;
-    boardpos[1][12].obstacleeast = true;
-    boardpos[2][5].obstacleeast = true;
-    boardpos[2][9].obstacleeast = true;
-    boardpos[4][2].obstacleeast = true;
-    boardpos[5][6].obstacleeast = true;
-    boardpos[5][13].obstacleeast = true;
-    boardpos[6][1].obstacleeast = true;
-    boardpos[6][11].obstacleeast = true;
-    boardpos[9][3].obstacleeast = true;
-    boardpos[10][7].obstacleeast = true;
-    boardpos[10][12].obstacleeast = true;
-    boardpos[11][0].obstacleeast = true;
-    boardpos[11][10].obstacleeast = true;
-    boardpos[12][6].obstacleeast = true;
-    boardpos[12][13].obstacleeast = true;
-    boardpos[14][1].obstacleeast = true;
-    boardpos[14][9].obstacleeast = true;
-    boardpos[15][5].obstacleeast = true;
-    boardpos[15][11].obstacleeast = true;
-
-    //Reflectors West
-    boardpos[0][4].obstaclewest = true;
-    boardpos[0][12].obstaclewest = true;
-    boardpos[1][13].obstaclewest = true;
-    boardpos[2][6].obstaclewest = true;
-    boardpos[2][10].obstaclewest = true;
-    boardpos[4][3].obstaclewest = true;
-    boardpos[5][7].obstaclewest = true;
-    boardpos[5][14].obstaclewest = true;
-    boardpos[6][2].obstaclewest = true;
-    boardpos[6][12].obstaclewest = true;
-    boardpos[9][4].obstaclewest = true;
-    boardpos[10][8].obstaclewest = true;
-    boardpos[10][13].obstaclewest = true;
-    boardpos[11][1].obstaclewest = true;
-    boardpos[11][11].obstaclewest = true;
-    boardpos[12][7].obstaclewest = true;
-    boardpos[12][14].obstaclewest = true;
-    boardpos[14][2].obstaclewest = true;
-    boardpos[14][10].obstaclewest = true;
-    boardpos[15][6].obstaclewest = true;
-    boardpos[15][12].obstaclewest = true;
-
-    //Reflectors South
-    boardpos[4][0].obstaclesouth = true;
-    boardpos[13][0].obstaclesouth = true;
-    boardpos[5][1].obstaclesouth = true;
-    boardpos[11][1].obstaclesouth = true;
-    boardpos[3][2].obstaclesouth = true;
-    boardpos[13][2].obstaclesouth = true;
-    boardpos[8][3].obstaclesouth = true;
-    boardpos[2][5].obstaclesouth = true;
-    boardpos[12][6].obstaclesouth = true;
-    boardpos[5][7].obstaclesouth = true;
-    boardpos[9][8].obstaclesouth = true;
-    boardpos[2][9].obstaclesouth = true;
-    boardpos[13][9].obstaclesouth = true;
-    boardpos[11][10].obstaclesouth = true;
-    boardpos[5][11].obstaclesouth = true;
-    boardpos[0][13].obstaclesouth = true;
-    boardpos[9][13].obstaclesouth = true;
-    boardpos[5][14].obstaclesouth = true;
-    boardpos[12][14].obstaclesouth = true;
-    boardpos[3][15].obstaclesouth = true;
-    boardpos[8][15].obstaclesouth = true;
-
-    //Reflectors North
-    boardpos[5][0].obstaclenorth = true;
-    boardpos[14][0].obstaclenorth = true;
-    boardpos[6][1].obstaclenorth = true;
-    boardpos[12][1].obstaclenorth = true;
-    boardpos[4][2].obstaclenorth = true;
-    boardpos[14][2].obstaclenorth = true;
-    boardpos[9][3].obstaclenorth = true;
-    boardpos[3][5].obstaclenorth = true;
-    boardpos[13][6].obstaclenorth = true;
-    boardpos[6][7].obstaclenorth = true;
-    boardpos[10][8].obstaclenorth = true;
-    boardpos[3][9].obstaclenorth = true;
-    boardpos[14][9].obstaclenorth = true;
-    boardpos[12][10].obstaclenorth = true;
-    boardpos[6][11].obstaclenorth = true;
-    boardpos[1][13].obstaclenorth = true;
-    boardpos[10][13].obstaclenorth = true;
-    boardpos[6][14].obstaclenorth = true;
-    boardpos[13][14].obstaclenorth = true;
-    boardpos[4][15].obstaclenorth = true;
-    boardpos[9][15].obstaclenorth = true;
-    //board[10][3].red = true;
-    // Check bombs around and assign numbers
-
-    boardpos[1][13].collectible = "RedSaturn";
-    boardpos[2][5].collectible = "BlueCross";
-    boardpos[2][9].collectible = "BlueTriangle";
-    boardpos[4][2].collectible = "GreenCircle";
-    boardpos[5][7].collectible = "RedTriangle";
-    boardpos[5][14].collectible = "GreenCross";
-    boardpos[6][1].collectible = "YellowSaturn";
-    boardpos[6][11].collectible = "YellowCircle";
-    boardpos[9][3].collectible = "YellowCross";
-    boardpos[10][13].collectible = "RedCross";
-    boardpos[11][1].collectible = "RedCircle";
-    boardpos[11][10].collectible = "GreenSaturn";
-    boardpos[12][6].collectible = "BlueSaturn";
-    boardpos[12][14].collectible = "YellowTriangle";
-    boardpos[14][2].collectible = "GreenTriangle";
-    boardpos[14][9].collectible = "BlueCircle";
-
-
-    boardpos[redi][redj].redposition = false;      // print(snapshot.connectionState);
-    boardpos[bluei][bluej].blueposition = false;      // print(snapshot.connectionState);
-    boardpos[greeni][greenj].greenposition = false;      // print(snapshot.connectionState);
-    boardpos[yellowi][yellowj].yellowposition = false;      // print(snapshot.connectionState);
-
-
-    await game.doc(gamename).update({'redalti': PositionRedI,'redaltj':PositionRedJ});
-    await game.doc(gamename).update({'bluealti': PositionBlueI,'bluealtj':PositionBlueJ});
-    await game.doc(gamename).update({'greenalti': PositionGreenI,'greenaltj':PositionGreenJ});
-    await game.doc(gamename).update({'yellowalti': PositionYellowI,'yellowaltj':PositionYellowJ});
-
-    await game.doc(gamename).update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
-    await game.doc(gamename).update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
-    await game.doc(gamename).update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
-    await game.doc(gamename).update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
-
-    await game.doc(gamename).update({'movecount': 0});
-    await game.doc(gamename).update({'bluei': 4,'bluej':4});
-    await game.doc(gamename).update({'redi': 3,'redj':3});
-    await game.doc(gamename).update({'greeni': 8,'greenj':2});
-    await game.doc(gamename).update({'yellowi': 13,'yellowj':13});
-
-    var list = new List<int>.filled(16, 0);
-    for (var i = 0; i < list.length; i++) {
-      list[i]=i;
-      //print(list[i]);
-    }
-    for (var i = 0; i < list.length; i++) {
-      int a=Random().nextInt(8);
-      int b=Random().nextInt(9)+7;
-      int avalue = list[a];
-      int bvalue = list[b];
-      list[a]=bvalue;
-      list[b]=avalue;
-    }
-  //  print("a");
-    CollectionReference collectibleupdate = FirebaseFirestore.instance.collection('Games/'+gamename!+'/Collectibles');
-
-    await collectibleupdate.doc("RedSaturn").update({'Round': list[1]});
-    await collectibleupdate.doc("BlueCross").update({'Round': list[2]});
-    await collectibleupdate.doc("BlueTriangle").update({'Round': list[3]});
-    await collectibleupdate.doc("GreenCircle").update({'Round': list[4]});
-    await collectibleupdate.doc("RedTriangle").update({'Round': list[5]});
-    await collectibleupdate.doc("GreenCross").update({'Round': list[6]});
-    await collectibleupdate.doc("YellowSaturn").update({'Round': list[7]});
-    await collectibleupdate.doc("YellowCircle").update({'Round': list[8]});
-    await collectibleupdate.doc("YellowCross").update({'Round': list[9]});
-    await collectibleupdate.doc("RedCross").update({'Round': list[10]});
-    await collectibleupdate.doc("RedCircle").update({'Round': list[11]});
-    await collectibleupdate.doc("GreenSaturn").update({'Round': list[12]});
-    await collectibleupdate.doc("BlueSaturn").update({'Round': list[13]});
-    await collectibleupdate.doc("YellowTriangle").update({'Round': list[14]});
-    await collectibleupdate.doc("GreenTriangle").update({'Round': list[15]});
-    await collectibleupdate.doc("BlueCircle").update({'Round': list[0]});
-
-  }
-  // This function opens other squares around the target square which don't have any bombs around them.
-  // We use a recursive function which stops at squares which have a non zero number of bombs around them.
 
   Future _handleMoveRedAlt(String? gamename, int i, int j, int t) async {
     CollectionReference game = FirebaseFirestore.instance.collection('Games');
@@ -1314,6 +1132,8 @@ class singleplayer_debugging extends StatelessWidget {
     PositionRedAltI=ialt;
     PositionRedAltJ=jalt;
     _move.value=_move.value+1;
+    _PositionRedI.value=i;
+    _PositionRedJ.value=j;
     await game.doc(gamename).update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
     if(ialt!=i || jalt!=j) {
       await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
@@ -1356,6 +1176,8 @@ class singleplayer_debugging extends StatelessWidget {
     PositionBlueAltI=ialt;
     PositionBlueAltJ=jalt;
     _move.value=_move.value+1;
+    _PositionBlueI.value=i;
+    _PositionBlueJ.value=j;
     await game.doc(gamename).update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
     if(ialt!=i || jalt!=j) {
     //  await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
@@ -1399,7 +1221,8 @@ class singleplayer_debugging extends StatelessWidget {
     PositionGreenAltI=ialt;
     PositionGreenAltJ=jalt;
     _move.value=_move.value+1;
-
+    _PositionGreenI.value=i;
+    _PositionGreenJ.value=j;
     await game.doc(gamename).update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
   //  print("MOVED");
     if(ialt!=i || jalt!=j) {
@@ -1445,69 +1268,14 @@ class singleplayer_debugging extends StatelessWidget {
     PositionYellowAltI=ialt;
     PositionYellowAltJ=jalt;
     _move.value=_move.value+1;
-
+    _PositionYellowI.value=i;
+    _PositionYellowJ.value=j;
     await game.doc(gamename).update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
     if(ialt!=i || jalt!=j) {
       await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
     }    //setState(() {});
   }
 
-
-  Future _nextRound(String? gamename, int Round,String uid,PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
-    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/'+gamename!+'/Players');
-    CollectionReference roundupdate = FirebaseFirestore.instance.collection('Games/'+gamename+'/Rounds');
-    DocumentSnapshot gamedata = await FirebaseFirestore.instance.collection('Games').doc(gamename).get();
-
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players').get();
-    var list = querySnapshot.docs;
-    list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
-    if(gamedata.data()!["winner"]==gamedata.data()!["lowestbidder"]) {
-      list.where((element) => element.id == uid).forEach((element) {
-        playerupdate.doc(element.id).update({'score': FieldValue.increment(1)});
-      });
-    }
-    await gameupdate.doc(gamename).update({'Round': Round+1});
-    await gameupdate.doc(gamename).update({'lowestbidder': "a@a.at"});
-    await gameupdate.doc(gamename).update({'lowestbid': 99});
-    await gameupdate.doc(gamename).update({'winner': ""});
-    await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
-    await gameupdate.doc(gamename).update({'movecount': 0});
-    await gameupdate.doc(gamename).update({'Timer': 10});
-    //_start=10;
-    await roundupdate.doc((Round+1).toString())
-        .set({
-      'Start': DateTime.now().add(const Duration(minutes: 5))
-    });
-
-    await gameupdate.doc(gamename).update({'redorigi': PositionRedI,'redorigj':PositionRedJ});
-    await gameupdate.doc(gamename).update({'blueorigi': PositionBlueI,'blueorigj':PositionBlueJ});
-    await gameupdate.doc(gamename).update({'greenorigi': PositionGreenI,'greenorigj':PositionGreenJ});
-    await gameupdate.doc(gamename).update({'yelloworigi': PositionYellowI,'yelloworigj':PositionYellowJ});
-
-  }
-
-  Future _resetGame(String? gamename,int PositionBlueI, int PositionBlueJ, int PositionRedI, int PositionRedJ, int PositionGreenI, int PositionGreenJ, int PositionYellowI, int PositionYellowJ) async {
-    await _reinitialiseGame(gamename,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-    CollectionReference gameupdate = FirebaseFirestore.instance.collection('Games/');
-    CollectionReference playerupdate = FirebaseFirestore.instance.collection('Games/'+gamename!+'/Players');
-    await gameupdate.doc(gamename).update({'lowestbidder': ""});
-    await gameupdate.doc(gamename).update({'lowestbid': 99});
-    await gameupdate.doc(gamename).update({'firstbet': DateTime.now()});
-    await gameupdate.doc(gamename).update({'movecount': 0});
-    await gameupdate.doc(gamename).update({'Round': 1});
-    await gameupdate.doc(gamename).update({'Timer': 10});
-
-
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Games/'+ gamename +'/Players').get();
-    var list = querySnapshot.docs;
-    list.forEach((element) { playerupdate.doc(element.id).update({'bet': 99}); });
-    list.forEach((element) { playerupdate.doc(element.id).update({'score': 0}); });
-
-
-    await _reinitialiseGame(gamename,PositionBlueI, PositionBlueJ, PositionRedI, PositionRedJ, PositionGreenI, PositionGreenJ, PositionYellowI, PositionYellowJ);
-
-  }
 
 }
 
