@@ -39,6 +39,14 @@ class RoundResults {
   });
 }
 
+class RoundMoves {
+  String color;
+  int from;
+  int to;
+  RoundMoves({this.color = "", this.from = 0, this.to = 0
+  });
+}
+
 
 class Players {
 

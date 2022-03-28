@@ -1,7 +1,3 @@
-//import 'package:flutter/services.dart';
-//import 'package:provider/provider.dart';
-//import 'package:cloud_functions/cloud_functions.dart';
-//import 'dart:html';
 import 'dart:math';
 import 'dart:async';
 import 'dart:io';

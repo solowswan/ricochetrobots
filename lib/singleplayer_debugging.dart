@@ -1,15 +1,23 @@
-import 'dart:math';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:ricochetrobots/main.dart';
 import 'board_square.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:fluttericon/typicons_icons.dart';
 
 class singleplayer_debugging extends StatelessWidget {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  List<DataRow> _rowList = [
+    DataRow(cells: <DataCell>[
+      DataCell(Text('1')),
+      DataCell(Text('0')),
+      DataCell(Text('Start')),
+      DataCell(Text('0')),
+    ]),
+  ];
 
   // Row and column count of the board
   int rowCount = 16;
@@ -36,33 +44,37 @@ class singleplayer_debugging extends StatelessWidget {
   ValueNotifier<int> _PositionYellowI = ValueNotifier<int>(0);
   ValueNotifier<int> _PositionYellowJ = ValueNotifier<int>(0);
 
-  int PositionBlueI = 2;
+  int PositionBlueI = 1;
   int PositionBlueAltI = 2;
-  int PositionBlueJ=8;
+  int PositionBlueJ=14;
   int PositionBlueAltJ = 2;
 
-  int PositionRedI = 3;
+  int PositionRedI = 1;
   int PositionRedAltI = 3;
-  int PositionRedJ=3;
+  int PositionRedJ=1;
   int PositionRedAltJ = 3;
 
-  int PositionGreenI = 4;
+  int PositionGreenI = 14;
   int PositionGreenAltI = 2;
-  int PositionGreenJ=4;
+  int PositionGreenJ=1;
   int PositionGreenAltJ = 2;
 
-  int PositionYellowI = 13;
+  int PositionYellowI = 14;
   int PositionYellowAltI = 13;
-  int PositionYellowJ=13;
+  int PositionYellowJ=14;
   int PositionYellowAltJ = 13;
   int movecount = 1;
 
   String lowestbidder = "asd";
 
+  int predicti = 0;
   int lowestbid = 1;
   bool isEnabled = true;
 
   String msg="";
+  String msg1="";
+  String msg2="";
+
   late FocusNode myFocusNode;
 
   ValueNotifier<int> _switch = ValueNotifier<int>(1);
@@ -79,6 +91,11 @@ class singleplayer_debugging extends StatelessWidget {
       return RoundResults();
   });
 
+  List<List<RoundMoves>> roundmoves = List.generate(3, (i) {
+    return List.generate(100, (j) {
+      return RoundMoves();
+    });
+  });
 
   void initState() {
     //super.initState();
@@ -134,27 +151,7 @@ class singleplayer_debugging extends StatelessWidget {
 
                     ListView(
                       children: <Widget>[
-                        ConstrainedBox(
-                          //color: Colors.grey,
-                          //height: 60.0,
-                          constraints: BoxConstraints(maxWidth: 1),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Column(children: <Widget>[IconButton(
-                                icon: const Icon(Icons.arrow_forward),
-                                tooltip: 'Next Round',
-                                onPressed: isEnabled?() {
-                                  roundres[_GameRound.value-1].moves=_move.value;
-                                  _GameRound.value=_GameRound.value+1;
-                                  _move.value=0;
-                                  }:null,
-                              ),
-                                Text('NextRound')]),
-                            ],
-                          ),
 
-                        ),
                         ConstrainedBox(
                           //color: Colors.grey,
                           //height: 60.0,
@@ -166,6 +163,16 @@ class singleplayer_debugging extends StatelessWidget {
                               Text("ROUND: " + _GameRound.value.toString() + " ",
                                   style: TextStyle(fontSize: 24.0,
                                       fontWeight: FontWeight.bold)),
+                              Text('NextRound'),
+                              IconButton(
+                                icon: const Icon(Icons.arrow_forward),
+                                tooltip: 'Next Round',
+                                onPressed: isEnabled?() {
+                                  roundres[_GameRound.value-1].moves=_move.value;
+                                  _GameRound.value=_GameRound.value+1;
+                                  _move.value=0;
+                                }:null,
+                              )
                             ],
                           ),
 
@@ -215,7 +222,7 @@ class singleplayer_debugging extends StatelessWidget {
                                 } else if(collectibles.data?.data()!["color"] == "blue") {
                                   myColorTarget = Colors.blue;
                                 } else if(collectibles.data?.data()!["color"] == "yellow") {
-                                  myColorTarget = Colors.yellow;
+                                  myColorTarget = Colors.black;
                                 } else {
                                   myColorTarget = Colors.white;
                                 }
@@ -233,18 +240,26 @@ class singleplayer_debugging extends StatelessWidget {
 
                                 if(boardpos[PositionGreenI][PositionGreenJ].collectible==collectibles.data?.data()!["name"])
                                 {
-                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                  //msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                  msg1="You found";
+                                  msg2="in "+_move.value.toString() +" moves";
                                 } else if(boardpos[PositionRedI][PositionRedJ].collectible==collectibles.data?.data()!["name"])
                                 {
-                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                  //msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                  msg1="You found";
+                                  msg2="in "+_move.value.toString() +" moves";
                                 } else if(boardpos[PositionBlueI][PositionBlueJ].collectible==collectibles.data?.data()!["name"])
                                 {
-                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                  //msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                  msg1="You found";
+                                  msg2="in "+_move.value.toString() +" moves";
                                 } else if(boardpos[PositionYellowI][PositionYellowJ].collectible==collectibles.data?.data()!["name"])
                                 {
-                                  msg="You managed to finish Round "+_GameRound.value.toString()+" in "+_move.value.toString() +" moves!";
+                                  msg1="You found";
+                                  msg2="in "+_move.value.toString() +" moves";
                                 } else {
-                                  msg="Happy turdling";
+                                  msg1="Find";
+                                  msg2="with minumum moves";
                                 }
                                   return (
                                       Column(
@@ -253,9 +268,17 @@ class singleplayer_debugging extends StatelessWidget {
                                           Row(
                                             mainAxisAlignment: MainAxisAlignment.center,
                                             children: <Widget>[
-                                              //Container(child:Text(target[0].toString().toUpperCase(),style: TextStyle(fontSize: 24.0,fontWeight:FontWeight.bold)),), //image = getImage(ImageType.bluecirclene);
-                                              Text("TARGET: ", style: TextStyle(
-                                                  fontSize: 14.0,
+                                              Text(msg1, style: TextStyle(
+                                                  fontSize: 24.0,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black))
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text("", style: TextStyle(
+                                                  fontSize: 24.0,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.red)),
                                               Container(
@@ -267,12 +290,17 @@ class singleplayer_debugging extends StatelessWidget {
                                                           //Icons.wb_sunny_sharp,
                                                           color: myColorTarget,
                                                           //Colors.green, //Colors.green,
-                                                          size: MediaQuery.of(context).size.width / 30, //48.0,
+                                                          size: MediaQuery.of(context).size.width / 20, //48.0,
                                                         ),
                                                       ])
                                               ),
-                                              Text(msg, style: TextStyle(
-                                                  fontSize: 14.0,
+                                            ],
+                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Text(msg2, style: TextStyle(
+                                                  fontSize: 24.0,
                                                   fontWeight: FontWeight.bold,
                                                   color: Colors.black))
                                             ],
@@ -302,6 +330,15 @@ class singleplayer_debugging extends StatelessWidget {
                                 valueListenable: _switch,
                                 builder: (context, value, child) {
                                   return (
+
+                                  StreamBuilder<DocumentSnapshot>(
+                                  stream: FirebaseFirestore.instance.collection('Games/anon/Collectibles').doc(_GameRound.value.toString()).snapshots(), //.doc(_auth.currentUser.email).get(),
+                                  builder: (context, AsyncSnapshot<DocumentSnapshot> collectibles ) {
+                                    if (collectibles.hasData) {
+                                      boardpos[collectibles.data?.data()!["i"]][collectibles.data?.data()!["j"]].collectible = collectibles.data?.data()!["name"];
+                                    }
+                                    return(
+
                                       GridView.builder(
                                         itemCount: rowCount * columnCount,
                                         shrinkWrap: true,
@@ -357,10 +394,20 @@ class singleplayer_debugging extends StatelessWidget {
                                             if(PositionBlueI>0){boardpos[PositionBlueI-1][PositionBlueJ].uparrow=true;}
                                             if(PositionBlueJ>0){boardpos[PositionBlueI][PositionBlueJ-1].leftarrow=true;}
                                           } else if(_switch.value==-2) {
-                                            if(PositionRedI<15){boardpos[PositionRedI+1][PositionRedJ].downarrow=true;}
-                                            if(PositionRedJ<15){boardpos[PositionRedI][PositionRedJ+1].rightarrow=true;}
-                                            if(PositionRedI>0){boardpos[PositionRedI-1][PositionRedJ].uparrow=true;}
-                                            if(PositionRedJ>0){boardpos[PositionRedI][PositionRedJ-1].leftarrow=true;}
+                                            //predicti=_predictMoveRedAlt(PositionRedI, PositionRedJ, 2);
+                                            //print(predicti);
+                                            //print((predicti/15).floor());
+                                            //print(predicti%15);
+                                            //if(PositionRedI>0){boardpos[PositionRedI-1][PositionRedJ].uparrow=true;}
+                                            //if(PositionRedJ<15){boardpos[PositionRedI][PositionRedJ+1].rightarrow=true;}
+                                            //if(PositionRedI<15){boardpos[PositionRedI+1][PositionRedJ].downarrow=true;}
+                                            //if(PositionRedJ>0){boardpos[PositionRedI][PositionRedJ-1].leftarrow=true;}
+                                            if(PositionRedI>0){  for(var counter = PositionRedI-1; counter <= _predictMoveRedAlt(PositionRedI, PositionRedJ, 1)/15.floor() && counter>=0; counter--)  {boardpos[counter][PositionRedJ].uparrow=true;  } }
+                                            if(PositionRedJ<15){ for(var counter = PositionRedJ+1; counter <= _predictMoveRedAlt(PositionRedI, PositionRedJ, 2)%15         && counter<=15; counter++)  {boardpos[PositionRedI][counter].rightarrow=true;  } }
+                                            if(PositionRedI<15){ for(var counter = PositionRedI+1; counter <= _predictMoveRedAlt(PositionRedI, PositionRedJ, 3)/15.floor() && counter<=15; counter++)  {boardpos[counter][PositionRedJ].downarrow=true;  } }
+                                            if(PositionRedJ>0){  for(var counter = PositionRedJ-1; counter >= _predictMoveRedAlt(PositionRedI, PositionRedJ, 4)%15         && counter>=0; counter--)  {boardpos[PositionRedI][counter].leftarrow=true;  } }
+
+
                                           }else if(_switch.value==-3) {
                                             if(PositionGreenI<15){boardpos[PositionGreenI+1][PositionGreenJ].downarrow=true;}
                                             if(PositionGreenJ<15){boardpos[PositionGreenI][PositionGreenJ+1].rightarrow=true;}
@@ -397,16 +444,16 @@ class singleplayer_debugging extends StatelessWidget {
                                           ];
                                           final Color myColor;
                                           if (boardpos[rowNumber][columnNumber].obstaclenorth) {
-                                           topwidth=4;
+                                            topwidth=2;
                                           }
                                           if (boardpos[rowNumber][columnNumber].obstaclesouth) {
-                                            bottomwidth=4;
+                                            bottomwidth=2;
                                           }
                                           if (boardpos[rowNumber][columnNumber].obstacleeast) {
-                                            rightwidth=4;
+                                            rightwidth=2;
                                           }
                                           if (boardpos[rowNumber][columnNumber].obstaclewest) {
-                                            leftwidth=4;
+                                            leftwidth=2;
                                           }
                                           if (boardpos[rowNumber][columnNumber].collectible == "GreenSaturn") {
                                             iconindex=0;
@@ -419,7 +466,7 @@ class singleplayer_debugging extends StatelessWidget {
                                             myColor = Colors.blue;
                                           } else if (boardpos[rowNumber][columnNumber].collectible == "YellowSaturn") {
                                             iconindex=0;
-                                            myColor = Colors.yellow;
+                                            myColor = Colors.black;
                                           } else if (boardpos[rowNumber][columnNumber].collectible == "GreenCircle") {
                                             iconindex=1;
                                             myColor = Colors.green;
@@ -431,7 +478,7 @@ class singleplayer_debugging extends StatelessWidget {
                                             myColor = Colors.blue;
                                           } else if (boardpos[rowNumber][columnNumber].collectible == "YellowCircle") {
                                             iconindex=1;
-                                            myColor = Colors.yellow;
+                                            myColor = Colors.black;
                                           } else if (boardpos[rowNumber][columnNumber].collectible == "GreenTriangle") {
                                             iconindex=2;
                                             myColor = Colors.green;
@@ -443,7 +490,7 @@ class singleplayer_debugging extends StatelessWidget {
                                             myColor = Colors.blue;
                                           } else if (boardpos[rowNumber][columnNumber].collectible == "YellowTriangle") {
                                             iconindex=2;
-                                            myColor = Colors.yellow;
+                                            myColor = Colors.black;
                                           } else if (boardpos[rowNumber][columnNumber].collectible == "GreenCross") {
                                             iconindex=3;
                                             myColor = Colors.green;
@@ -455,7 +502,7 @@ class singleplayer_debugging extends StatelessWidget {
                                             myColor = Colors.blue;
                                           } else if (boardpos[rowNumber][columnNumber].collectible == "YellowCross") {
                                             iconindex=3;
-                                            myColor = Colors.yellow;
+                                            myColor = Colors.black;
                                           }else {
                                             myColor = Colors.white;
                                           }
@@ -475,15 +522,20 @@ class singleplayer_debugging extends StatelessWidget {
                                                   _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 2);
                                                 } else if(_switch.value==2 || _switch.value==-2) {
                                                   _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 2);
+                                                  predicti=_predictMoveRedAlt(PositionRedI, PositionRedJ,4);
+                                                  print(predicti);
+                                                  print((predicti/15).floor());
+                                                  print(predicti%15);
                                                 } else if(_switch.value==3|| _switch.value==-3) {
                                                   _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 2);
                                                 } else if(_switch.value==4|| _switch.value==-4) {
                                                   _handleMoveYellowAlt(_auth.currentUser?.email, PositionYellowI, PositionYellowJ, 2);
+
                                                 }
                                                 //   };
 
                                               },
-                                                splashColor: Colors.grey,
+                                                splashColor: Colors.black12,
                                                 child: Stack(children: <Widget>[Container(
                                                   padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
                                                   decoration: BoxDecoration(
@@ -501,13 +553,12 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.grey,
+                                                    color: Colors.black12,
                                                   ),
                                                 ),
                                                   Container(
-                                                      color: Colors.grey,
-                                                      child: Text(
-                                                          position.toString())
+                                                      color: Colors.black12,
+                                                      child: Text("")
                                                   ),
                                                   Container(
                                                       child: Align(
@@ -535,6 +586,10 @@ class singleplayer_debugging extends StatelessWidget {
                                                   _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 1);
                                                 } else if(_switch.value==2 || _switch.value==-2) {
                                                   _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 1);
+                                                  predicti=_predictMoveRedAlt(PositionRedI, PositionRedJ,1);
+                                                  print(predicti);
+                                                  print((predicti/15).floor());
+                                                  print(predicti%15);
                                                 } else if(_switch.value==3|| _switch.value==-3) {
                                                   _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 1);
                                                 } else if(_switch.value==4|| _switch.value==-4) {
@@ -542,7 +597,7 @@ class singleplayer_debugging extends StatelessWidget {
                                                 }
                                                 //   };
                                               },
-                                                splashColor: Colors.grey,
+                                                splashColor: Colors.black12,
                                                 child: Stack(children: <Widget>[Container(
                                                   padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
                                                   decoration: BoxDecoration(
@@ -560,13 +615,12 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.grey,
+                                                    color: Colors.black12,
                                                   ),
                                                 ),
                                                   Container(
-                                                      color: Colors.grey,
-                                                      child: Text(
-                                                          position.toString())
+                                                      color: Colors.black12,
+                                                      child: Text("")
                                                   ),
                                                   Container(
                                                       child: Align(
@@ -594,6 +648,10 @@ class singleplayer_debugging extends StatelessWidget {
                                                   _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 4);
                                                 } else if(_switch.value==2 || _switch.value==-2) {
                                                   _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 4);
+                                                  predicti=_predictMoveRedAlt(PositionRedI, PositionRedJ,4);
+                                                  print(predicti);
+                                                  print((predicti/15).floor());
+                                                  print(predicti%15);
                                                 } else if(_switch.value==3|| _switch.value==-3) {
                                                   _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 4);
                                                 } else if(_switch.value==4|| _switch.value==-4) {
@@ -601,7 +659,7 @@ class singleplayer_debugging extends StatelessWidget {
                                                 }
                                                 //   };
                                               },
-                                                splashColor: Colors.grey,
+                                                splashColor: Colors.black12,
                                                 child: Stack(children: <Widget>[Container(
                                                   padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
                                                   decoration: BoxDecoration(
@@ -619,13 +677,12 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.grey,
+                                                    color: Colors.black12,
                                                   ),
                                                 ),
                                                   Container(
-                                                      color: Colors.grey,
-                                                      child: Text(
-                                                          position.toString())
+                                                      color: Colors.black12,
+                                                      child: Text("")
                                                   ),
                                                   Container(
                                                       child: Align(
@@ -653,6 +710,10 @@ class singleplayer_debugging extends StatelessWidget {
                                                   _handleMoveBlueAlt(_auth.currentUser?.email, PositionBlueI, PositionBlueJ, 3);
                                                 } else if(_switch.value==2 || _switch.value==-2) {
                                                   _handleMoveRedAlt(_auth.currentUser?.email, PositionRedI, PositionRedJ, 3);
+                                                  predicti=_predictMoveRedAlt(PositionRedI, PositionRedJ,4);
+                                                  print(predicti);
+                                                  print((predicti/15).floor());
+                                                  print(predicti%15);
                                                 } else if(_switch.value==3|| _switch.value==-3) {
                                                   _handleMoveGreenAlt(_auth.currentUser?.email, PositionGreenI, PositionGreenJ, 3);
                                                 } else if(_switch.value==4|| _switch.value==-4) {
@@ -660,7 +721,7 @@ class singleplayer_debugging extends StatelessWidget {
                                                 }
                                                 //   };
                                               },
-                                              splashColor: Colors.grey,
+                                              splashColor: Colors.black12,
                                               child: Stack(children: <Widget>[Container(
                                                       padding: EdgeInsets.only(top: 0,bottom: 0,right: 0,left: 0),
                                                       decoration: BoxDecoration(
@@ -678,12 +739,12 @@ class singleplayer_debugging extends StatelessWidget {
                                                                 width: leftwidth,
                                                                 color: Colors.black)
                                                         ),
-                                                        color: Colors.grey,
+                                                        color: Colors.black12,
                                                       ),
                                                     ),
                                                     Container(
-                                                        color: Colors.grey,
-                                                        child: Text(position.toString())
+                                                        color: Colors.black12,
+                                                        child: Text("")
                                                     ),
                                                 Container(
                                                   child: Align(
@@ -722,12 +783,18 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.blue,
+                                                    color: Colors.white,
                                                   ),
                                                 ),
                                                   Container(
-                                                      color: Colors.blue,
-                                                      child: Text(position.toString())
+                                                      child: Align(
+                                                        alignment: Alignment.center,
+                                                        child: Icon(
+                                                          Typicons.user,//Icons.wb_sunny_sharp,
+                                                          color: Colors.blue, //Colors.green,
+                                                          size: MediaQuery.of(context).size.width/20, //48.0,
+                                                        ),
+                                                      )
                                                   )
                                                   //Text(position.toString())
                                                   //   Image.asset('assets/images/greenplayer.png'),
@@ -758,12 +825,18 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.red,
+                                                    color: Colors.white,
                                                   ),
                                                 ),
                                                   Container(
-                                                      color: Colors.red,
-                                                      child: Text(position.toString())
+                                                      child: Align(
+                                                        alignment: Alignment.center,
+                                                        child: Icon(
+                                                          Typicons.user,//Icons.wb_sunny_sharp,
+                                                          color: Colors.red, //Colors.green,
+                                                          size: MediaQuery.of(context).size.width/20, //48.0,
+                                                        ),
+                                                      )
                                                   )
                                                   //Text(position.toString())
                                                   //   Image.asset('assets/images/greenplayer.png'),
@@ -794,12 +867,18 @@ class singleplayer_debugging extends StatelessWidget {
                                                               width: leftwidth,
                                                               color: Colors.black)
                                                       ),
-                                                      color: Colors.green,
+                                                      color: Colors.white,
                                                     ),
                                                   ),
                                                 Container(
-                                                    color: Colors.green,
-                                                    child: Text(position.toString())
+                                                    child: Align(
+                                                      alignment: Alignment.center,
+                                                      child: Icon(
+                                                        Typicons.user,//Icons.wb_sunny_sharp,
+                                                        color: Colors.green, //Colors.green,
+                                                        size: MediaQuery.of(context).size.width/20, //48.0,
+                                                      ),
+                                                    )
                                                 )
                                                     //Text(position.toString())
                                                  //   Image.asset('assets/images/greenplayer.png'),
@@ -829,12 +908,18 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.yellow,
+                                                    color: Colors.white,
                                                   ),
                                                 ),
                                                   Container(
-                                                      color: Colors.yellow,
-                                                      child: Text(position.toString())
+                                                      child: Align(
+                                                        alignment: Alignment.center,
+                                                        child: Icon(
+                                                          Typicons.user,//Icons.wb_sunny_sharp,
+                                                          color: Colors.black, //Colors.green,
+                                                          size: MediaQuery.of(context).size.width/20, //48.0,
+                                                        ),
+                                                      )
                                                   )
                                                   //Text(position.toString())
                                                   //   Image.asset('assets/images/greenplayer.png'),
@@ -862,12 +947,12 @@ class singleplayer_debugging extends StatelessWidget {
                                                             width: leftwidth,
                                                             color: Colors.black)
                                                     ),
-                                                    color: Colors.grey,
+                                                    color: Colors.black12,
                                                   ),
                                                 ),
                                                   Container(
-                                                      color: Colors.grey,
-                                                      child: Text(position.toString())
+                                                      color: Colors.black12,
+                                                      child: Text("")
                                                   ),
                                                   if(iconindex>-1) (
                                                     Container(
@@ -886,26 +971,74 @@ class singleplayer_debugging extends StatelessWidget {
                                           }
                                         },
                                       )
+                                  );})
                                   );
                                 })
                         ),
                         ),
+
+
+
+
                             ValueListenableBuilder(
                             valueListenable: _move,
                             builder: (context, value, child) {
                             return (Column( children: <Widget>[ if(true)
                                     Center(child: Text("Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),),
                              // Center(child: Text("Moves " + _GameRound.value.toString(), style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),),
-                              if(_GameRound.value==1) Center(child: Text("Round 1: Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),), _GameRound.value>1 ? Center(child: Text("Round 1: Moves " + roundres[0].moves.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),) : Text(""),
-                              if(_GameRound.value==2) Center(child: Text("Round 2: Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),), _GameRound.value>2 ? Center(child: Text("Round 2: Moves " + roundres[1].moves.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),) : Text(""),
-                              if(_GameRound.value==3) Center(child: Text("Round 3: Moves " + _move.value.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),), _GameRound.value>3 ? Center(child: Text("Round 3: Moves " + roundres[2].moves.toString(),style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold)),) : Text(""),
+                              if(_GameRound.value==1) Center(child: Text("Round 1: Moves " + _move.value.toString(),style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.normal)),), _GameRound.value>1 ? Center(child: Text("Round 1: Moves " + roundres[0].moves.toString(),style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.normal)),) : Text(""),
+                              if(_GameRound.value==2) Center(child: Text("Round 2: Moves " + _move.value.toString(),style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.normal)),), _GameRound.value>2 ? Center(child: Text("Round 2: Moves " + roundres[1].moves.toString(),style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.normal)),) : Text(""),
+                              if(_GameRound.value==3) Center(child: Text("Round 3: Moves " + _move.value.toString(),style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.normal)),), _GameRound.value>3 ? Center(child: Text("Round 3: Moves " + roundres[2].moves.toString(),style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.normal)),) : Text(""),
+
+                              GridView.builder(
+                                //shrinkWrap: true,
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                  ),
+                                  itemCount: 1,
+                                  itemBuilder: (BuildContext context, int index) {
+
+
+                                    return DataTable(
+                                      dataRowHeight: 20,
+                                      headingRowHeight: 30,
+                                      headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black26),
+                                      showBottomBorder: true,
+                                      columns: [
+                                        DataColumn(label: Text('ROUND', style: TextStyle(fontWeight: FontWeight.bold),)),
+                                        DataColumn(label: Text('MOVE', style: TextStyle(fontWeight: FontWeight.bold),)),
+                                        DataColumn(label: Text('COLOR', style: TextStyle(fontWeight: FontWeight.bold),)),
+                                        DataColumn(label: Text('FROM/TO',style: TextStyle(fontWeight: FontWeight.bold),)),
+                                      ],
+                                      rows: _rowList,
+                                    );
+                                  }
+                              )
+
                               ])
-                            );})
+                            );}),
+
                       ],
                     )
+
+
+
+
+
             );})
 
+
+
+
+
+
+
+
+
                 );
+
   }
   // Initialises all lists
   Future _initialiseGame() async {
@@ -1078,26 +1211,55 @@ class singleplayer_debugging extends StatelessWidget {
     boardpos[4][15].obstaclenorth = true;
     boardpos[9][15].obstaclenorth = true;
 
-    boardpos[1][13].collectible = "RedSaturn";
-    boardpos[2][5].collectible = "BlueCross";
-    boardpos[2][9].collectible = "BlueTriangle";
-    boardpos[4][2].collectible = "GreenCircle";
-    boardpos[5][7].collectible = "RedTriangle";
-    boardpos[5][14].collectible = "GreenCross";
-    boardpos[6][1].collectible = "YellowSaturn";
-    boardpos[6][11].collectible = "YellowCircle";
-    boardpos[9][3].collectible = "YellowCross";
-    boardpos[10][13].collectible = "RedCross";
-    boardpos[11][1].collectible = "RedCircle";
-    boardpos[11][10].collectible = "GreenSaturn";
-    boardpos[12][6].collectible = "BlueSaturn";
-    boardpos[12][14].collectible = "YellowTriangle";
-    boardpos[14][2].collectible = "GreenTriangle";
-    boardpos[14][9].collectible = "BlueCircle";
+    //boardpos[1][13].collectible = "RedSaturn";
+    //boardpos[2][5].collectible = "BlueCross";
+    //boardpos[2][9].collectible = "BlueTriangle";
+    //boardpos[4][2].collectible = "GreenCircle";
+    //boardpos[5][7].collectible = "RedTriangle";
+    //boardpos[5][14].collectible = "GreenCross";
+    //boardpos[6][1].collectible = "YellowSaturn";
+    //boardpos[6][11].collectible = "YellowCircle";
+    //boardpos[9][3].collectible = "YellowCross";
+    //boardpos[10][13].collectible = "RedCross";
+    //boardpos[11][1].collectible = "RedCircle";
+    //boardpos[11][10].collectible = "GreenSaturn";
+    // boardpos[12][6].collectible = "BlueSaturn";
+    //boardpos[12][14].collectible = "YellowTriangle";
+    // boardpos[14][2].collectible = "GreenTriangle";
+    // boardpos[14][9].collectible = "BlueCircle";
   }
 
+   _predictMoveRedAlt(int i, int j, int t) {
+    while(1==1) {
+      if (boardpos[i][j].obstaclenorth && t==1) {break;}
+      if (boardpos[i][j].obstacleeast && t==2) {break;}
+      if (boardpos[i][j].obstaclesouth && t==3) {break;}
+      if (boardpos[i][j].obstaclewest && t==4) {break;}
+      if (i>0 && boardpos[i-1][j].blueposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].blueposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].blueposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].blueposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].greenposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].greenposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].greenposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].greenposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].yellowposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].yellowposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].yellowposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].yellowposition && t==2) {break;}
+      if (t==1) {i--;}
+      if (t==3) {i++;}
+      if (t==4) {j--;}
+      if (t==2) {j++;}
+    }
+    return(i*15+j);
+  }
+
+
+
+
+
   Future _handleMoveRedAlt(String? gamename, int i, int j, int t) async {
-    CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[i][j].redposition = false;
     int ialt=i;
@@ -1134,14 +1296,16 @@ class singleplayer_debugging extends StatelessWidget {
     _move.value=_move.value+1;
     _PositionRedI.value=i;
     _PositionRedJ.value=j;
-    await game.doc(gamename).update({'redi': i,'redj':j,'redalti': ialt,'redaltj':jalt});
-    if(ialt!=i || jalt!=j) {
-      await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
-    }    //setState(() {});
+
+    _rowList.add(DataRow(cells: <DataCell>[
+      DataCell(Text(_GameRound.value.toString())),
+      DataCell(Text(_move.value.toString())),
+      DataCell(Text("Red")),
+      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+    ]));
   }
 
   Future _handleMoveBlueAlt(String? gamename, int i, int j, int t) async {
-    CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[i][j].blueposition = false;
     int ialt=i;
@@ -1178,15 +1342,18 @@ class singleplayer_debugging extends StatelessWidget {
     _move.value=_move.value+1;
     _PositionBlueI.value=i;
     _PositionBlueJ.value=j;
-    await game.doc(gamename).update({'bluei': i,'bluej':j,'bluealti': ialt,'bluealtj':jalt});
-    if(ialt!=i || jalt!=j) {
-    //  await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
-    }    // setState(() {});
+
+    _rowList.add(DataRow(cells: <DataCell>[
+      DataCell(Text(_GameRound.value.toString())),
+      DataCell(Text(_move.value.toString())),
+      DataCell(Text("Blue")),
+      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+    ]));
+
+   // setState(() {});
   }
 
   Future _handleMoveGreenAlt(String? gamename, int i, int j, int t) async {
-
-    CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[i][j].greenposition = false;
     int ialt=i;
@@ -1223,17 +1390,18 @@ class singleplayer_debugging extends StatelessWidget {
     _move.value=_move.value+1;
     _PositionGreenI.value=i;
     _PositionGreenJ.value=j;
-    await game.doc(gamename).update({'greeni': i,'greenj':j,'greenalti': ialt,'greenaltj':jalt});
-  //  print("MOVED");
-    if(ialt!=i || jalt!=j) {
-  //    await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
-    }
-    //setState(() {});
+
+    _rowList.add(DataRow(cells: <DataCell>[
+      DataCell(Text(_GameRound.value.toString())),
+      DataCell(Text(_move.value.toString())),
+      DataCell(Text("Green")),
+      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+    ]));
+
+
   }
 
   Future _handleMoveYellowAlt(String? gamename, int i, int j, int t) async {
-
-    CollectionReference game = FirebaseFirestore.instance.collection('Games');
 
     boardpos[i][j].yellowposition = false;
     int ialt=i;
@@ -1270,10 +1438,14 @@ class singleplayer_debugging extends StatelessWidget {
     _move.value=_move.value+1;
     _PositionYellowI.value=i;
     _PositionYellowJ.value=j;
-    await game.doc(gamename).update({'yellowi': i,'yellowj':j,'yellowalti': ialt,'yellowaltj':jalt});
-    if(ialt!=i || jalt!=j) {
-      await game.doc(gamename).update({'movecount': FieldValue.increment(1)});
-    }    //setState(() {});
+
+    _rowList.add(DataRow(cells: <DataCell>[
+      DataCell(Text(_GameRound.value.toString())),
+      DataCell(Text(_move.value.toString())),
+      DataCell(Text("Black")),
+      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+    ]));
+
   }
 
 

@@ -4,9 +4,9 @@ import 'dart:async';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'game_activity.dart';
-import 'games_list.dart';
 import 'menulist.dart';
 import 'signup.dart';
+import 'singleplayer_debugging.dart';
 
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -16,6 +16,9 @@ void main() async {
   await Firebase.initializeApp();
   runApp(MyApp()  );
 }
+
+
+
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -111,6 +114,30 @@ class SignInPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Row( mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[ //Text("Game Menu",style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                      TextButton(
+                        style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            textStyle: TextStyle(fontSize: 32, fontStyle: FontStyle.normal, fontWeight: FontWeight.bold)
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (
+                                    ctxt) => new singleplayer_debugging(),
+                                settings: RouteSettings(
+                                    arguments: Arguments("")
+                                  // comic.reference.id,
+                                  // comic.data()["title"].toString(),
+                                  // comic.data()["lang"].toString(),
+                                ),
+                              ));
+                        },
+                        child: const Text('FREE SINGLEPLAYER'),
+                      ),
+                    ]),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
