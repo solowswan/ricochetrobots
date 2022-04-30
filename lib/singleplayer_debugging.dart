@@ -389,35 +389,49 @@ class singleplayer_debugging extends StatelessWidget {
                                             );
                                           }
                                           if(_switch.value==-1) {
-                                            if(PositionBlueI<15){boardpos[PositionBlueI+1][PositionBlueJ].downarrow=true;}
-                                            if(PositionBlueJ<15){boardpos[PositionBlueI][PositionBlueJ+1].rightarrow=true;}
-                                            if(PositionBlueI>0){boardpos[PositionBlueI-1][PositionBlueJ].uparrow=true;}
-                                            if(PositionBlueJ>0){boardpos[PositionBlueI][PositionBlueJ-1].leftarrow=true;}
+                                            //if(PositionBlueI<15){boardpos[PositionBlueI+1][PositionBlueJ].downarrow=true;}
+                                            //if(PositionBlueJ<15){boardpos[PositionBlueI][PositionBlueJ+1].rightarrow=true;}
+                                            //if(PositionBlueI>0){boardpos[PositionBlueI-1][PositionBlueJ].uparrow=true;}
+                                            //if(PositionBlueJ>0){boardpos[PositionBlueI][PositionBlueJ-1].leftarrow=true;}
+                                            if(PositionBlueI>0){  for(var counter = PositionBlueI-1; counter >= ((_predictMoveBlueAlt(PositionBlueI, PositionBlueJ, 1))/16).floor() && counter>=0; counter--)  { boardpos[counter][PositionBlueJ].uparrow=true;  } }
+                                            if(PositionBlueJ<15){ for(var counter = PositionBlueJ+1; counter <= (_predictMoveBlueAlt(PositionBlueI, PositionBlueJ, 2))%16         && counter<=15; counter++)  {boardpos[PositionBlueI][counter].rightarrow=true;  } }
+                                            if(PositionBlueI<15){ for(var counter = PositionBlueI+1; counter <= ((_predictMoveBlueAlt(PositionBlueI, PositionBlueJ, 3))/16).floor() && counter<=15; counter++)  {boardpos[counter][PositionBlueJ].downarrow=true;  } }
+                                            if(PositionBlueJ>0){  for(var counter = PositionBlueJ-1; counter >= _predictMoveBlueAlt(PositionBlueI, PositionBlueJ, 4)%16         && counter>=0; counter--)  { boardpos[PositionBlueI][counter].leftarrow=true;  } }
+
                                           } else if(_switch.value==-2) {
-                                            //predicti=_predictMoveRedAlt(PositionRedI, PositionRedJ, 2);
-                                            //print(predicti);
-                                            //print((predicti/15).floor());
-                                            //print(predicti%15);
+                                            //print( _predictMoveRedAlt(PositionRedI, PositionRedJ, 2));
+                                            //print( _predictMoveRedAlt(PositionRedI, PositionRedJ, 2)%16 );
+                                            //print(boardpos[PositionRedI][PositionRedJ+1].obstacleeast);
                                             //if(PositionRedI>0){boardpos[PositionRedI-1][PositionRedJ].uparrow=true;}
                                             //if(PositionRedJ<15){boardpos[PositionRedI][PositionRedJ+1].rightarrow=true;}
                                             //if(PositionRedI<15){boardpos[PositionRedI+1][PositionRedJ].downarrow=true;}
                                             //if(PositionRedJ>0){boardpos[PositionRedI][PositionRedJ-1].leftarrow=true;}
-                                            if(PositionRedI>0){  for(var counter = PositionRedI-1; counter <= _predictMoveRedAlt(PositionRedI, PositionRedJ, 1)/15.floor() && counter>=0; counter--)  {boardpos[counter][PositionRedJ].uparrow=true;  } }
-                                            if(PositionRedJ<15){ for(var counter = PositionRedJ+1; counter <= _predictMoveRedAlt(PositionRedI, PositionRedJ, 2)%15         && counter<=15; counter++)  {boardpos[PositionRedI][counter].rightarrow=true;  } }
-                                            if(PositionRedI<15){ for(var counter = PositionRedI+1; counter <= _predictMoveRedAlt(PositionRedI, PositionRedJ, 3)/15.floor() && counter<=15; counter++)  {boardpos[counter][PositionRedJ].downarrow=true;  } }
-                                            if(PositionRedJ>0){  for(var counter = PositionRedJ-1; counter >= _predictMoveRedAlt(PositionRedI, PositionRedJ, 4)%15         && counter>=0; counter--)  {boardpos[PositionRedI][counter].leftarrow=true;  } }
+                                            if(PositionRedI>0){  for(var counter = PositionRedI-1; counter >= ((_predictMoveRedAlt(PositionRedI, PositionRedJ, 1))/16).floor() && counter>=0; counter--)  { boardpos[counter][PositionRedJ].uparrow=true;  } }
+                                            if(PositionRedJ<15){ for(var counter = PositionRedJ+1; counter <= (_predictMoveRedAlt(PositionRedI, PositionRedJ, 2))%16         && counter<=15; counter++)  {boardpos[PositionRedI][counter].rightarrow=true;  } }
+                                            if(PositionRedI<15){ for(var counter = PositionRedI+1; counter <= ((_predictMoveRedAlt(PositionRedI, PositionRedJ, 3))/16).floor() && counter<=15; counter++)  {boardpos[counter][PositionRedJ].downarrow=true;  } }
+                                            if(PositionRedJ>0){  for(var counter = PositionRedJ-1; counter >= _predictMoveRedAlt(PositionRedI, PositionRedJ, 4)%16         && counter>=0; counter--)  { boardpos[PositionRedI][counter].leftarrow=true;  } }
 
 
                                           }else if(_switch.value==-3) {
-                                            if(PositionGreenI<15){boardpos[PositionGreenI+1][PositionGreenJ].downarrow=true;}
-                                            if(PositionGreenJ<15){boardpos[PositionGreenI][PositionGreenJ+1].rightarrow=true;}
-                                            if(PositionGreenI>0){boardpos[PositionGreenI-1][PositionGreenJ].uparrow=true;}
-                                            if(PositionGreenJ>0){boardpos[PositionGreenI][PositionGreenJ-1].leftarrow=true;}
+                                            //if(PositionGreenI<15){boardpos[PositionGreenI+1][PositionGreenJ].downarrow=true;}
+                                            //if(PositionGreenJ<15){boardpos[PositionGreenI][PositionGreenJ+1].rightarrow=true;}
+                                            //if(PositionGreenI>0){boardpos[PositionGreenI-1][PositionGreenJ].uparrow=true;}
+                                            //if(PositionGreenJ>0){boardpos[PositionGreenI][PositionGreenJ-1].leftarrow=true;}
+                                            if(PositionGreenI>0){  for(var counter = PositionGreenI-1; counter >= ((_predictMoveGreenAlt(PositionGreenI, PositionGreenJ, 1))/16).floor() && counter>=0; counter--)  { boardpos[counter][PositionGreenJ].uparrow=true;  } }
+                                            if(PositionGreenJ<15){ for(var counter = PositionGreenJ+1; counter <= (_predictMoveGreenAlt(PositionGreenI, PositionGreenJ, 2))%16         && counter<=15; counter++)  {boardpos[PositionGreenI][counter].rightarrow=true;  } }
+                                            if(PositionGreenI<15){ for(var counter = PositionGreenI+1; counter <= ((_predictMoveGreenAlt(PositionGreenI, PositionGreenJ, 3))/16).floor() && counter<=15; counter++)  {boardpos[counter][PositionGreenJ].downarrow=true;  } }
+                                            if(PositionGreenJ>0){  for(var counter = PositionGreenJ-1; counter >= _predictMoveGreenAlt(PositionGreenI, PositionGreenJ, 4)%16         && counter>=0; counter--)  { boardpos[PositionGreenI][counter].leftarrow=true;  } }
+
                                           }else if(_switch.value==-4) {
-                                            if(PositionYellowI<15){boardpos[PositionYellowI+1][PositionYellowJ].downarrow=true;}
-                                            if(PositionYellowJ<15){boardpos[PositionYellowI][PositionYellowJ+1].rightarrow=true;}
-                                            if(PositionYellowI>0){boardpos[PositionYellowI-1][PositionYellowJ].uparrow=true;}
-                                            if(PositionYellowJ>0){boardpos[PositionYellowI][PositionYellowJ-1].leftarrow=true;}
+                                            //if(PositionYellowI<15){boardpos[PositionYellowI+1][PositionYellowJ].downarrow=true;}
+                                            //if(PositionYellowJ<15){boardpos[PositionYellowI][PositionYellowJ+1].rightarrow=true;}
+                                            //if(PositionYellowI>0){boardpos[PositionYellowI-1][PositionYellowJ].uparrow=true;}
+                                            //if(PositionYellowJ>0){boardpos[PositionYellowI][PositionYellowJ-1].leftarrow=true;}
+                                            if(PositionYellowI>0){  for(var counter = PositionYellowI-1; counter >= ((_predictMoveYellowAlt(PositionYellowI, PositionYellowJ, 1))/16).floor() && counter>=0; counter--)  { boardpos[counter][PositionYellowJ].uparrow=true;  } }
+                                            if(PositionRedJ<15){ for(var counter = PositionYellowJ+1; counter <= (_predictMoveYellowAlt(PositionYellowI, PositionYellowJ, 2))%16         && counter<=15; counter++)  {boardpos[PositionYellowI][counter].rightarrow=true;  } }
+                                            if(PositionYellowI<15){ for(var counter = PositionYellowI+1; counter <= ((_predictMoveYellowAlt(PositionYellowI, PositionYellowJ, 3))/16).floor() && counter<=15; counter++)  {boardpos[counter][PositionYellowJ].downarrow=true;  } }
+                                            if(PositionRedJ>0){  for(var counter = PositionYellowJ-1; counter >= _predictMoveYellowAlt(PositionYellowI, PositionYellowJ, 4)%16         && counter>=0; counter--)  { boardpos[PositionYellowI][counter].leftarrow=true;  } }
+
                                           }else if (_switch.value.sign==1) {
                                             boardpos.forEach((f) => {f.forEach((x) => {x.downarrow=false}) });
                                             boardpos.forEach((f) => {f.forEach((x) => {x.rightarrow=false}) });
@@ -806,6 +820,7 @@ class singleplayer_debugging extends StatelessWidget {
                                             return InkWell(
                                                 onTap: () {
                                                   _switch.value = _switch.value.sign * 2 * -1;
+
                                                 },
                                                 splashColor: Colors.grey,
                                                 child: Stack(children: <Widget>[Container(
@@ -1229,6 +1244,32 @@ class singleplayer_debugging extends StatelessWidget {
     // boardpos[14][9].collectible = "BlueCircle";
   }
 
+  _predictMoveBlueAlt(int i, int j, int t) {
+    while(1==1) {
+      if (boardpos[i][j].obstaclenorth && t==1) {break;}
+      if (boardpos[i][j].obstacleeast && t==2) {break;}
+      if (boardpos[i][j].obstaclesouth && t==3) {break;}
+      if (boardpos[i][j].obstaclewest && t==4) {break;}
+      if (i>0 && boardpos[i-1][j].redposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].redposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].redposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].redposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].greenposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].greenposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].greenposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].greenposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].yellowposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].yellowposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].yellowposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].yellowposition && t==2) {break;}
+      if (t==1) {i--;}
+      if (t==3) {i++;}
+      if (t==4) {j--;}
+      if (t==2) {j++;}
+    }
+    return(i*16+j);
+  }
+
    _predictMoveRedAlt(int i, int j, int t) {
     while(1==1) {
       if (boardpos[i][j].obstaclenorth && t==1) {break;}
@@ -1252,10 +1293,60 @@ class singleplayer_debugging extends StatelessWidget {
       if (t==4) {j--;}
       if (t==2) {j++;}
     }
-    return(i*15+j);
+    return(i*16+j);
   }
 
+  _predictMoveGreenAlt(int i, int j, int t) {
+    while(1==1) {
+      if (boardpos[i][j].obstaclenorth && t==1) {break;}
+      if (boardpos[i][j].obstacleeast && t==2) {break;}
+      if (boardpos[i][j].obstaclesouth && t==3) {break;}
+      if (boardpos[i][j].obstaclewest && t==4) {break;}
+      if (i>0 && boardpos[i-1][j].blueposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].blueposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].blueposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].blueposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].redposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].redposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].redposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].redposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].yellowposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].yellowposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].yellowposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].yellowposition && t==2) {break;}
+      if (t==1) {i--;}
+      if (t==3) {i++;}
+      if (t==4) {j--;}
+      if (t==2) {j++;}
+    }
+    return(i*16+j);
+  }
 
+  _predictMoveYellowAlt(int i, int j, int t) {
+    while(1==1) {
+      if (boardpos[i][j].obstaclenorth && t==1) {break;}
+      if (boardpos[i][j].obstacleeast && t==2) {break;}
+      if (boardpos[i][j].obstaclesouth && t==3) {break;}
+      if (boardpos[i][j].obstaclewest && t==4) {break;}
+      if (i>0 && boardpos[i-1][j].blueposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].blueposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].blueposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].blueposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].greenposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].greenposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].greenposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].greenposition && t==2) {break;}
+      if (i>0 && boardpos[i-1][j].redposition && t==1) {break;}
+      if (i<15 && boardpos[i+1][j].redposition && t==3) {break;}
+      if (j>0 && boardpos[i][j-1].redposition && t==4) {break;}
+      if (j<15 && boardpos[i][j+1].redposition && t==2) {break;}
+      if (t==1) {i--;}
+      if (t==3) {i++;}
+      if (t==4) {j--;}
+      if (t==2) {j++;}
+    }
+    return(i*16+j);
+  }
 
 
 
@@ -1301,7 +1392,7 @@ class singleplayer_debugging extends StatelessWidget {
       DataCell(Text(_GameRound.value.toString())),
       DataCell(Text(_move.value.toString())),
       DataCell(Text("Red")),
-      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+      DataCell(Text(((ialt)*16+(jalt+1)).toString() + "-" + ((i)*16+(j+1)).toString())),
     ]));
   }
 
@@ -1347,7 +1438,7 @@ class singleplayer_debugging extends StatelessWidget {
       DataCell(Text(_GameRound.value.toString())),
       DataCell(Text(_move.value.toString())),
       DataCell(Text("Blue")),
-      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+      DataCell(Text(((ialt)*16+(jalt+1)).toString() + "-" + ((i)*16+(j+1)).toString())),
     ]));
 
    // setState(() {});
@@ -1395,7 +1486,7 @@ class singleplayer_debugging extends StatelessWidget {
       DataCell(Text(_GameRound.value.toString())),
       DataCell(Text(_move.value.toString())),
       DataCell(Text("Green")),
-      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+      DataCell(Text(((ialt)*16+(jalt+1)).toString() + "-" + ((i)*16+(j+1)).toString())),
     ]));
 
 
@@ -1443,7 +1534,7 @@ class singleplayer_debugging extends StatelessWidget {
       DataCell(Text(_GameRound.value.toString())),
       DataCell(Text(_move.value.toString())),
       DataCell(Text("Black")),
-      DataCell(Text((ialt*15+jalt).toString() + "-" + (i*15+j).toString())),
+      DataCell(Text(((ialt)*16+(jalt+1)).toString() + "-" + ((i)*16+(j+1)).toString())),
     ]));
 
   }
