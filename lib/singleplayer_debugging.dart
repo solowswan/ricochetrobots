@@ -1057,6 +1057,68 @@ class singleplayer_debugging extends StatelessWidget {
   }
   // Initialises all lists
   Future _initialiseGame() async {
+
+    StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance.collection('/Games/anon/board /obstacles').orderBy('bet', descending: false).snapshots(), //.doc(_auth.currentUser.email).get(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot1 ) {
+          if (snapshot1.hasData) {
+            var data = [];
+            List<String> players = [];
+            List<String> bets = [];
+            List<String> scores = [];
+            snapshot1.data?.docs.forEach((f) => bets.add(f.data()["bet"].toString()));
+            snapshot1.data?.docs.forEach((f) => players.add(f.id.toString()));
+            snapshot1.data?.docs.forEach((f) => scores.add(f.data()["score"].toString()));
+
+            List<DataRow> _createRows(QuerySnapshot snapshot) {
+              List<DataRow> newList = snapshot.docs.map((DocumentSnapshot documentSnapshot) {
+                return new DataRow(cells: [ DataCell(Text(documentSnapshot.id.toString(),  style: TextStyle(height: 1, fontSize: 15),)) ,
+                  DataCell(Text(documentSnapshot['bet'].toString(),  style: TextStyle(height: 1, fontSize: 15),)),
+                  DataCell(Text(documentSnapshot['score'].toString(),  style: TextStyle(height: 1, fontSize: 15),)),
+                ]
+                );
+              }).toList();
+              return newList;
+            }
+            //print(bets[1]);
+            //print(players[1]);
+            //print(players.length);
+
+            return (GridView.builder(
+              //shrinkWrap: true,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                ),
+                itemCount: 1,
+                itemBuilder: (BuildContext context, int index) {
+                  return DataTable(
+                    dataRowHeight: 20,
+                    headingRowHeight: 30,
+                    headingRowColor: MaterialStateColor.resolveWith((states) => Colors.black26),
+                    showBottomBorder: true,
+                    columns: [
+                      DataColumn(label: Text('PLAYER', style: TextStyle(fontWeight: FontWeight.bold),)),
+                      DataColumn(label: Text('BID', style: TextStyle(fontWeight: FontWeight.bold),)),
+                      DataColumn(label: Text('SCORE',style: TextStyle(fontWeight: FontWeight.bold),)),
+                    ],
+                    rows: _createRows(snapshot1.data!),
+
+                  );
+                }
+            )
+
+
+            );
+
+
+          } else {return new Text("There is no data");}
+          //return new ListView(children: getExpenseItems(snapshot1));
+        }
+    );
+
+
     //MIDDLE
     boardpos[6][7].obstaclesouth = true;
     boardpos[6][8].obstaclesouth = true;
