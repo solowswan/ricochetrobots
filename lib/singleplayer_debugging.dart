@@ -112,7 +112,7 @@ class singleplayer_debugging extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('TURDLE'),
+            Text('RATHA'),
           ],
           // children: [
           //Image.asset(
@@ -1062,21 +1062,6 @@ class singleplayer_debugging extends StatelessWidget {
     DocumentSnapshot board = await FirebaseFirestore.instance.collection('Games/anon/board').doc("obstacles").get();
     //DocumentReference board = FirebaseFirestore.instance.doc('Games/anon/board/obstacles');
     //print(board.data()!["1"]["n"]);
-
-    await boardupdate.doc("obstacles").update({'1.i': 0});
-    await boardupdate.doc("obstacles").update({'1.j': 0});
-    await boardupdate.doc("obstacles").update({'1.n': true});
-    await boardupdate.doc("obstacles").update({'1.e': false});
-    await boardupdate.doc("obstacles").update({'1.w': false});
-    await boardupdate.doc("obstacles").update({'1.s': true});
-
-    await boardupdate.doc("obstacles").update({'2.i': 0});
-    await boardupdate.doc("obstacles").update({'2.j': 0});
-    await boardupdate.doc("obstacles").update({'2.n': true});
-    await boardupdate.doc("obstacles").update({'2.e': false});
-    await boardupdate.doc("obstacles").update({'2.w': false});
-    await boardupdate.doc("obstacles").update({'2.s': false});
-
 
 
     //MIDDLE

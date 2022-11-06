@@ -103,7 +103,7 @@ class SignInPage extends StatelessWidget {
     return Scaffold( backgroundColor: Colors.black,
       resizeToAvoidBottomInset: false,
         appBar: AppBar(          backgroundColor: Colors.black,
-            title: Text('TURDLE')
+            title: Text('RATHA')
       ),
 
 
